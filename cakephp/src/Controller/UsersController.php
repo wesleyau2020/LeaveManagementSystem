@@ -102,17 +102,4 @@ class UsersController extends AppController
 
         return $this->redirect(['action' => 'index']);
     }
-
-    public function login()
-    {
-        $this->request->allowMethod(['get', 'post']);
-        // regardless of POST or GET, redirect if user is logged in
-        // for now, hardcode redirect to /users
-        $redirect = $this->request->getQuery('redirect', [
-            'controller' => 'LeaveRequests',
-            'action' => 'index',
-        ]);
-
-        return $this->redirect($redirect);
-    }
 }
