@@ -1,9 +1,9 @@
 <?php return array(
     'root' => array(
         'name' => 'cakephp/app',
-        'pretty_version' => '4.4.2',
-        'version' => '4.4.2.0',
-        'reference' => NULL,
+        'pretty_version' => 'dev-main',
+        'version' => 'dev-main',
+        'reference' => '305169bd0bc48eefd1f695ac21d08ffa2acde810',
         'type' => 'project',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -20,11 +20,20 @@
             'dev_requirement' => true,
         ),
         'cakephp/app' => array(
-            'pretty_version' => '4.4.2',
-            'version' => '4.4.2.0',
-            'reference' => NULL,
+            'pretty_version' => 'dev-main',
+            'version' => 'dev-main',
+            'reference' => '305169bd0bc48eefd1f695ac21d08ffa2acde810',
             'type' => 'project',
             'install_path' => __DIR__ . '/../../',
+            'aliases' => array(),
+            'dev_requirement' => false,
+        ),
+        'cakephp/authentication' => array(
+            'pretty_version' => '2.10.1',
+            'version' => '2.10.1.0',
+            'reference' => '643e17bcbbe2c5a01a5aaaa10d56df1a609ca6ab',
+            'type' => 'cakephp-plugin',
+            'install_path' => __DIR__ . '/../cakephp/authentication',
             'aliases' => array(),
             'dev_requirement' => false,
         ),
@@ -478,8 +487,8 @@
         'psr/container-implementation' => array(
             'dev_requirement' => false,
             'provided' => array(
-                0 => '^1.0',
-                1 => '^1.0 || ^2.0',
+                0 => '^1.0 || ^2.0',
+                1 => '^1.0',
             ),
         ),
         'psr/http-client' => array(
