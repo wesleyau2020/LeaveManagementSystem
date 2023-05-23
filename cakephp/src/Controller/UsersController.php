@@ -116,17 +116,16 @@ class UsersController extends AppController
         $this->request->allowMethod(['get', 'post']);
         $result = $this->Authentication->getResult();
 
-        // to be commented out
-        debug($this->request->getData());
-        debug($result->getData());
-        debug($result->getErrors());
+        // debug($this->request->getData());
+        // debug($result->getData());
+        // debug($result->getErrors());
 
         // regardless of POST or GET, redirect if user is logged in
         if ($result && $result->isValid()) {
             // redirect to /Users after login success
             $redirect = $this->request->getQuery('redirect', [
                 'controller' => 'Users',
-                'action' => 'view',
+                'action' => 'index',
             ]);
     
             return $this->redirect($redirect);
