@@ -53,6 +53,7 @@ class User extends Entity
         'password',
     ];
 
+    // Automatically hash passwords when they are changed.
     protected function _setPassword(string $password) : ?string
     {
         if (strlen($password) > 0) {
