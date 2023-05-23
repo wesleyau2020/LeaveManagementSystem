@@ -1,0 +1,37 @@
+2023-05-22 04:36:41 error: [Cake\Database\Exception\MissingConnectionException] Connection to Mysql could not be established: SQLSTATE[HY000] [2002] No such file or directory in /mnt/c/Users/wesle/Desktop/Github Desktop/PualHypePage_HRLeaveSite/cakephp/vendor/cakephp/cakephp/src/Database/Driver.php on line 133
+Exception Attributes: array (
+  'driver' => 'Mysql',
+  'reason' => 'SQLSTATE[HY000] [2002] No such file or directory',
+)
+Stack Trace:
+- /mnt/c/Users/wesle/Desktop/Github Desktop/PualHypePage_HRLeaveSite/cakephp/vendor/cakephp/cakephp/src/Database/Driver/Mysql.php:164
+- /mnt/c/Users/wesle/Desktop/Github Desktop/PualHypePage_HRLeaveSite/cakephp/vendor/cakephp/cakephp/src/Database/Schema/SchemaDialect.php:51
+- /mnt/c/Users/wesle/Desktop/Github Desktop/PualHypePage_HRLeaveSite/cakephp/vendor/cakephp/cakephp/src/Database/Driver/Mysql.php:216
+- /mnt/c/Users/wesle/Desktop/Github Desktop/PualHypePage_HRLeaveSite/cakephp/vendor/cakephp/cakephp/src/Database/Schema/Collection.php:53
+- /mnt/c/Users/wesle/Desktop/Github Desktop/PualHypePage_HRLeaveSite/cakephp/vendor/cakephp/cakephp/src/Database/Connection.php:418
+- /mnt/c/Users/wesle/Desktop/Github Desktop/PualHypePage_HRLeaveSite/cakephp/vendor/cakephp/bake/src/Utility/TableScanner.php:65
+- /mnt/c/Users/wesle/Desktop/Github Desktop/PualHypePage_HRLeaveSite/cakephp/vendor/cakephp/bake/src/Utility/TableScanner.php:82
+- /mnt/c/Users/wesle/Desktop/Github Desktop/PualHypePage_HRLeaveSite/cakephp/vendor/cakephp/bake/src/Command/AllCommand.php:88
+- /mnt/c/Users/wesle/Desktop/Github Desktop/PualHypePage_HRLeaveSite/cakephp/vendor/cakephp/cakephp/src/Console/BaseCommand.php:189
+- /mnt/c/Users/wesle/Desktop/Github Desktop/PualHypePage_HRLeaveSite/cakephp/vendor/cakephp/cakephp/src/Console/CommandRunner.php:334
+- /mnt/c/Users/wesle/Desktop/Github Desktop/PualHypePage_HRLeaveSite/cakephp/vendor/cakephp/cakephp/src/Console/CommandRunner.php:172
+- /mnt/c/Users/wesle/Desktop/Github Desktop/PualHypePage_HRLeaveSite/cakephp/bin/cake.php:12
+
+Caused by: [PDOException] SQLSTATE[HY000] [2002] No such file or directory in /mnt/c/Users/wesle/Desktop/Github Desktop/PualHypePage_HRLeaveSite/cakephp/vendor/cakephp/cakephp/src/Database/Driver.php on line 125
+Stack Trace:
+- /mnt/c/Users/wesle/Desktop/Github Desktop/PualHypePage_HRLeaveSite/cakephp/vendor/cakephp/cakephp/src/Database/Driver.php:125
+- /mnt/c/Users/wesle/Desktop/Github Desktop/PualHypePage_HRLeaveSite/cakephp/vendor/cakephp/cakephp/src/Core/Retry/CommandRetry.php:70
+- /mnt/c/Users/wesle/Desktop/Github Desktop/PualHypePage_HRLeaveSite/cakephp/vendor/cakephp/cakephp/src/Database/Driver.php:131
+- /mnt/c/Users/wesle/Desktop/Github Desktop/PualHypePage_HRLeaveSite/cakephp/vendor/cakephp/cakephp/src/Database/Driver/Mysql.php:164
+- /mnt/c/Users/wesle/Desktop/Github Desktop/PualHypePage_HRLeaveSite/cakephp/vendor/cakephp/cakephp/src/Database/Schema/SchemaDialect.php:51
+- /mnt/c/Users/wesle/Desktop/Github Desktop/PualHypePage_HRLeaveSite/cakephp/vendor/cakephp/cakephp/src/Database/Driver/Mysql.php:216
+- /mnt/c/Users/wesle/Desktop/Github Desktop/PualHypePage_HRLeaveSite/cakephp/vendor/cakephp/cakephp/src/Database/Schema/Collection.php:53
+- /mnt/c/Users/wesle/Desktop/Github Desktop/PualHypePage_HRLeaveSite/cakephp/vendor/cakephp/cakephp/src/Database/Connection.php:418
+- /mnt/c/Users/wesle/Desktop/Github Desktop/PualHypePage_HRLeaveSite/cakephp/vendor/cakephp/bake/src/Utility/TableScanner.php:65
+- /mnt/c/Users/wesle/Desktop/Github Desktop/PualHypePage_HRLeaveSite/cakephp/vendor/cakephp/bake/src/Utility/TableScanner.php:82
+- /mnt/c/Users/wesle/Desktop/Github Desktop/PualHypePage_HRLeaveSite/cakephp/vendor/cakephp/bake/src/Command/AllCommand.php:88
+- /mnt/c/Users/wesle/Desktop/Github Desktop/PualHypePage_HRLeaveSite/cakephp/vendor/cakephp/cakephp/src/Console/BaseCommand.php:189
+- /mnt/c/Users/wesle/Desktop/Github Desktop/PualHypePage_HRLeaveSite/cakephp/vendor/cakephp/cakephp/src/Console/CommandRunner.php:334
+- /mnt/c/Users/wesle/Desktop/Github Desktop/PualHypePage_HRLeaveSite/cakephp/vendor/cakephp/cakephp/src/Console/CommandRunner.php:172
+- /mnt/c/Users/wesle/Desktop/Github Desktop/PualHypePage_HRLeaveSite/cakephp/bin/cake.php:12
+
