@@ -8,124 +8,104 @@
     <aside class="column">
         <div class="side-nav">
             <h4 class="heading"><?= __('Actions') ?></h4>
-            <?= $this->Html->link(__('Edit User'), ['action' => 'edit', $user->id], ['class' => 'side-nav-item']) ?>
-            <?= $this->Form->postLink(__('Delete User'), ['action' => 'delete', $user->id], ['confirm' => __('Are you sure you want to delete # {0}?', $user->id), 'class' => 'side-nav-item']) ?>
-            <?= $this->Html->link(__('List Users'), ['action' => 'index'], ['class' => 'side-nav-item']) ?>
-            <?= $this->Html->link(__('New User'), ['action' => 'add'], ['class' => 'side-nav-item']) ?>
+            <?= $this->Html->link(__('Edit Details'), ['action' => 'edit', $user->id], ['class' => 'side-nav-item']) ?>
         </div>
     </aside>
     <div class="column-responsive column-80">
         <div class="users view content">
-            <h3><?= h($user->id) ?></h3>
+            <!-- display username and sign out button-->
+            <!-- <h3 style="float:left;"><?= h($user->username)?></h3> -->
+            <h3 style="float:left;"><?=  __('User Details:') ?></h3>
+            <div style="float:right;">
+            <?= $this->Html->link("Sign Out", ['action' => 'logout']) ?>
+            </div>
+
+            <!-- display user details -->
             <table>
-                <tr>
-                    <th><?= __('Username') ?></th>
-                    <td><?= h($user->username) ?></td>
-                </tr>
                 <tr>
                     <th><?= __('Id') ?></th>
                     <td><?= $this->Number->format($user->id) ?></td>
                 </tr>
                 <tr>
-                    <th><?= __('Num Annual Leave') ?></th>
+                    <th><?= __('Username') ?></th>
+                    <td><?= h($user->username) ?></td>
+                </tr>
+                <tr>
+                    <th><?= __('Annual Leave (AL)') ?></th>
                     <td><?= $this->Number->format($user->num_annual_leave) ?></td>
                 </tr>
                 <tr>
-                    <th><?= __('Num Medical Leave') ?></th>
+                    <th><?= __('Medical Leave (ML)') ?></th>
                     <td><?= $this->Number->format($user->num_medical_leave) ?></td>
                 </tr>
                 <tr>
-                    <th><?= __('Num Hospital Leave') ?></th>
+                    <th><?= __('Hospital Leave (ML)') ?></th>
                     <td><?= $this->Number->format($user->num_hospital_leave) ?></td>
                 </tr>
-                <tr>
-                    <th><?= __('Admin Level') ?></th>
-                    <td><?= $user->admin_level === null ? '' : $this->Number->format($user->admin_level) ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Is Admin') ?></th>
-                    <td><?= $user->is_admin ? __('Yes') : __('No'); ?></td>
-                </tr>
             </table>
+
+            <h3 style="margin-top:50px;"><?= __('Leave Details (Year):') ?></h3>
+
+            <!-- select year via dropdown menu -->
+            <form style="margin-top:20px;" method="GET">
+                <label>Year:</label>
+                <div style="width: 20%;">
+                    <?php
+                    echo $this->Form->year('input_year', [
+                        'min' => 2000,
+                        'max' => date('Y')
+                    ]);
+                    ?>
+                </div>
+                <input type="submit" value="submit">
+            </form>
+            <?php $input_year = $_GET["input_year"]?>
+            
+            <!-- display leave details-->
             <div class="related">
-                <h4><?= __('Related Leave Details') ?></h4>
                 <?php if (!empty($user->leave_details)) : ?>
                 <div class="table-responsive">
                     <table>
+                        <?php echo "<th>Leave Days Given ({$input_year})</th>" ?>
                         <tr>
-                            <th><?= __('Id') ?></th>
-                            <th><?= __('User Id') ?></th>
-                            <th><?= __('Year') ?></th>
                             <th><?= __('Carried Over') ?></th>
                             <th><?= __('Max Carry Over') ?></th>
-                            <th><?= __('Num AL Given') ?></th>
-                            <th><?= __('Num AL Left') ?></th>
-                            <th><?= __('Num ML Given') ?></th>
-                            <th><?= __('Num ML Left') ?></th>
-                            <th><?= __('Num HL Given') ?></th>
-                            <th><?= __('Num HL Left') ?></th>
-                            <th class="actions"><?= __('Actions') ?></th>
+                            <th><?= __('Annual Leave (AL)') ?></th>
+                            <th><?= __('Annual Leave (MC)') ?></th>
+                            <th><?= __('Annual Leave (HL)') ?></th>
                         </tr>
                         <?php foreach ($user->leave_details as $leaveDetails) : ?>
-                        <tr>
-                            <td><?= h($leaveDetails->id) ?></td>
-                            <td><?= h($leaveDetails->user_id) ?></td>
-                            <td><?= h($leaveDetails->year) ?></td>
-                            <td><?= h($leaveDetails->carried_over) ?></td>
-                            <td><?= h($leaveDetails->max_carry_over) ?></td>
-                            <td><?= h($leaveDetails->num_AL_given) ?></td>
-                            <td><?= h($leaveDetails->num_AL_left) ?></td>
-                            <td><?= h($leaveDetails->num_ML_given) ?></td>
-                            <td><?= h($leaveDetails->num_ML_left) ?></td>
-                            <td><?= h($leaveDetails->num_HL_given) ?></td>
-                            <td><?= h($leaveDetails->num_HL_left) ?></td>
-                            <td class="actions">
-                                <?= $this->Html->link(__('View'), ['controller' => 'LeaveDetails', 'action' => 'view', $leaveDetails->id]) ?>
-                                <?= $this->Html->link(__('Edit'), ['controller' => 'LeaveDetails', 'action' => 'edit', $leaveDetails->id]) ?>
-                                <?= $this->Form->postLink(__('Delete'), ['controller' => 'LeaveDetails', 'action' => 'delete', $leaveDetails->id], ['confirm' => __('Are you sure you want to delete # {0}?', $leaveDetails->id)]) ?>
-                            </td>
-                        </tr>
+                            <?php if ($leaveDetails->year === $input_year): ?>
+                                <tr>
+                                    <td><?= h($leaveDetails->carried_over) ?></td>
+                                    <td><?= h($leaveDetails->max_carry_over) ?></td>
+                                    <td><?= h($leaveDetails->num_AL_given) ?></td>
+                                    <td><?= h($leaveDetails->num_ML_given) ?></td>
+                                    <td><?= h($leaveDetails->num_HL_given) ?></td>
+                                    </td>
+                                </tr>
+                            <?php endif; ?>
                         <?php endforeach; ?>
                     </table>
                 </div>
-                <?php endif; ?>
-            </div>
-            <div class="related">
-                <h4><?= __('Related Leave Requests') ?></h4>
-                <?php if (!empty($user->leave_requests)) : ?>
-                <div class="table-responsive">
+
+                <div class="table-responsive" style="margin-top:20px;">
                     <table>
+                        <?php echo "<th>Leave Balance ({$input_year})</th>" ?>
                         <tr>
-                            <th><?= __('Id') ?></th>
-                            <th><?= __('User Id') ?></th>
-                            <th><?= __('Leave Type') ?></th>
-                            <th><?= __('Start Of Leave') ?></th>
-                            <th><?= __('End Of Leave') ?></th>
-                            <th><?= __('Num Days') ?></th>
-                            <th><?= __('Year') ?></th>
-                            <th><?= __('Description') ?></th>
-                            <th><?= __('Status') ?></th>
-                            <th><?= __('Remark') ?></th>
-                            <th class="actions"><?= __('Actions') ?></th>
+                            <th><?= __('Annual Leave (AL)') ?></th>
+                            <th><?= __('Annual Leave (MC)') ?></th>
+                            <th><?= __('Annual Leave (HL)') ?></th>
                         </tr>
-                        <?php foreach ($user->leave_requests as $leaveRequests) : ?>
-                        <tr>
-                            <td><?= h($leaveRequests->id) ?></td>
-                            <td><?= h($leaveRequests->user_id) ?></td>
-                            <td><?= h($leaveRequests->leave_type) ?></td>
-                            <td><?= h($leaveRequests->start_of_leave) ?></td>
-                            <td><?= h($leaveRequests->end_of_leave) ?></td>
-                            <td><?= h($leaveRequests->num_days) ?></td>
-                            <td><?= h($leaveRequests->year) ?></td>
-                            <td><?= h($leaveRequests->description) ?></td>
-                            <td><?= h($leaveRequests->status) ?></td>
-                            <td><?= h($leaveRequests->remark) ?></td>
-                            <td class="actions">
-                                <?= $this->Html->link(__('View'), ['controller' => 'LeaveRequests', 'action' => 'view', $leaveRequests->id]) ?>
-                                <?= $this->Html->link(__('Edit'), ['controller' => 'LeaveRequests', 'action' => 'edit', $leaveRequests->id]) ?>
-                                <?= $this->Form->postLink(__('Delete'), ['controller' => 'LeaveRequests', 'action' => 'delete', $leaveRequests->id], ['confirm' => __('Are you sure you want to delete # {0}?', $leaveRequests->id)]) ?>
-                            </td>
-                        </tr>
+                        <?php foreach ($user->leave_details as $leaveDetails) : ?>
+                            <?php if ($leaveDetails->year === $input_year): ?>
+                            <tr>
+                                <td><?= h($leaveDetails->num_AL_left) ?></td>
+                                <td><?= h($leaveDetails->num_ML_left) ?></td>
+                                <td><?= h($leaveDetails->num_HL_left) ?></td>
+                                </td>
+                            </tr>
+                            <?php endif; ?>
                         <?php endforeach; ?>
                     </table>
                 </div>
