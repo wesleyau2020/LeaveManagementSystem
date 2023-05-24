@@ -14,7 +14,8 @@
     <div class="column-responsive column-80">
         <div class="users view content">
             <!-- display username and sign out button-->
-            <h3 style="float:left;"><?= h($user->username)?></h3>
+            <!-- <h3 style="float:left;"><?= h($user->username)?></h3> -->
+            <h3 style="float:left;"><?=  __('User Details:') ?></h3>
             <div style="float:right;">
             <?= $this->Html->link("Sign Out", ['action' => 'logout']) ?>
             </div>
@@ -43,10 +44,12 @@
                 </tr>
             </table>
 
+            <h3 style="margin-top:50px;"><?= __('Leave Details (Year):') ?></h3>
+
             <!-- select year via dropdown menu -->
-            <form style="margin-top:20px;">
+            <form style="margin-top:20px;" method="GET">
                 <label>Year:</label>
-                <div style="width: 25%;">
+                <div style="width: 20%;">
                     <?php
                     echo $this->Form->year('input_year', [
                         'min' => 2000,
@@ -56,13 +59,12 @@
                 </div>
                 <input type="submit" value="submit">
             </form>
-
+            
             <!-- display leave details-->
             <div class="related">
-                <h3><?= __('Leave Details') ?></h3>
                 <?php if (!empty($user->leave_details)) : ?>
                 <div class="table-responsive">
-                    <table>                            
+                    <table>
                         <th>Leave Days Given</th>
                         <tr>
                             <th><?= __('Carried Over') ?></th>
@@ -72,19 +74,21 @@
                             <th><?= __('Annual Leave (HL)') ?></th>
                         </tr>
                         <?php foreach ($user->leave_details as $leaveDetails) : ?>
-                        <tr>
-                            <td><?= h($leaveDetails->carried_over) ?></td>
-                            <td><?= h($leaveDetails->max_carry_over) ?></td>
-                            <td><?= h($leaveDetails->num_AL_given) ?></td>
-                            <td><?= h($leaveDetails->num_ML_given) ?></td>
-                            <td><?= h($leaveDetails->num_HL_given) ?></td>
-                            </td>
-                        </tr>
+                            <?php if ($leaveDetails->year === $_GET["input_year"]): ?>
+                                <tr>
+                                    <td><?= h($leaveDetails->carried_over) ?></td>
+                                    <td><?= h($leaveDetails->max_carry_over) ?></td>
+                                    <td><?= h($leaveDetails->num_AL_given) ?></td>
+                                    <td><?= h($leaveDetails->num_ML_given) ?></td>
+                                    <td><?= h($leaveDetails->num_HL_given) ?></td>
+                                    </td>
+                                </tr>
+                            <?php endif; ?>
                         <?php endforeach; ?>
                     </table>
                 </div>
 
-                <div class="table-responsive">
+                <div class="table-responsive" style="margin-top:20px;">
                     <table>
                         <th>Leave Balance</th>
                         <tr>
@@ -93,14 +97,14 @@
                             <th><?= __('Annual Leave (HL)') ?></th>
                         </tr>
                         <?php foreach ($user->leave_details as $leaveDetails) : ?>
-                            <!-- <?php if ($user->leave_details->year === $submit) : ?> -->
+                            <?php if ($leaveDetails->year === $_GET["input_year"]): ?>
                             <tr>
                                 <td><?= h($leaveDetails->num_AL_left) ?></td>
                                 <td><?= h($leaveDetails->num_ML_left) ?></td>
                                 <td><?= h($leaveDetails->num_HL_left) ?></td>
                                 </td>
                             </tr>
-                            <!-- <?php endif; ?> -->
+                            <?php endif; ?>
                         <?php endforeach; ?>
                     </table>
                 </div>
