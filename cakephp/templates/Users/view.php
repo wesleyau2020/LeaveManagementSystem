@@ -59,13 +59,14 @@
                 </div>
                 <input type="submit" value="submit">
             </form>
+            <?php $input_year = $_GET["input_year"]?>
             
             <!-- display leave details-->
             <div class="related">
                 <?php if (!empty($user->leave_details)) : ?>
                 <div class="table-responsive">
                     <table>
-                        <th>Leave Days Given</th>
+                        <?php echo "<th>Leave Days Given ({$input_year})</th>" ?>
                         <tr>
                             <th><?= __('Carried Over') ?></th>
                             <th><?= __('Max Carry Over') ?></th>
@@ -74,7 +75,7 @@
                             <th><?= __('Annual Leave (HL)') ?></th>
                         </tr>
                         <?php foreach ($user->leave_details as $leaveDetails) : ?>
-                            <?php if ($leaveDetails->year === $_GET["input_year"]): ?>
+                            <?php if ($leaveDetails->year === $input_year): ?>
                                 <tr>
                                     <td><?= h($leaveDetails->carried_over) ?></td>
                                     <td><?= h($leaveDetails->max_carry_over) ?></td>
@@ -90,14 +91,14 @@
 
                 <div class="table-responsive" style="margin-top:20px;">
                     <table>
-                        <th>Leave Balance</th>
+                        <?php echo "<th>Leave Balance ({$input_year})</th>" ?>
                         <tr>
                             <th><?= __('Annual Leave (AL)') ?></th>
                             <th><?= __('Annual Leave (MC)') ?></th>
                             <th><?= __('Annual Leave (HL)') ?></th>
                         </tr>
                         <?php foreach ($user->leave_details as $leaveDetails) : ?>
-                            <?php if ($leaveDetails->year === $_GET["input_year"]): ?>
+                            <?php if ($leaveDetails->year === $input_year): ?>
                             <tr>
                                 <td><?= h($leaveDetails->num_AL_left) ?></td>
                                 <td><?= h($leaveDetails->num_ML_left) ?></td>
