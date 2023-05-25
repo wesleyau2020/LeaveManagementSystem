@@ -41,6 +41,8 @@ $cakeDescription = 'CakePHP: the rapid development php framework';
             <a href="<?= $this->Url->build('/') ?>"><span>Cake</span>PHP</a>
         </div>
         <div class="top-nav-links">
+            <?= $this->Html->link('User List', ['controller' => 'Users', 'action' => 'index'])?>
+            <?= $this->Html->link('Leave List', ['controller' => 'LeaveRequests', 'action' => 'index'])?>
             <a target="_blank" rel="noopener" href="https://book.cakephp.org/4/">Documentation</a>
             <a target="_blank" rel="noopener" href="https://api.cakephp.org/">API</a>
         </div>
