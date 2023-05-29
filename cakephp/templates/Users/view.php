@@ -55,7 +55,7 @@ $input_year = $_POST["input_year"]??date('Y');
                     'type' => 'post',
                     'valueSources' => ['query', 'data'],
                     'url' => ['action' => 'view/'.($user->id)]
-                 ])
+                ])
             ?>
             <?=
                 $this->Form->year('input_year', [
@@ -63,7 +63,7 @@ $input_year = $_POST["input_year"]??date('Y');
                     'max' => date('Y'),
                     'default' => $input_year,
                     'style' => 'width:20%'
-                ]);
+                ])
             ?>
             <?php
                 echo $this->Form->button('Submit');
