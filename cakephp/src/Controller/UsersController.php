@@ -3,14 +3,15 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use DebugKit\Database\Log\DebugLog;
+
 /**
  * Users Controller
  *
  * @property \App\Model\Table\UsersTable $Users
  * @method \App\Model\Entity\User[]|\Cake\Datasource\ResultSetInterface paginate($object = null, array $settings = [])
  */
-class UsersController extends AppController
-{
+class UsersController extends AppController {
     /**
      * Index method
      *
@@ -30,11 +31,12 @@ class UsersController extends AppController
      * @return \Cake\Http\Response|null|void Renders view
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
-    public function view($id = null)
-    {
+    public function view($id = null) {
         $user = $this->Users->get($id, [
-            'contain' => ['LeaveDetails', 'LeaveRequests'],
+            'contain' => ['LeaveDetails', 'LeaveRequests']
         ]);
+        
+        // $this->set('input_date', 'hello world');
 
         $this->set(compact('user'));
     }

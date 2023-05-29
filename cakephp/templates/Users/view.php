@@ -3,6 +3,9 @@
  * @var \App\View\AppView $this
  * @var \App\Model\Entity\User $user
  */
+
+/** @var string input_year */
+$input_year = $_POST["input_year"]??date('Y');
 ?>
 <div class="row">
     <aside class="column">
@@ -47,20 +50,26 @@
             <h3 style="margin-top:50px;"><?= __('Leave Details (Year):') ?></h3>
 
             <!-- select year via dropdown menu -->
-            <form style="margin-top:20px;" method="GET">
-                <label>Year:</label>
-                <div style="width: 20%;">
-                    <?php
-                    echo $this->Form->year('input_year', [
-                        'min' => 2000,
-                        'max' => date('Y')
-                    ]);
-                    ?>
-                </div>
-                <input type="submit" value="submit">
-            </form>
-            <?php $input_year = $_GET["input_year"]?>
-            
+            <?= 
+                $this->Form->create($user, [
+                    'type' => 'post',
+                    'valueSources' => ['query', 'data'],
+                    'url' => ['action' => 'view/'.($user->id)]
+                ])
+            ?>
+            <?=
+                $this->Form->year('input_year', [
+                    'min' => 2000,
+                    'max' => date('Y'),
+                    'default' => $input_year,
+                    'style' => 'width:20%'
+                ])
+            ?>
+            <?php
+                echo $this->Form->button('Submit');
+                echo $this->Form->end();
+            ?>
+
             <!-- display leave details-->
             <div class="related">
                 <?php if (!empty($user->leave_details)) : ?>
