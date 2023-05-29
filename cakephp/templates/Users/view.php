@@ -61,7 +61,7 @@ $input_year = $_POST["input_year"]??date('Y');
                 $this->Form->year('input_year', [
                     'min' => 2000,
                     'max' => date('Y'),
-                    'default' => date('Y'),
+                    'default' => $input_year,
                     'style' => 'width:20%'
                 ]);
             ?>
