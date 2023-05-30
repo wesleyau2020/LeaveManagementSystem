@@ -4,8 +4,12 @@
  * @var \App\View\AppView $this
  * @var \App\Model\Entity\User $user
  */
+
+ /** @var string input_year */
+ $input_year = $_POST["input_year"]??date('Y');
 ?>
 
+<!-- Nav Bar -->
 <?php
 $this->assign('title', __('User'));
 $this->Breadcrumbs->add([
@@ -15,6 +19,7 @@ $this->Breadcrumbs->add([
 ]);
 ?>
 
+<!-- User Details -->
 <div class="view card card-primary card-outline">
   <div class="card-header d-sm-flex">
     <h2 class="card-title" style="float: left;">User Details</h2>
@@ -55,10 +60,33 @@ $this->Breadcrumbs->add([
   </div>
 </div>
 
+<!-- Leave Days Given -->
+<div class="related related-leaveDetails view card" >
+  <div class="card-header d-sm-flex" >
+    <h3 class="card-title">Leave Details (Year)</h3>
 
-<div class="related related-leaveDetails view card">
-  <div class="card-header d-sm-flex">
-    <h3 class="card-title"><?= __('Leave Details') ?></h3>
+    <!-- select year via dropdown menu -->
+    <h4 style="float: left; margin-right: 20px">Year: </h4>
+    <?= 
+        $this->Form->create($user, [
+            'type' => 'post',
+            'valueSources' => ['query', 'data'],
+            'url' => ['action' => 'view/'.($user->id)]
+        ])
+    ?>
+    <?=
+        $this->Form->year('input_year', [
+            'min' => 2000,
+            'max' => date('Y'),
+            'default' => $input_year,
+            'style' => 'width:15%'
+        ])
+    ?>
+    <?php
+        echo $this->Form->button('Submit');
+        echo $this->Form->end();
+    ?>
+
     <div class="card-toolbox">
       <!-- <?= $this->Html->link(__('New'), ['controller' => 'LeaveDetails' , 'action' => 'add'], ['class' => 'btn btn-primary btn-sm']) ?>
       <?= $this->Html->link(__('List '), ['controller' => 'LeaveDetails' , 'action' => 'index'], ['class' => 'btn btn-primary btn-sm']) ?> -->
@@ -83,6 +111,7 @@ $this->Breadcrumbs->add([
         </tr>
       <?php } else{ ?>
         <?php foreach ($user->leave_details as $leaveDetails) : ?>
+          
         <tr>
             <td><?= h($leaveDetails->carried_over) ?></td>
             <td><?= h($leaveDetails->max_carry_over) ?></td>
@@ -99,6 +128,7 @@ $this->Breadcrumbs->add([
       <?php } ?>
     </table>
 
+    <!-- Leave Balance -->
     <table class="table table-hover text-nowrap">
       <th>Leave Balance</th>
       <tr>
