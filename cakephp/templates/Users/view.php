@@ -22,7 +22,7 @@ $this->Breadcrumbs->add([
 <!-- User Details -->
 <div class="view card card-primary card-outline">
   <div class="card-header d-sm-flex">
-    <h2 class="card-title" style="float: left;">User Details</h2>
+    <h3 class="card-title" style="float: left;">User Details</h3>
       <div style="float: right;">
         <?= $this->Html->link(__('Logout'), ['action' => 'logout'], ['class' => 'btn btn-default'],) ?>
       </div>
@@ -60,7 +60,7 @@ $this->Breadcrumbs->add([
   </div>
 </div>
 
-<!-- Leave Days Given -->
+<!-- Leave Details (Year) -->
 <div class="related related-leaveDetails view card" >
   <div class="card-header d-sm-flex" >
     <h3 class="card-title">Leave Details (Year)</h3>
@@ -92,67 +92,72 @@ $this->Breadcrumbs->add([
       <?= $this->Html->link(__('List '), ['controller' => 'LeaveDetails' , 'action' => 'index'], ['class' => 'btn btn-primary btn-sm']) ?> -->
     </div>
   </div>
-  <div class="card-body table-responsive p-0">
-    <table class="table table-hover text-nowrap">
-      <th>Leave Days Given</th>
-      <tr>
-          <th><?= __('Carried Over') ?></th>
-          <th><?= __('Max Carry Over') ?></th>
-          <th><?= __('Annual Leave (AL)') ?></th>
-          <th><?= __('Medical Leave (ML)') ?></th>
-          <th><?= __('Hospital Leave (HL)') ?></th>
-          <!-- <th class="actions"><?= __('Actions') ?></th> -->
-      </tr>
-      <?php if (empty($user->leave_details)) { ?>
-        <tr>
-            <td colspan="12" class="text-muted">
-              Leave Details record not found!
-            </td>
-        </tr>
-      <?php } else{ ?>
-        <?php foreach ($user->leave_details as $leaveDetails) : ?>
-          
-        <tr>
-            <td><?= h($leaveDetails->carried_over) ?></td>
-            <td><?= h($leaveDetails->max_carry_over) ?></td>
-            <td><?= h($leaveDetails->num_AL_given) ?></td>
-            <td><?= h($leaveDetails->num_ML_given) ?></td>
-            <td><?= h($leaveDetails->num_HL_given) ?></td>
-            <!-- <td class="actions">
-              <?= $this->Html->link(__('View'), ['controller' => 'LeaveDetails', 'action' => 'view', $leaveDetails->id], ['class'=>'btn btn-xs btn-outline-primary']) ?>
-              <?= $this->Html->link(__('Edit'), ['controller' => 'LeaveDetails', 'action' => 'edit', $leaveDetails->id], ['class'=>'btn btn-xs btn-outline-primary']) ?>
-              <?= $this->Form->postLink(__('Delete'), ['controller' => 'LeaveDetails', 'action' => 'delete', $leaveDetails->id], ['class'=>'btn btn-xs btn-outline-danger', 'confirm' => __('Are you sure you want to delete # {0}?', $leaveDetails->id)]) ?>
-            </td> -->
-        </tr>
-        <?php endforeach; ?>
-      <?php } ?>
-    </table>
 
-    <!-- Leave Balance -->
-    <table class="table table-hover text-nowrap">
-      <th>Leave Balance</th>
-      <tr>
-          <th><?= __('Annual Leave (AL)') ?></th>
-          <th><?= __('Medical Leave (ML)') ?></th>
-          <th><?= __('Hospital Leave (HL)') ?></th>
-      </tr>
-      <?php if (empty($user->leave_details)) { ?>
+    <!-- Leave Days Given -->
+    <div class="card-body table-responsive p-0">
+      <table class="table table-hover text-nowrap">
+        <th>Leave Days Given</th>
         <tr>
-            <td colspan="12" class="text-muted">
-              Leave Details record not found!
-            </td>
+            <th><?= __('Carried Over') ?></th>
+            <th><?= __('Max Carry Over') ?></th>
+            <th><?= __('Annual Leave (AL)') ?></th>
+            <th><?= __('Medical Leave (ML)') ?></th>
+            <th><?= __('Hospital Leave (HL)') ?></th>
+            <!-- <th class="actions"><?= __('Actions') ?></th> -->
         </tr>
-      <?php } else{ ?>
-        <?php foreach ($user->leave_details as $leaveDetails) : ?>
+        <?php if (empty($user->leave_details)) { ?>
+          <tr>
+              <td colspan="12" class="text-muted">
+                Leave Details record not found!
+              </td>
+          </tr>
+        <?php } else{ ?>
+          <?php foreach ($user->leave_details as $leaveDetails) : ?>
+            <?php if ($leaveDetails->year === $input_year): ?>
+          <tr>
+              <td><?= h($leaveDetails->carried_over) ?></td>
+              <td><?= h($leaveDetails->max_carry_over) ?></td>
+              <td><?= h($leaveDetails->num_AL_given) ?></td>
+              <td><?= h($leaveDetails->num_ML_given) ?></td>
+              <td><?= h($leaveDetails->num_HL_given) ?></td>
+              <!-- <td class="actions">
+                <?= $this->Html->link(__('View'), ['controller' => 'LeaveDetails', 'action' => 'view', $leaveDetails->id], ['class'=>'btn btn-xs btn-outline-primary']) ?>
+                <?= $this->Html->link(__('Edit'), ['controller' => 'LeaveDetails', 'action' => 'edit', $leaveDetails->id], ['class'=>'btn btn-xs btn-outline-primary']) ?>
+                <?= $this->Form->postLink(__('Delete'), ['controller' => 'LeaveDetails', 'action' => 'delete', $leaveDetails->id], ['class'=>'btn btn-xs btn-outline-danger', 'confirm' => __('Are you sure you want to delete # {0}?', $leaveDetails->id)]) ?>
+              </td> -->
+          </tr>
+            <?php endif; ?>
+          <?php endforeach; ?>
+        <?php } ?>
+      </table>
+
+      <!-- Leave Balance -->
+      <table class="table table-hover text-nowrap">
+        <th>Leave Balance</th>
         <tr>
-            <td><?= h($leaveDetails->num_AL_left) ?></td>
-            <td><?= h($leaveDetails->num_ML_left) ?></td>
-            <td><?= h($leaveDetails->num_HL_left) ?></td>
+            <th><?= __('Annual Leave (AL)') ?></th>
+            <th><?= __('Medical Leave (ML)') ?></th>
+            <th><?= __('Hospital Leave (HL)') ?></th>
         </tr>
-        <?php endforeach; ?>
-      <?php } ?>
-    </table>
+        <?php if (empty($user->leave_details)) { ?>
+          <tr>
+              <td colspan="12" class="text-muted">
+                Leave Details record not found!
+              </td>
+          </tr>
+        <?php } else{ ?>
+          <?php foreach ($user->leave_details as $leaveDetails) : ?>
+            <?php if ($leaveDetails->year === $input_year): ?>
+              <tr>
+                  <td><?= h($leaveDetails->num_AL_left) ?></td>
+                  <td><?= h($leaveDetails->num_ML_left) ?></td>
+                  <td><?= h($leaveDetails->num_HL_left) ?></td>
+              </tr>
+            <?php endif; ?>
+          <?php endforeach; ?>
+        <?php } ?>
+      </table>
+    </div>
   </div>
-</div>
 </div>
 
