@@ -11,17 +11,17 @@
         <table>
             <thead>
                 <tr>
-                    <th><?= $this->Paginator->sort('ID') ?></th>
+                    <th><?= $this->Paginator->sort('id') ?></th>
                     <th><?= $this->Paginator->sort('user_id') ?></th>
                     <th><?= $this->Paginator->sort('year') ?></th>
                     <th><?= $this->Paginator->sort('carried_over') ?></th>
                     <th><?= $this->Paginator->sort('max_carry_over') ?></th>
-                    <th><?= $this->Paginator->sort('AL_given') ?></th>
-                    <th><?= $this->Paginator->sort('AL_left') ?></th>
-                    <th><?= $this->Paginator->sort('ML_given') ?></th>
-                    <th><?= $this->Paginator->sort('ML_left') ?></th>
-                    <th><?= $this->Paginator->sort('HL_given') ?></th>
-                    <th><?= $this->Paginator->sort('HL_left') ?></th>
+                    <th><?= $this->Paginator->sort('num_AL_given') ?></th>
+                    <th><?= $this->Paginator->sort('num_AL_left') ?></th>
+                    <th><?= $this->Paginator->sort('num_ML_given') ?></th>
+                    <th><?= $this->Paginator->sort('num_ML_left') ?></th>
+                    <th><?= $this->Paginator->sort('num_HL_given') ?></th>
+                    <th><?= $this->Paginator->sort('num_HL_left') ?></th>
                     <th class="actions"><?= __('Actions') ?></th>
                 </tr>
             </thead>

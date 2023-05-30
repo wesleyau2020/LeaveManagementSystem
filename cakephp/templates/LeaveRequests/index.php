@@ -11,12 +11,12 @@
         <table>
             <thead>
                 <tr>
-                    <th><?= $this->Paginator->sort('ID') ?></th>
+                    <th><?= $this->Paginator->sort('id') ?></th>
                     <th><?= $this->Paginator->sort('user_id') ?></th>
                     <th><?= $this->Paginator->sort('leave_type') ?></th>
                     <th><?= $this->Paginator->sort('start_of_leave') ?></th>
                     <th><?= $this->Paginator->sort('end_of_leave') ?></th>
-                    <th><?= $this->Paginator->sort('days') ?></th>
+                    <th><?= $this->Paginator->sort('num_days') ?></th>
                     <th><?= $this->Paginator->sort('year') ?></th>
                     <th><?= $this->Paginator->sort('description') ?></th>
                     <th><?= $this->Paginator->sort('status') ?></th>

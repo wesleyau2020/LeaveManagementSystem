@@ -96,14 +96,12 @@ class LeaveRequestsTable extends Table
         $validator
             ->scalar('status')
             ->maxLength('status', 10)
-            ->requirePresence('status', 'create')
-            ->notEmptyString('status');
+            ->allowEmptyString('status');
 
         $validator
             ->scalar('remark')
             ->maxLength('remark', 200)
-            ->requirePresence('remark', 'create')
-            ->notEmptyString('remark');
+            ->allowEmptyString('remark');
 
         return $validator;
     }

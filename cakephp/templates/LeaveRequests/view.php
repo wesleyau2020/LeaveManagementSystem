@@ -47,7 +47,7 @@
                     <td><?= $this->Number->format($leaveRequest->id) ?></td>
                 </tr>
                 <tr>
-                    <th><?= __('Days') ?></th>
+                    <th><?= __('Num Days') ?></th>
                     <td><?= $this->Number->format($leaveRequest->num_days) ?></td>
                 </tr>
                 <tr>

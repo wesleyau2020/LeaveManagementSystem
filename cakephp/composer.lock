@@ -4,8 +4,52 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "b3e2710defd3daada7505f68bdd4eaa8",
+    "content-hash": "663dcec98bca2b889646beb38b963333",
     "packages": [
+        {
+            "name": "arodu/cakelte",
+            "version": "v1.1.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/arodu/cakelte.git",
+                "reference": "1508c9f7f17feb2e7cdc45b39bfbb34f48727022"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/arodu/cakelte/zipball/1508c9f7f17feb2e7cdc45b39bfbb34f48727022",
+                "reference": "1508c9f7f17feb2e7cdc45b39bfbb34f48727022",
+                "shasum": ""
+            },
+            "require": {
+                "cakephp/cakephp": "^4.0",
+                "friendsofcake/bootstrap-ui": "^3.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^8.0"
+            },
+            "type": "cakephp-plugin",
+            "autoload": {
+                "psr-4": {
+                    "CakeLte\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "CakeLTE: AdminLTE plugin for CakePHP 4.x",
+            "support": {
+                "issues": "https://github.com/arodu/cakelte/issues",
+                "source": "https://github.com/arodu/cakelte/tree/v1.1.1"
+            },
+            "funding": [
+                {
+                    "url": "https://github.com/CakeDC",
+                    "type": "github"
+                }
+            ],
+            "time": "2023-05-18T12:02:17+00:00"
+        },
         {
             "name": "cakephp/authentication",
             "version": "2.10.1",
@@ -428,6 +472,62 @@
                 }
             ],
             "time": "2023-01-11T08:27:00+00:00"
+        },
+        {
+            "name": "friendsofcake/bootstrap-ui",
+            "version": "3.1.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/FriendsOfCake/bootstrap-ui.git",
+                "reference": "8fca5c21105899698f29ec1dd00689e05b4822be"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/FriendsOfCake/bootstrap-ui/zipball/8fca5c21105899698f29ec1dd00689e05b4822be",
+                "reference": "8fca5c21105899698f29ec1dd00689e05b4822be",
+                "shasum": ""
+            },
+            "require": {
+                "cakephp/cakephp": "^4.0"
+            },
+            "require-dev": {
+                "cakephp/bake": "^2.1",
+                "cakephp/cakephp-codesniffer": "^4.1",
+                "phpunit/phpunit": "^8.5 || ^9.3"
+            },
+            "type": "cakephp-plugin",
+            "autoload": {
+                "psr-4": {
+                    "BootstrapUI\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Jad Bitar",
+                    "homepage": "http://jadb.io",
+                    "role": "Author"
+                },
+                {
+                    "name": "Others",
+                    "homepage": "https://github.com/friendsofcake/bootstrap-ui/graphs/contributors"
+                }
+            ],
+            "description": "Bootstrap front-end framework support for CakePHP",
+            "homepage": "http://github.com/friendsofcake/bootstrap-ui",
+            "keywords": [
+                "bootstrap",
+                "cakephp",
+                "front-end"
+            ],
+            "support": {
+                "issues": "http://github.com/friendsofcake/bootstrap-ui/issues",
+                "source": "http://github.com/friendsofcake/bootstrap-ui"
+            },
+            "time": "2022-02-23T13:02:28+00:00"
         },
         {
             "name": "laminas/laminas-diactoros",

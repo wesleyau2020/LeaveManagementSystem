@@ -16,8 +16,8 @@ use Cake\ORM\Entity;
  * @property int $num_days
  * @property string $year
  * @property string $description
- * @property string $status
- * @property string $remark
+ * @property string|null $status
+ * @property string|null $remark
  *
  * @property \App\Model\Entity\User $user
  */
