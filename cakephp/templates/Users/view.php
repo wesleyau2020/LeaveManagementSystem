@@ -17,8 +17,10 @@ $this->Breadcrumbs->add([
 
 <div class="view card card-primary card-outline">
   <div class="card-header d-sm-flex">
-    <h2 class="card-title">User Details</h2>
-    <?= $this->Html->link(__('Sign Out'), ['action' => 'logout'], ['class' => 'btn btn-default'], ['style' => 'float: right;']) ?>
+    <h2 class="card-title" style="float: left;">User Details</h2>
+      <div style="float: right;">
+        <?= $this->Html->link(__('Logout'), ['action' => 'logout'], ['class' => 'btn btn-default'],) ?>
+      </div>
   </div>
   <div class="card-body table-responsive p-0">
     <table class="table table-hover text-nowrap">
@@ -48,7 +50,7 @@ $this->Breadcrumbs->add([
     <div class="">
     </div>
     <div class="ml-auto">
-      <?= $this->Html->link(__('Edit Details'), ['action' => 'edit', $user->id], ['class' => 'btn btn-secondary']) ?>
+      <?= $this->Html->link(__('Edit'), ['action' => 'edit', $user->id], ['class' => 'btn btn-secondary']) ?>
     </div>
   </div>
 </div>
@@ -56,7 +58,7 @@ $this->Breadcrumbs->add([
 
 <div class="related related-leaveDetails view card">
   <div class="card-header d-sm-flex">
-    <h3 class="card-title"><?= __('Related Leave Details') ?></h3>
+    <h3 class="card-title"><?= __('Leave Details') ?></h3>
     <div class="card-toolbox">
       <!-- <?= $this->Html->link(__('New'), ['controller' => 'LeaveDetails' , 'action' => 'add'], ['class' => 'btn btn-primary btn-sm']) ?>
       <?= $this->Html->link(__('List '), ['controller' => 'LeaveDetails' , 'action' => 'index'], ['class' => 'btn btn-primary btn-sm']) ?> -->
@@ -64,12 +66,13 @@ $this->Breadcrumbs->add([
   </div>
   <div class="card-body table-responsive p-0">
     <table class="table table-hover text-nowrap">
+      <th>Leave Days Given</th>
       <tr>
           <th><?= __('Carried Over') ?></th>
           <th><?= __('Max Carry Over') ?></th>
-          <th><?= __('Num AL Given') ?></th>
-          <th><?= __('Num ML Given') ?></th>
-          <th><?= __('Num HL Given') ?></th>
+          <th><?= __('Annual Leave (AL)') ?></th>
+          <th><?= __('Medical Leave (ML)') ?></th>
+          <th><?= __('Hospital Leave (HL)') ?></th>
           <!-- <th class="actions"><?= __('Actions') ?></th> -->
       </tr>
       <?php if (empty($user->leave_details)) { ?>
@@ -97,10 +100,11 @@ $this->Breadcrumbs->add([
     </table>
 
     <table class="table table-hover text-nowrap">
+      <th>Leave Balance</th>
       <tr>
-          <th><?= __('Num AL Left') ?></th>
-          <th><?= __('Num ML Left') ?></th>
-          <th><?= __('Num HL Left') ?></th>
+          <th><?= __('Annual Leave (AL)') ?></th>
+          <th><?= __('Medical Leave (ML)') ?></th>
+          <th><?= __('Hospital Leave (HL)') ?></th>
       </tr>
       <?php if (empty($user->leave_details)) { ?>
         <tr>
