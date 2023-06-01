@@ -45,7 +45,7 @@ $this->Breadcrumbs->add([
                 </tr>
             </thead>
             <tbody>
-                <?php foreach ($leaveRequests as $leaveRequest) : ?>
+                <?php foreach ($userLeaveRequests as $leaveRequest) : ?>
                     <tr>
                         <td><?= $this->Number->format($leaveRequest->id) ?></td>
                         <td><?= $leaveRequest->has('user') ? $this->Html->link($leaveRequest->user->id, ['controller' => 'Users', 'action' => 'view', $leaveRequest->user->id]) : '' ?></td>

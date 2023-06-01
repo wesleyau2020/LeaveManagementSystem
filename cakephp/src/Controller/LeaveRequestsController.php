@@ -16,15 +16,26 @@ class LeaveRequestsController extends AppController
      *
      * @return \Cake\Http\Response|null|void Renders view
      */
-    public function index()
+    public function index() // user should only see his own requests
     {
-        // user should only see his own requests
+        // fetches a paginated set of leaveRequests from DB
         $this->paginate = [
             'contain' => ['Users'],
         ];
-        $leaveRequests = $this->paginate($this->LeaveRequests);
+        $leaveRequests = $this->paginate($this->LeaveRequests); 
 
-        $this->set(compact('leaveRequests'));
+        // show only user's own requests
+        $result = $this->Authentication->getResult();
+        $id  = $result->getData()->id??0;
+        $userLeaveRequests = [];
+        foreach ($leaveRequests as $leaveRequest) {
+            if ($leaveRequest->user_id === $id) {
+                array_push($userLeaveRequests, $leaveRequest);
+            }
+        }
+
+        // pass to template
+        $this->set(compact('userLeaveRequests')); 
     }
 
     /**
