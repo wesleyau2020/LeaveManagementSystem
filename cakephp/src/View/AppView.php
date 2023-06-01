@@ -16,6 +16,7 @@ declare(strict_types=1);
 namespace App\View;
 
 use Cake\View\View;
+use CakeLte\View\CakeLteTrait;
 
 /**
  * Application View
@@ -35,9 +36,12 @@ class AppView extends View
      *
      * @return void
      */
+    use CakeLteTrait;
+    public $layout = 'CakeLte.default';
+    
     public function initialize(): void
     {
-        // parent::initialize();
-        // $this->initializeCakeLte();
+        parent::initialize();
+        $this->initializeCakeLte();
     }
 }

@@ -23,14 +23,11 @@ $this->Breadcrumbs->add([
 <div class="view card card-primary card-outline">
   <div class="card-header d-sm-flex">
     <h3 class="card-title" style="float: left;">User Details</h3>
-      <div style="float: right;">
-        <?= $this->Html->link(__('Logout'), ['action' => 'logout'], ['class' => 'btn btn-default'],) ?>
-      </div>
   </div>
   <div class="card-body table-responsive p-0">
     <table class="table table-hover text-nowrap">
         <tr>
-            <th><?= __('Id') ?></th>
+            <th><?= __('ID') ?></th>
             <td><?= $this->Number->format($user->id) ?></td>
         </tr>
         <tr>
@@ -56,36 +53,15 @@ $this->Breadcrumbs->add([
     </div>
     <div class="ml-auto">
       <?= $this->Html->link(__('Edit'), ['action' => 'edit', $user->id], ['class' => 'btn btn-secondary']) ?>
+      <?= $this->Html->link(__('Logout'), ['action' => 'logout'], ['class' => 'btn btn-default'],) ?>
     </div>
   </div>
 </div>
 
 <!-- Leave Details (Year) -->
-<div class="related related-leaveDetails view card" >
+<div style="margin-top: 40px" class="related related-leaveDetails view card" >
   <div class="card-header d-sm-flex" >
     <h3 class="card-title">Leave Details (Year)</h3>
-
-    <!-- select year via dropdown menu -->
-    <h4 style="float: left; margin-right: 20px">Year: </h4>
-    <?= 
-        $this->Form->create($user, [
-            'type' => 'post',
-            'valueSources' => ['query', 'data'],
-            'url' => ['action' => 'view/'.($user->id)]
-        ])
-    ?>
-    <?=
-        $this->Form->year('input_year', [
-            'min' => 2000,
-            'max' => date('Y'),
-            'default' => $input_year,
-            'style' => 'width:15%'
-        ])
-    ?>
-    <?php
-        echo $this->Form->button('Submit');
-        echo $this->Form->end();
-    ?>
 
     <div class="card-toolbox">
       <!-- <?= $this->Html->link(__('New'), ['controller' => 'LeaveDetails' , 'action' => 'add'], ['class' => 'btn btn-primary btn-sm']) ?>
@@ -96,7 +72,7 @@ $this->Breadcrumbs->add([
     <!-- Leave Days Given -->
     <div class="card-body table-responsive p-0">
       <table class="table table-hover text-nowrap">
-        <th>Leave Days Given</th>
+      <?php echo "<th>Leave Days Given ({$input_year})</th>" ?>
         <tr>
             <th><?= __('Carried Over') ?></th>
             <th><?= __('Max Carry Over') ?></th>
@@ -133,7 +109,7 @@ $this->Breadcrumbs->add([
 
       <!-- Leave Balance -->
       <table class="table table-hover text-nowrap">
-        <th>Leave Balance</th>
+      <?php echo "<th>Leave Balance ({$input_year})</th>" ?>
         <tr>
             <th><?= __('Annual Leave (AL)') ?></th>
             <th><?= __('Medical Leave (ML)') ?></th>
@@ -157,6 +133,28 @@ $this->Breadcrumbs->add([
           <?php endforeach; ?>
         <?php } ?>
       </table>
+
+    <div class="ml-auto">
+    <!-- select year via dropdown menu -->
+    <?= 
+        $this->Form->create($user, [
+            'type' => 'post',
+            'valueSources' => ['query', 'data'],
+            'url' => ['action' => 'view/'.($user->id)]
+        ])
+    ?>
+    <?=
+        $this->Form->year('input_year', [
+            'min' => 2000,
+            'max' => date('Y'),
+            'default' => $input_year,
+            'style' => 'width:15%'
+        ])
+    ?>
+    <?php
+        echo $this->Form->button('Submit');
+        echo $this->Form->end();
+    ?>
     </div>
   </div>
 </div>
