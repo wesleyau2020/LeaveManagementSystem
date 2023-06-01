@@ -6,7 +6,7 @@
  */
 ?>
 <?php
-$this->assign('title', __('Leave Requests'));
+$this->assign('title', __('Leave List: '));
 $this->Breadcrumbs->add([
     ['title' => 'Home', 'url' => '/'],
     ['title' => 'List Leave Requests'],
@@ -32,14 +32,12 @@ $this->Breadcrumbs->add([
             <thead>
                 <tr>
                     <th><?= $this->Paginator->sort('id') ?></th>
-                    <th><?= $this->Paginator->sort('user_id') ?></th>
-                    <th><?= $this->Paginator->sort('leave_type') ?></th>
-                    <th><?= $this->Paginator->sort('start_of_leave') ?></th>
-                    <th><?= $this->Paginator->sort('end_of_leave') ?></th>
-                    <th><?= $this->Paginator->sort('num_days') ?></th>
-                    <th><?= $this->Paginator->sort('year') ?></th>
                     <th><?= $this->Paginator->sort('description') ?></th>
                     <th><?= $this->Paginator->sort('status') ?></th>
+                    <th><?= $this->Paginator->sort('leave_type') ?></th>
+                    <th><?= $this->Paginator->sort('num_days') ?></th>
+                    <th><?= $this->Paginator->sort('start_of_leave') ?></th>
+                    <th><?= $this->Paginator->sort('end_of_leave') ?></th>
                     <th><?= $this->Paginator->sort('remark') ?></th>
                     <th class="actions"><?= __('Actions') ?></th>
                 </tr>
@@ -48,14 +46,12 @@ $this->Breadcrumbs->add([
                 <?php foreach ($userLeaveRequests as $leaveRequest) : ?>
                     <tr>
                         <td><?= $this->Number->format($leaveRequest->id) ?></td>
-                        <td><?= $leaveRequest->has('user') ? $this->Html->link($leaveRequest->user->id, ['controller' => 'Users', 'action' => 'view', $leaveRequest->user->id]) : '' ?></td>
-                        <td><?= h($leaveRequest->leave_type) ?></td>
-                        <td><?= h($leaveRequest->start_of_leave) ?></td>
-                        <td><?= h($leaveRequest->end_of_leave) ?></td>
-                        <td><?= $this->Number->format($leaveRequest->num_days) ?></td>
-                        <td><?= h($leaveRequest->year) ?></td>
                         <td><?= h($leaveRequest->description) ?></td>
                         <td><?= h($leaveRequest->status) ?></td>
+                        <td><?= h($leaveRequest->leave_type) ?></td>
+                        <td><?= $this->Number->format($leaveRequest->num_days) ?></td>
+                        <td><?= h($leaveRequest->start_of_leave) ?></td>
+                        <td><?= h($leaveRequest->end_of_leave) ?></td>
                         <td><?= h($leaveRequest->remark) ?></td>
                         <td class="actions">
                             <?= $this->Html->link(__('View'), ['action' => 'view', $leaveRequest->id], ['class' => 'btn btn-xs btn-outline-primary', 'escape' => false]) ?>
