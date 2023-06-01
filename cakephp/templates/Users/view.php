@@ -62,24 +62,18 @@ $this->Breadcrumbs->add([
 <div style="margin-top: 40px" class="related related-leaveDetails view card" >
   <div class="card-header d-sm-flex" >
     <h3 class="card-title">Leave Details (Year)</h3>
-
-    <div class="card-toolbox">
-      <!-- <?= $this->Html->link(__('New'), ['controller' => 'LeaveDetails' , 'action' => 'add'], ['class' => 'btn btn-primary btn-sm']) ?>
-      <?= $this->Html->link(__('List '), ['controller' => 'LeaveDetails' , 'action' => 'index'], ['class' => 'btn btn-primary btn-sm']) ?> -->
-    </div>
   </div>
 
     <!-- Leave Days Given -->
     <div class="card-body table-responsive p-0">
-      <table class="table table-hover text-nowrap">
-      <?php echo "<th>Leave Days Given ({$input_year})</th>" ?>
+      <table style="margin-top: 20px" class="table table-hover text-nowrap">
+        <?php echo "<th>Leave Days Given ({$input_year})</th>" ?>
         <tr>
             <th><?= __('Carried Over') ?></th>
             <th><?= __('Max Carry Over') ?></th>
             <th><?= __('Annual Leave (AL)') ?></th>
             <th><?= __('Medical Leave (ML)') ?></th>
             <th><?= __('Hospital Leave (HL)') ?></th>
-            <!-- <th class="actions"><?= __('Actions') ?></th> -->
         </tr>
         <?php if (empty($user->leave_details)) { ?>
           <tr>
@@ -96,11 +90,6 @@ $this->Breadcrumbs->add([
               <td><?= h($leaveDetails->num_AL_given) ?></td>
               <td><?= h($leaveDetails->num_ML_given) ?></td>
               <td><?= h($leaveDetails->num_HL_given) ?></td>
-              <!-- <td class="actions">
-                <?= $this->Html->link(__('View'), ['controller' => 'LeaveDetails', 'action' => 'view', $leaveDetails->id], ['class'=>'btn btn-xs btn-outline-primary']) ?>
-                <?= $this->Html->link(__('Edit'), ['controller' => 'LeaveDetails', 'action' => 'edit', $leaveDetails->id], ['class'=>'btn btn-xs btn-outline-primary']) ?>
-                <?= $this->Form->postLink(__('Delete'), ['controller' => 'LeaveDetails', 'action' => 'delete', $leaveDetails->id], ['class'=>'btn btn-xs btn-outline-danger', 'confirm' => __('Are you sure you want to delete # {0}?', $leaveDetails->id)]) ?>
-              </td> -->
           </tr>
             <?php endif; ?>
           <?php endforeach; ?>
@@ -108,7 +97,7 @@ $this->Breadcrumbs->add([
       </table>
 
       <!-- Leave Balance -->
-      <table class="table table-hover text-nowrap">
+      <table style="margin-top: 20px" class="table table-hover text-nowrap">
       <?php echo "<th>Leave Balance ({$input_year})</th>" ?>
         <tr>
             <th><?= __('Annual Leave (AL)') ?></th>
@@ -133,28 +122,35 @@ $this->Breadcrumbs->add([
           <?php endforeach; ?>
         <?php } ?>
       </table>
+    </div>
 
+    <div class="card-footer d-flex">
+      <div class="">
+    </div>
     <div class="ml-auto">
-    <!-- select year via dropdown menu -->
-    <?= 
-        $this->Form->create($user, [
-            'type' => 'post',
-            'valueSources' => ['query', 'data'],
-            'url' => ['action' => 'view/'.($user->id)]
-        ])
-    ?>
-    <?=
-        $this->Form->year('input_year', [
-            'min' => 2000,
-            'max' => date('Y'),
-            'default' => $input_year,
-            'style' => 'width:15%'
-        ])
-    ?>
-    <?php
-        echo $this->Form->button('Submit');
-        echo $this->Form->end();
-    ?>
+        <!-- select year via dropdown menu -->
+        <div style="float: left">
+        <?= 
+            $this->Form->create($user, [
+                'type' => 'post',
+                'valueSources' => ['query', 'data'],
+                'url' => ['action' => 'view/'.($user->id)],
+                'style' => "margin-right: 20px"
+            ])
+        ?>
+        <?=
+            $this->Form->year('input_year', [
+                'min' => 2000,
+                'max' => date('Y'),
+                'default' => $input_year,
+
+            ])
+        ?>
+        </div>
+      <?php
+          echo $this->Form->button('Submit');
+          echo $this->Form->end();
+      ?>
     </div>
   </div>
 </div>
