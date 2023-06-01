@@ -1,14 +1,34 @@
 <?php
+
 /**
  * @var \App\View\AppView $this
- * @var iterable<\App\Model\Entity\LeaveRequest> $leaveRequests
+ * @var \App\Model\Entity\LeaveRequest[]|\Cake\Collection\CollectionInterface $leaveRequests
  */
 ?>
-<div class="leaveRequests index content">
-    <?= $this->Html->link(__('New Leave Request'), ['action' => 'add'], ['class' => 'button float-right']) ?>
-    <h3><?= __('Leave Requests') ?></h3>
-    <div class="table-responsive">
-        <table>
+<?php
+$this->assign('title', __('Leave Requests'));
+$this->Breadcrumbs->add([
+    ['title' => 'Home', 'url' => '/'],
+    ['title' => 'List Leave Requests'],
+]);
+?>
+
+<div class="card card-primary card-outline">
+    <div class="card-header d-sm-flex">
+        <h2 class="card-title">
+            <!-- -->
+        </h2>
+        <div class="card-toolbox">
+            <?= $this->Paginator->limitControl([], null, [
+                'label' => false,
+                'class' => 'form-control-sm',
+            ]); ?>
+            <?= $this->Html->link(__('New Leave Request'), ['action' => 'add'], ['class' => 'btn btn-primary btn-sm']) ?>
+        </div>
+    </div>
+    <!-- /.card-header -->
+    <div class="card-body table-responsive p-0">
+        <table class="table table-hover text-nowrap">
             <thead>
                 <tr>
                     <th><?= $this->Paginator->sort('id') ?></th>
@@ -25,36 +45,41 @@
                 </tr>
             </thead>
             <tbody>
-                <?php foreach ($leaveRequests as $leaveRequest): ?>
-                <tr>
-                    <td><?= $this->Number->format($leaveRequest->id) ?></td>
-                    <td><?= $leaveRequest->has('user') ? $this->Html->link($leaveRequest->user->id, ['controller' => 'Users', 'action' => 'view', $leaveRequest->user->id]) : '' ?></td>
-                    <td><?= h($leaveRequest->leave_type) ?></td>
-                    <td><?= h($leaveRequest->start_of_leave) ?></td>
-                    <td><?= h($leaveRequest->end_of_leave) ?></td>
-                    <td><?= $this->Number->format($leaveRequest->num_days) ?></td>
-                    <td><?= h($leaveRequest->year) ?></td>
-                    <td><?= h($leaveRequest->description) ?></td>
-                    <td><?= h($leaveRequest->status) ?></td>
-                    <td><?= h($leaveRequest->remark) ?></td>
-                    <td class="actions">
-                        <?= $this->Html->link(__('View'), ['action' => 'view', $leaveRequest->id]) ?>
-                        <?= $this->Html->link(__('Edit'), ['action' => 'edit', $leaveRequest->id]) ?>
-                        <?= $this->Form->postLink(__('Delete'), ['action' => 'delete', $leaveRequest->id], ['confirm' => __('Are you sure you want to delete # {0}?', $leaveRequest->id)]) ?>
-                    </td>
-                </tr>
+                <?php foreach ($leaveRequests as $leaveRequest) : ?>
+                    <tr>
+                        <td><?= $this->Number->format($leaveRequest->id) ?></td>
+                        <td><?= $leaveRequest->has('user') ? $this->Html->link($leaveRequest->user->id, ['controller' => 'Users', 'action' => 'view', $leaveRequest->user->id]) : '' ?></td>
+                        <td><?= h($leaveRequest->leave_type) ?></td>
+                        <td><?= h($leaveRequest->start_of_leave) ?></td>
+                        <td><?= h($leaveRequest->end_of_leave) ?></td>
+                        <td><?= $this->Number->format($leaveRequest->num_days) ?></td>
+                        <td><?= h($leaveRequest->year) ?></td>
+                        <td><?= h($leaveRequest->description) ?></td>
+                        <td><?= h($leaveRequest->status) ?></td>
+                        <td><?= h($leaveRequest->remark) ?></td>
+                        <td class="actions">
+                            <?= $this->Html->link(__('View'), ['action' => 'view', $leaveRequest->id], ['class' => 'btn btn-xs btn-outline-primary', 'escape' => false]) ?>
+                            <?= $this->Html->link(__('Edit'), ['action' => 'edit', $leaveRequest->id], ['class' => 'btn btn-xs btn-outline-primary', 'escape' => false]) ?>
+                            <?= $this->Form->postLink(__('Delete'), ['action' => 'delete', $leaveRequest->id], ['class' => 'btn btn-xs btn-outline-danger', 'escape' => false, 'confirm' => __('Are you sure you want to delete # {0}?', $leaveRequest->id)]) ?>
+                        </td>
+                    </tr>
                 <?php endforeach; ?>
             </tbody>
         </table>
     </div>
-    <div class="paginator">
-        <ul class="pagination">
-            <?= $this->Paginator->first('<< ' . __('first')) ?>
-            <?= $this->Paginator->prev('< ' . __('previous')) ?>
+    <!-- /.card-body -->
+
+    <div class="card-footer d-md-flex paginator">
+        <div class="mr-auto" style="font-size:.8rem">
+            <?= $this->Paginator->counter(__('Page {{page}} of {{pages}}, showing {{current}} record(s) out of {{count}} total')) ?>
+        </div>
+        <ul class="pagination pagination-sm">
+            <?= $this->Paginator->first('<i class="fas fa-angle-double-left"></i>', ['escape' => false]) ?>
+            <?= $this->Paginator->prev('<i class="fas fa-angle-left"></i>', ['escape' => false]) ?>
             <?= $this->Paginator->numbers() ?>
-            <?= $this->Paginator->next(__('next') . ' >') ?>
-            <?= $this->Paginator->last(__('last') . ' >>') ?>
+            <?= $this->Paginator->next('<i class="fas fa-angle-right"></i>', ['escape' => false]) ?>
+            <?= $this->Paginator->last('<i class="fas fa-angle-double-right"></i>', ['escape' => false]) ?>
         </ul>
-        <p><?= $this->Paginator->counter(__('Page {{page}} of {{pages}}, showing {{current}} record(s) out of {{count}} total')) ?></p>
     </div>
+    <!-- /.card-footer -->
 </div>

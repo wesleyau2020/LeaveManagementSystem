@@ -19,11 +19,11 @@ $this->Breadcrumbs->add([
   <?= $this->Form->create($leaveRequest) ?> 
   <div class="card-body">
     <?php
-    //   echo $this->Form->control('user_id', ['options' => $user->id]); // should be preset
+    // display user ID 
       echo $this->Form->control('leave_type');
       echo $this->Form->control('start_of_leave');
       echo $this->Form->control('end_of_leave');
-    //   echo $this->Form->control('num_days'); // should be calculated
+    // calculate and display num_days
       echo $this->Form->control('year');
       echo $this->Form->control('description');
     ?>
