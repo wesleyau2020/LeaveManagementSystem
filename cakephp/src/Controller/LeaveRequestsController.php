@@ -18,6 +18,7 @@ class LeaveRequestsController extends AppController
      */
     public function index()
     {
+        // user should only see his own requests
         $this->paginate = [
             'contain' => ['Users'],
         ];
@@ -51,11 +52,18 @@ class LeaveRequestsController extends AppController
     {
         $leaveRequest = $this->LeaveRequests->newEmptyEntity();
         if ($this->request->is('post')) {
-            // debug($this->request->getData());
             $leaveRequest = $this->LeaveRequests->patchEntity($leaveRequest, $this->request->getData());
 
-            $leaveRequest->user_id = 7;
-            $leaveRequest->num_days = 7;
+            // set user_id
+            $result = $this->Authentication->getResult();
+            $id  = $result->getData()->id??0;
+            $leaveRequest->user_id = $id;
+
+            // set num_days
+            $start = $leaveRequest->start_of_leave;
+            $end = $leaveRequest->end_of_leave;
+            $leaveRequest->num_days = $end->diff($start)->format("%a");
+
             if ($this->LeaveRequests->save($leaveRequest)) {
                 $this->Flash->success(__('The leave request has been saved.'));
 
