@@ -1,36 +1,41 @@
 <?php
+
 /**
  * @var \App\View\AppView $this
  * @var \App\Model\Entity\LeaveRequest $leaveRequest
- * @var \Cake\Collection\CollectionInterface|string[] $users
  */
 ?>
-<div class="row">
-    <aside class="column">
-        <div class="side-nav">
-            <h4 class="heading"><?= __('Actions') ?></h4>
-            <?= $this->Html->link(__('List Leave Requests'), ['action' => 'index'], ['class' => 'side-nav-item']) ?>
-        </div>
-    </aside>
-    <div class="column-responsive column-80">
-        <div class="leaveRequests form content">
-            <?= $this->Form->create($leaveRequest) ?>
-            <fieldset>
-                <legend><?= __('Add Leave Request') ?></legend>
-                <?php
-                    echo $this->Form->control('user_id', ['options' => $users]);
-                    echo $this->Form->control('leave_type');
-                    echo $this->Form->control('start_of_leave');
-                    echo $this->Form->control('end_of_leave');
-                    echo $this->Form->control('num_days');
-                    echo $this->Form->control('year');
-                    echo $this->Form->control('description');
-                    echo $this->Form->control('status');
-                    echo $this->Form->control('remark');
-                ?>
-            </fieldset>
-            <?= $this->Form->button(__('Submit')) ?>
-            <?= $this->Form->end() ?>
-        </div>
+<?php
+$this->assign('title', __('Request Leave: '));
+$this->Breadcrumbs->add([
+    ['title' => 'Home', 'url' => '/'],
+    ['title' => 'List Leave Requests', 'url' => ['action' => 'index']],
+    ['title' => 'Add'],
+]);
+?>
+
+<div class="card card-primary card-outline">
+<!-- This will POST the form data to the add() action of ArticlesController.  -->
+  <?= $this->Form->create($leaveRequest) ?> 
+  <div class="card-body">
+    <?php
+    //   echo $this->Form->control('user_id', ['options' => $user->id]); // should be preset
+      echo $this->Form->control('leave_type');
+      echo $this->Form->control('start_of_leave');
+      echo $this->Form->control('end_of_leave');
+    //   echo $this->Form->control('num_days'); // should be calculated
+      echo $this->Form->control('year');
+      echo $this->Form->control('description');
+    ?>
+  </div>
+
+  <div class="card-footer d-flex">
+    <div class="ml-auto">
+      <?= $this->Form->button(__('Save')) ?>
+      <?= $this->Html->link(__('Cancel'), ['action' => 'index'], ['class' => 'btn btn-default']) ?>
     </div>
+  </div>
+
+  <?= $this->Form->end() ?>
 </div>
+

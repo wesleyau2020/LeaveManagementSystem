@@ -11,12 +11,12 @@
 
 <!-- Nav Bar -->
 <?php
-$this->assign('title', __('User'));
-$this->Breadcrumbs->add([
-    ['title' => 'Home', 'url' => '/'],
-    ['title' => 'List Users', 'url' => ['action' => 'index']],
-    ['title' => 'View'],
-]);
+  $this->assign('title', __('User'));
+  $this->Breadcrumbs->add([
+      ['title' => 'Home', 'url' => '/'],
+      ['title' => 'List Users', 'url' => ['action' => 'index']],
+      ['title' => 'View'],
+  ]);
 ?>
 
 <!-- User Details -->
@@ -126,7 +126,7 @@ $this->Breadcrumbs->add([
 
     <div class="card-footer d-flex">
       <div class="">
-    </div>
+      </div>
     <div class="ml-auto">
         <!-- select year via dropdown menu -->
         <div style="float: left">
@@ -135,7 +135,7 @@ $this->Breadcrumbs->add([
                 'type' => 'post',
                 'valueSources' => ['query', 'data'],
                 'url' => ['action' => 'view/'.($user->id)],
-                'style' => "margin-right: 20px"
+                'style' => "margin-right: 5px"
             ])
         ?>
         <?=

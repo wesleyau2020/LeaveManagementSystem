@@ -51,7 +51,11 @@ class LeaveRequestsController extends AppController
     {
         $leaveRequest = $this->LeaveRequests->newEmptyEntity();
         if ($this->request->is('post')) {
+            // debug($this->request->getData());
             $leaveRequest = $this->LeaveRequests->patchEntity($leaveRequest, $this->request->getData());
+
+            $leaveRequest->user_id = 7;
+            $leaveRequest->num_days = 7;
             if ($this->LeaveRequests->save($leaveRequest)) {
                 $this->Flash->success(__('The leave request has been saved.'));
 

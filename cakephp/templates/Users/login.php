@@ -26,9 +26,6 @@ $this->layout = 'CakeLte.login';
         ]) ?>
 
         <div class="row">
-            <!-- <div class="col-8">
-                <?= $this->Form->control('remember_me', ['type' => 'checkbox', 'custom' => true]) ?>
-            </div> -->
             <div class="col-4">
                 <?= $this->Form->control(__('Sign In'), ['type' => 'submit', 'class' => 'btn btn-primary btn-block']) ?>
             </div>
