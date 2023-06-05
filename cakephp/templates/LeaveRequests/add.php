@@ -23,7 +23,7 @@ $this->Breadcrumbs->add([
     ?>
     <?php
       $options=[
-      'Annual Leave (AL)'=>'Annual Leave (AL)',
+      'Annual Leave (AL)'=>'Annual Leave (AL)', 
       'Urgent Leave (UL)'=>'Urgent Leave (UL)', 
       'Earned Leave (EL)'=>'Earned Leave (EL)', 
       'Half Day (AM)'=>'Half Day (AM)', 
