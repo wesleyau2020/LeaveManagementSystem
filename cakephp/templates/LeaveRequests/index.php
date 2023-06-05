@@ -4,7 +4,11 @@
  * @var \App\View\AppView $this
  * @var \App\Model\Entity\LeaveRequest[]|\Cake\Collection\CollectionInterface $leaveRequests
  */
+
+/** @var string input_year */
+$input_year = $_POST["input_year"]??date('Y');
 ?>
+
 <?php
 $this->assign('title', __('Leave List: '));
 $this->Breadcrumbs->add([
@@ -13,19 +17,49 @@ $this->Breadcrumbs->add([
 ]);
 ?>
 
+<div>
+
+</div>
+
 <div class="card card-primary card-outline">
     <div class="card-header d-sm-flex">
         <h2 class="card-title">
             <!-- -->
         </h2>
         <div class="card-toolbox">
-            <?= $this->Paginator->limitControl([], null, [
-                'label' => false,
-                'class' => 'form-control-sm',
-            ]); ?>
-            <?= $this->Html->link(__('New Leave Request'), ['action' => 'add'], ['class' => 'btn btn-primary btn-sm']) ?>
+        <!-- select year via dropdown menu -->
+        <div style="float:left">
+            <?= 
+                $this->Form->create($userLeaveRequests, [
+                    'type' => 'post',
+                    'valueSources' => ['query', 'data'],
+                    'url' => ['action' => 'index/'],
+                    'style' => "margin-right: 5px"
+                ])
+            ?>
+            <?=
+                $this->Form->year('input_year', [
+                    'min' => 2000,
+                    'max' => date('Y'),
+                    'default' => $input_year
+                ])
+            ?>
         </div>
+
+        <div style="float:right">
+            <?php
+                echo $this->Form->button('Submit');
+                echo $this->Form->end();
+            ?>
+        </div>
+
+        <!-- <?= $this->Paginator->limitControl([], null, [
+            'label' => false,
+            'class' => 'form-control-sm',
+            'style' => 'float: right'
+        ]); ?> -->
     </div>
+</div>
     <!-- /.card-header -->
     
     <div class="card-body table-responsive p-0">
@@ -45,6 +79,7 @@ $this->Breadcrumbs->add([
             </thead>
             <tbody>
                 <?php foreach ($userLeaveRequests as $leaveRequest) : ?>
+                    <?php if ($leaveRequest->year === $input_year): ?>
                     <tr>
                         <td><?= $this->Number->format($leaveRequest->id) ?></td>
                         <td><?= h($leaveRequest->description) ?></td>
@@ -60,6 +95,7 @@ $this->Breadcrumbs->add([
                             <?= $this->Form->postLink(__('Delete'), ['action' => 'delete', $leaveRequest->id], ['class' => 'btn btn-xs btn-outline-danger', 'escape' => false, 'confirm' => __('Are you sure you want to delete # {0}?', $leaveRequest->id)]) ?>
                         </td>
                     </tr>
+                    <?php endif; ?>
                 <?php endforeach; ?>
             </tbody>
         </table>
