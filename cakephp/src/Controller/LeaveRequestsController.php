@@ -75,6 +75,8 @@ class LeaveRequestsController extends AppController
             $end = $leaveRequest->end_of_leave;
             $leaveRequest->num_days = $end->diff($start)->format("%a");
 
+            // debug($leaveRequest);
+
             if ($this->LeaveRequests->save($leaveRequest)) {
                 $this->Flash->success(__('The leave request has been saved.'));
 

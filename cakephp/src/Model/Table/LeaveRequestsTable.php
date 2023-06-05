@@ -63,7 +63,7 @@ class LeaveRequestsTable extends Table
 
         $validator
             ->scalar('leave_type')
-            ->maxLength('leave_type', 2)
+            ->maxLength('leave_type', 50)
             ->requirePresence('leave_type', 'create')
             ->notEmptyString('leave_type');
 
