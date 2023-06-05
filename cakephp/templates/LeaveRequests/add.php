@@ -22,7 +22,15 @@ $this->Breadcrumbs->add([
 
     ?>
     <?php
-      echo $this->Form->control('leave_type');
+      $options=['option1'=>'Annual Leave (AL)',
+      'option2'=>'Urgent Leave (UL)', 
+      'option3'=>'Earned Leave (EL)', 
+      'option4'=>'Half Day (AM)', 
+      'option5'=>'Half Day (PM)', 
+      'option6'=>'Medical Leave (MC)', 
+      'option7'=>'Hospital Leave (HL)'];
+
+      echo $this->Form->control('leave_type', ['options' => $options]);
       echo $this->Form->control('start_of_leave');
       echo $this->Form->control('end_of_leave');
       echo $this->Form->control('year');
