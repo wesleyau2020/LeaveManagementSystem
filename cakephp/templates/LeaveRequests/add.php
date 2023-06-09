@@ -41,7 +41,7 @@ $this->Breadcrumbs->add([
 
   <div class="card-footer d-flex">
     <div style="float:left">
-      <?= $this->Html->link(__('Leave List'), ['action' => 'index'], ['class' => 'btn btn-default']) ?>
+      <?= $this->Html->link(__('Leave List'), ['action' => 'index'], ['class' => 'btn btn-primary btn-m']) ?>
     </div>
 
     <div class="ml-auto" style="float:right">
@@ -49,7 +49,7 @@ $this->Breadcrumbs->add([
       <?= $this->Html->link(__('Cancel'), ['action' => 'index'], ['class' => 'btn btn-default']) ?>
     </div>
   </div>
-  
+
   <?= $this->Form->end() ?>
 </div>
 
