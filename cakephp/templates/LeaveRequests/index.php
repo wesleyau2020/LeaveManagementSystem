@@ -80,7 +80,7 @@ $this->Breadcrumbs->add([
                         <td><?= $this->Number->format($leaveRequest->id) ?></td>
                         <td><?= h($leaveRequest->description) ?></td>
                         <td><?= h($leaveRequest->status) ?></td>
-                        <td><?= h($leaveRequest->leave_type) ?></td>
+                        <td><?= h($leaveRequest->leave_type->name) ?></td>
                         <td><?= $this->Number->format($leaveRequest->num_days) ?></td>
                         <td><?= h($leaveRequest->start_of_leave) ?></td>
                         <td><?= h($leaveRequest->end_of_leave) ?></td>
