@@ -3,20 +3,20 @@ declare(strict_types=1);
 
 namespace App\Test\TestCase\Model\Table;
 
-use App\Model\Table\LeaveRequestsTable;
+use App\Model\Table\LeaveTypeTable;
 use Cake\TestSuite\TestCase;
 
 /**
- * App\Model\Table\LeaveRequestsTable Test Case
+ * App\Model\Table\LeaveTypeTable Test Case
  */
-class LeaveRequestsTableTest extends TestCase
+class LeaveTypeTableTest extends TestCase
 {
     /**
      * Test subject
      *
-     * @var \App\Model\Table\LeaveRequestsTable
+     * @var \App\Model\Table\LeaveTypeTable
      */
-    protected $LeaveRequests;
+    protected $LeaveType;
 
     /**
      * Fixtures
@@ -24,9 +24,8 @@ class LeaveRequestsTableTest extends TestCase
      * @var array<string>
      */
     protected $fixtures = [
-        'app.LeaveRequests',
-        'app.Users',
         'app.LeaveType',
+        'app.LeaveRequests',
     ];
 
     /**
@@ -37,8 +36,8 @@ class LeaveRequestsTableTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $config = $this->getTableLocator()->exists('LeaveRequests') ? [] : ['className' => LeaveRequestsTable::class];
-        $this->LeaveRequests = $this->getTableLocator()->get('LeaveRequests', $config);
+        $config = $this->getTableLocator()->exists('LeaveType') ? [] : ['className' => LeaveTypeTable::class];
+        $this->LeaveType = $this->getTableLocator()->get('LeaveType', $config);
     }
 
     /**
@@ -48,7 +47,7 @@ class LeaveRequestsTableTest extends TestCase
      */
     protected function tearDown(): void
     {
-        unset($this->LeaveRequests);
+        unset($this->LeaveType);
 
         parent::tearDown();
     }
@@ -57,7 +56,7 @@ class LeaveRequestsTableTest extends TestCase
      * Test validationDefault method
      *
      * @return void
-     * @uses \App\Model\Table\LeaveRequestsTable::validationDefault()
+     * @uses \App\Model\Table\LeaveTypeTable::validationDefault()
      */
     public function testValidationDefault(): void
     {
@@ -68,7 +67,7 @@ class LeaveRequestsTableTest extends TestCase
      * Test buildRules method
      *
      * @return void
-     * @uses \App\Model\Table\LeaveRequestsTable::buildRules()
+     * @uses \App\Model\Table\LeaveTypeTable::buildRules()
      */
     public function testBuildRules(): void
     {

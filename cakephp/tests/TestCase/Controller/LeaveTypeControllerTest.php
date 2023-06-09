@@ -3,16 +3,16 @@ declare(strict_types=1);
 
 namespace App\Test\TestCase\Controller;
 
-use App\Controller\LeaveRequestsController;
+use App\Controller\LeaveTypeController;
 use Cake\TestSuite\IntegrationTestTrait;
 use Cake\TestSuite\TestCase;
 
 /**
- * App\Controller\LeaveRequestsController Test Case
+ * App\Controller\LeaveTypeController Test Case
  *
- * @uses \App\Controller\LeaveRequestsController
+ * @uses \App\Controller\LeaveTypeController
  */
-class LeaveRequestsControllerTest extends TestCase
+class LeaveTypeControllerTest extends TestCase
 {
     use IntegrationTestTrait;
 
@@ -22,16 +22,15 @@ class LeaveRequestsControllerTest extends TestCase
      * @var array<string>
      */
     protected $fixtures = [
-        'app.LeaveRequests',
-        'app.Users',
         'app.LeaveType',
+        'app.LeaveRequests',
     ];
 
     /**
      * Test index method
      *
      * @return void
-     * @uses \App\Controller\LeaveRequestsController::index()
+     * @uses \App\Controller\LeaveTypeController::index()
      */
     public function testIndex(): void
     {
@@ -42,7 +41,7 @@ class LeaveRequestsControllerTest extends TestCase
      * Test view method
      *
      * @return void
-     * @uses \App\Controller\LeaveRequestsController::view()
+     * @uses \App\Controller\LeaveTypeController::view()
      */
     public function testView(): void
     {
@@ -53,7 +52,7 @@ class LeaveRequestsControllerTest extends TestCase
      * Test add method
      *
      * @return void
-     * @uses \App\Controller\LeaveRequestsController::add()
+     * @uses \App\Controller\LeaveTypeController::add()
      */
     public function testAdd(): void
     {
@@ -64,7 +63,7 @@ class LeaveRequestsControllerTest extends TestCase
      * Test edit method
      *
      * @return void
-     * @uses \App\Controller\LeaveRequestsController::edit()
+     * @uses \App\Controller\LeaveTypeController::edit()
      */
     public function testEdit(): void
     {
@@ -75,7 +74,7 @@ class LeaveRequestsControllerTest extends TestCase
      * Test delete method
      *
      * @return void
-     * @uses \App\Controller\LeaveRequestsController::delete()
+     * @uses \App\Controller\LeaveTypeController::delete()
      */
     public function testDelete(): void
     {

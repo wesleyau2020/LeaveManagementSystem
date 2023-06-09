@@ -16,13 +16,13 @@ class LeaveRequestsController extends AppController
      *
      * @return \Cake\Http\Response|null|void Renders view
      */
-    public function index() // user should only see his own requests
+    public function index()
     {
         // fetches a paginated set of leaveRequests from DB
         $this->paginate = [
-            'contain' => ['Users'],
+            'contain' => ['Users', 'LeaveType'],
         ];
-        $leaveRequests = $this->paginate($this->LeaveRequests); 
+        $leaveRequests = $this->paginate($this->LeaveRequests);
 
         // show only user's own requests
         $result = $this->Authentication->getResult();
@@ -48,7 +48,7 @@ class LeaveRequestsController extends AppController
     public function view($id = null)
     {
         $leaveRequest = $this->LeaveRequests->get($id, [
-            'contain' => ['Users'],
+            'contain' => ['Users', 'LeaveType'],
         ]);
 
         $this->set(compact('leaveRequest'));
@@ -75,8 +75,6 @@ class LeaveRequestsController extends AppController
             $end = $leaveRequest->end_of_leave;
             $leaveRequest->num_days = $end->diff($start)->format("%a");
 
-            // debug($leaveRequest);
-
             if ($this->LeaveRequests->save($leaveRequest)) {
                 $this->Flash->success(__('The leave request has been saved.'));
 
@@ -85,7 +83,8 @@ class LeaveRequestsController extends AppController
             $this->Flash->error(__('The leave request could not be saved. Please, try again.'));
         }
         $users = $this->LeaveRequests->Users->find('list', ['limit' => 200])->all();
-        $this->set(compact('leaveRequest', 'users'));
+        $leaveType = $this->LeaveRequests->LeaveType->find('list', ['limit' => 200])->all();
+        $this->set(compact('leaveRequest', 'users', 'leaveType'));
     }
 
     /**
@@ -110,7 +109,8 @@ class LeaveRequestsController extends AppController
             $this->Flash->error(__('The leave request could not be saved. Please, try again.'));
         }
         $users = $this->LeaveRequests->Users->find('list', ['limit' => 200])->all();
-        $this->set(compact('leaveRequest', 'users'));
+        $leaveType = $this->LeaveRequests->LeaveType->find('list', ['limit' => 200])->all();
+        $this->set(compact('leaveRequest', 'users', 'leaveType'));
     }
 
     /**
