@@ -2,14 +2,14 @@
 
 /**
  * @var \App\View\AppView $this
- * @var \App\Model\Entity\User[]|\Cake\Collection\CollectionInterface $users
+ * @var \Cake\Datasource\EntityInterface[]|\Cake\Collection\CollectionInterface $leaveType
  */
 ?>
 <?php
-$this->assign('title', __('Users'));
+$this->assign('title', __('Leave Type'));
 $this->Breadcrumbs->add([
     ['title' => 'Home', 'url' => '/'],
-    ['title' => 'List Users'],
+    ['title' => 'List Leave Type'],
 ]);
 ?>
 
@@ -23,7 +23,7 @@ $this->Breadcrumbs->add([
                 'label' => false,
                 'class' => 'form-control-sm',
             ]); ?>
-            <?= $this->Html->link(__('New User'), ['action' => 'add'], ['class' => 'btn btn-primary btn-sm']) ?>
+            <?= $this->Html->link(__('New Leave Type'), ['action' => 'add'], ['class' => 'btn btn-primary btn-sm']) ?>
         </div>
     </div>
     <!-- /.card-header -->
@@ -32,29 +32,25 @@ $this->Breadcrumbs->add([
             <thead>
                 <tr>
                     <th><?= $this->Paginator->sort('id') ?></th>
-                    <th><?= $this->Paginator->sort('username') ?></th>
-                    <th><?= $this->Paginator->sort('num_annual_leave') ?></th>
-                    <th><?= $this->Paginator->sort('num_medical_leave') ?></th>
-                    <th><?= $this->Paginator->sort('num_hospital_leave') ?></th>
-                    <th><?= $this->Paginator->sort('is_admin') ?></th>
-                    <th><?= $this->Paginator->sort('admin_level') ?></th>
+                    <th><?= $this->Paginator->sort('name') ?></th>
+                    <th><?= $this->Paginator->sort('type') ?></th>
+                    <th><?= $this->Paginator->sort('leave_type_id') ?></th>
+                    <th><?= $this->Paginator->sort('cost') ?></th>
                     <th class="actions"><?= __('Actions') ?></th>
                 </tr>
             </thead>
             <tbody>
-                <?php foreach ($users as $user) : ?>
+                <?php foreach ($leaveType as $leaveType) : ?>
                     <tr>
-                        <td><?= $this->Number->format($user->id) ?></td>
-                        <td><?= h($user->username) ?></td>
-                        <td><?= $this->Number->format($user->num_annual_leave) ?></td>
-                        <td><?= $this->Number->format($user->num_medical_leave) ?></td>
-                        <td><?= $this->Number->format($user->num_hospital_leave) ?></td>
-                        <td><?= ($user->is_admin) ? __('Yes') : __('No') ?></td>
-                        <td><?= $this->Number->format($user->admin_level) ?></td>
+                        <td><?= $this->Number->format($leaveType->id) ?></td>
+                        <td><?= h($leaveType->name) ?></td>
+                        <td><?= h($leaveType->type) ?></td>
+                        <td><?= $this->Number->format($leaveType->leave_type_id) ?></td>
+                        <td><?= $this->Number->format($leaveType->cost) ?></td>
                         <td class="actions">
-                            <?= $this->Html->link(__('View'), ['action' => 'view', $user->id], ['class' => 'btn btn-xs btn-outline-primary', 'escape' => false]) ?>
-                            <?= $this->Html->link(__('Edit'), ['action' => 'edit', $user->id], ['class' => 'btn btn-xs btn-outline-primary', 'escape' => false]) ?>
-                            <?= $this->Form->postLink(__('Delete'), ['action' => 'delete', $user->id], ['class' => 'btn btn-xs btn-outline-danger', 'escape' => false, 'confirm' => __('Are you sure you want to delete # {0}?', $user->id)]) ?>
+                            <?= $this->Html->link(__('View'), ['action' => 'view', $leaveType->id], ['class' => 'btn btn-xs btn-outline-primary', 'escape' => false]) ?>
+                            <?= $this->Html->link(__('Edit'), ['action' => 'edit', $leaveType->id], ['class' => 'btn btn-xs btn-outline-primary', 'escape' => false]) ?>
+                            <?= $this->Form->postLink(__('Delete'), ['action' => 'delete', $leaveType->id], ['class' => 'btn btn-xs btn-outline-danger', 'escape' => false, 'confirm' => __('Are you sure you want to delete # {0}?', $leaveType->id)]) ?>
                         </td>
                     </tr>
                 <?php endforeach; ?>

@@ -10,7 +10,7 @@ use Cake\ORM\Entity;
  *
  * @property int $id
  * @property int $user_id
- * @property string $leave_type
+ * @property int $leave_type_id
  * @property \Cake\I18n\FrozenDate $start_of_leave
  * @property \Cake\I18n\FrozenDate $end_of_leave
  * @property int $num_days
@@ -20,6 +20,7 @@ use Cake\ORM\Entity;
  * @property string $remark
  *
  * @property \App\Model\Entity\User $user
+ * @property \App\Model\Entity\LeaveType $leave_type
  */
 class LeaveRequest extends Entity
 {
@@ -34,7 +35,7 @@ class LeaveRequest extends Entity
      */
     protected $_accessible = [
         'user_id' => true,
-        'leave_type' => true,
+        'leave_type_id' => true,
         'start_of_leave' => true,
         'end_of_leave' => true,
         'num_days' => true,
@@ -43,5 +44,6 @@ class LeaveRequest extends Entity
         'status' => true,
         'remark' => true,
         'user' => true,
+        'leave_type' => true,
     ];
 }

@@ -2,27 +2,26 @@
 
 /**
  * @var \App\View\AppView $this
- * @var \App\Model\Entity\LeaveRequest $leaveRequest
+ * @var \Cake\Datasource\EntityInterface $leaveType
  */
 ?>
 <?php
-$this->assign('title', __('Add Leave Request'));
+$this->assign('title', __('Add Leave Type'));
 $this->Breadcrumbs->add([
     ['title' => 'Home', 'url' => '/'],
-    ['title' => 'List Leave Requests', 'url' => ['action' => 'index']],
+    ['title' => 'List Leave Type', 'url' => ['action' => 'index']],
     ['title' => 'Add'],
 ]);
 ?>
 
 <div class="card card-primary card-outline">
-  <?= $this->Form->create($leaveRequest) ?>
+  <?= $this->Form->create($leaveType) ?>
   <div class="card-body">
     <?php
-      echo $this->Form->control('leave_type_id', ['options' => $leaveType]);
-      echo $this->Form->control('start_of_leave');
-      echo $this->Form->control('end_of_leave');
-      echo $this->Form->control('year');
-      echo $this->Form->control('description');
+      echo $this->Form->control('name');
+      echo $this->Form->control('type');
+      echo $this->Form->control('leave_type_id');
+      echo $this->Form->control('cost');
     ?>
   </div>
 

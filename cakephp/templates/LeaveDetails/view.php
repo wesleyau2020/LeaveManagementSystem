@@ -39,27 +39,27 @@
                     <td><?= $this->Number->format($leaveDetail->max_carry_over) ?></td>
                 </tr>
                 <tr>
-                    <th><?= __('AL Given') ?></th>
+                    <th><?= __('Num AL Given') ?></th>
                     <td><?= $this->Number->format($leaveDetail->num_AL_given) ?></td>
                 </tr>
                 <tr>
-                    <th><?= __('AL Left') ?></th>
+                    <th><?= __('Num AL Left') ?></th>
                     <td><?= $this->Number->format($leaveDetail->num_AL_left) ?></td>
                 </tr>
                 <tr>
-                    <th><?= __('ML Given') ?></th>
+                    <th><?= __('Num ML Given') ?></th>
                     <td><?= $this->Number->format($leaveDetail->num_ML_given) ?></td>
                 </tr>
                 <tr>
-                    <th><?= __('ML Left') ?></th>
+                    <th><?= __('Num ML Left') ?></th>
                     <td><?= $this->Number->format($leaveDetail->num_ML_left) ?></td>
                 </tr>
                 <tr>
-                    <th><?= __('HL Given') ?></th>
+                    <th><?= __('Num HL Given') ?></th>
                     <td><?= $this->Number->format($leaveDetail->num_HL_given) ?></td>
                 </tr>
                 <tr>
-                    <th><?= __('HL Left') ?></th>
+                    <th><?= __('Num HL Left') ?></th>
                     <td><?= $this->Number->format($leaveDetail->num_HL_left) ?></td>
                 </tr>
             </table>

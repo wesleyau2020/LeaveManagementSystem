@@ -3,8 +3,8 @@ declare(strict_types=1);
 
 namespace App\Model\Entity;
 
-use Authentication\PasswordHasher\DefaultPasswordHasher;
 use Cake\ORM\Entity;
+use Authentication\PasswordHasher\DefaultPasswordHasher; 
 
 /**
  * User Entity
@@ -53,7 +53,6 @@ class User extends Entity
         'password',
     ];
 
-    // Automatically hash passwords when they are changed.
     protected function _setPassword(string $password) : ?string
     {
         if (strlen($password) > 0) {
