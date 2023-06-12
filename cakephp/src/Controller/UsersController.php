@@ -69,11 +69,11 @@ class UsersController extends AppController
                 $leaveDetail->entitled = $leaveEntitled;
                 $leaveDetail->balance = 1.5;
                 $leaveDetail->earned = 1.5;
-                debug($leaveDetail);
-                $leaveDetailsController->LeaveDetails->save($leaveDetail);
 
-                $this->Flash->success(__('The user has been saved.'));
-                return $this->redirect(['action' => 'index']);
+                if ($leaveDetailsController->LeaveDetails->save($leaveDetail)) {
+                    $this->Flash->success(__('The user has been saved.'));
+                    return $this->redirect(['action' => 'index']);
+                }
             }
             $this->Flash->error(__('The user could not be saved. Please, try again.'));
         }
