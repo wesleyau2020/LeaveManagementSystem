@@ -50,17 +50,19 @@ class UsersController extends AppController
         $user = $this->Users->newEmptyEntity();
         if ($this->request->is('post')) {
             $user = $this->Users->patchEntity($user, $this->request->getData());
+            $result = $this->Users->save($user);
 
-            if ($this->Users->save($user)) {
-                $leaveDetailsController = new \App\Controller\LeaveDetailsController();
-                $leaveDetail = $leaveDetailsController->LeaveDetails->newEmptyEntity();
+            if ($result) {
+                // Calculate $leaveEntitled
                 $monthsWorked = FrozenTime::now()->month - $user->start_date->month;
                 $maxLeave = 14;
                 $leaveEntitled = ($maxLeave / 12) * $monthsWorked; 
                 $leaveEntitled = ceil($leaveEntitled * 2) / 2;
     
                 // Auto-create leaveDetail for each user
-                $leaveDetail->user_id = 1;
+                $leaveDetailsController = new \App\Controller\LeaveDetailsController();
+                $leaveDetail = $leaveDetailsController->LeaveDetails->newEmptyEntity();
+                $leaveDetail->user_id = $result->id;
                 $leaveDetail->year = FrozenTime::now()->year;
                 $leaveDetail->carried_over = 0;
                 $leaveDetail->max_carry_over = 7;
@@ -69,8 +71,8 @@ class UsersController extends AppController
                 $leaveDetail->earned = 1.5;
                 debug($leaveDetail);
                 $leaveDetailsController->LeaveDetails->save($leaveDetail);
-                $this->Flash->success(__('The user has been saved.'));
 
+                $this->Flash->success(__('The user has been saved.'));
                 return $this->redirect(['action' => 'index']);
             }
             $this->Flash->error(__('The user could not be saved. Please, try again.'));
