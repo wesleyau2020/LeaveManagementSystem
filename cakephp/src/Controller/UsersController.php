@@ -63,6 +63,7 @@ class UsersController extends AppController
                 $leaveDetailsController = new \App\Controller\LeaveDetailsController();
                 $leaveDetail = $leaveDetailsController->LeaveDetails->newEmptyEntity();
                 $leaveDetail->user_id = $result->id;
+                $leaveDetail->leave_type_id = 1;
                 $leaveDetail->year = FrozenTime::now()->year;
                 $leaveDetail->carried_over = 0;
                 $leaveDetail->max_carry_over = 7;
