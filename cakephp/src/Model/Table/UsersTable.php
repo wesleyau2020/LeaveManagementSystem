@@ -62,7 +62,7 @@ class UsersTable extends Table
     {
         $validator
             ->scalar('username')
-            ->maxLength('username', 40)
+            ->maxLength('username', 50)
             ->requirePresence('username', 'create')
             ->notEmptyString('username');
 
@@ -73,16 +73,13 @@ class UsersTable extends Table
             ->notEmptyString('password');
 
         $validator
-            ->integer('num_annual_leave')
-            ->notEmptyString('num_annual_leave');
+            ->date('start_date')
+            ->requirePresence('start_date', 'create')
+            ->notEmptyDate('start_date');
 
         $validator
-            ->integer('num_medical_leave')
-            ->notEmptyString('num_medical_leave');
-
-        $validator
-            ->integer('num_hospital_leave')
-            ->notEmptyString('num_hospital_leave');
+            ->date('end_date')
+            ->allowEmptyDate('end_date');
 
         $validator
             ->boolean('is_admin')
