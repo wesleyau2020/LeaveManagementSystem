@@ -66,7 +66,7 @@ $this->Breadcrumbs->add([
                     <th><?= $this->Paginator->sort('description') ?></th>
                     <th><?= $this->Paginator->sort('status') ?></th>
                     <th><?= $this->Paginator->sort('leave_type') ?></th>
-                    <th><?= $this->Paginator->sort('num_days') ?></th>
+                    <th><?= $this->Paginator->sort('days') ?></th>
                     <th><?= $this->Paginator->sort('start_of_leave') ?></th>
                     <th><?= $this->Paginator->sort('end_of_leave') ?></th>
                     <th><?= $this->Paginator->sort('remark') ?></th>
@@ -81,7 +81,7 @@ $this->Breadcrumbs->add([
                         <td><?= h($leaveRequest->description) ?></td>
                         <td><?= h($leaveRequest->status) ?></td>
                         <td><?= h($leaveRequest->leave_type->name) ?></td>
-                        <td><?= $this->Number->format($leaveRequest->num_days) ?></td>
+                        <td><?= $this->Number->format($leaveRequest->days) ?></td>
                         <td><?= h($leaveRequest->start_of_leave) ?></td>
                         <td><?= h($leaveRequest->end_of_leave) ?></td>
                         <td><?= h($leaveRequest->remark) ?></td>

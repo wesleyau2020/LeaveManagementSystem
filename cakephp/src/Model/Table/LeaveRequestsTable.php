@@ -81,9 +81,9 @@ class LeaveRequestsTable extends Table
             ->notEmptyDate('end_of_leave');
 
         $validator
-            ->integer('num_days')
-            ->requirePresence('num_days', 'create')
-            ->notEmptyString('num_days');
+            ->integer('days')
+            ->requirePresence('days', 'create')
+            ->notEmptyString('days');
 
         $validator
             ->scalar('year')

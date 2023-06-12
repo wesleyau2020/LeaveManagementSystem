@@ -34,17 +34,30 @@
             <th><?= __('Username') ?></th>
             <td><?= h($user->username) ?></td>
         </tr>
+        <?php
+            foreach ($user->leave_details as $leaveDetails) {
+              if ($leaveDetails->year === date('Y')) {
+                if ($leaveDetails->leave_type_id === 1) {
+                  $num_AL = $leaveDetails->balance;
+                } elseif ($leaveDetails->leave_type_id === 2) {
+                  $num_ML = $leaveDetails->balance;
+                } elseif ($leaveDetails->leave_type_id === 3) {
+                  $num_HL = $leaveDetails->balance;
+                }
+              }
+            }
+        ?>
         <tr>
             <th><?= __('Annual Leave (AL)') ?></th>
-            <td><?= $this->Number->format($user->num_annual_leave) ?></td>
+            <td><?= $this->Number->format($num_AL) ?></td>
         </tr>
         <tr>
             <th><?= __('Medical Leave (ML)') ?></th>
-            <td><?= $this->Number->format($user->num_medical_leave) ?></td>
+            <td><?= $this->Number->format($num_ML) ?></td>
         </tr>
         <tr>
             <th><?= __('Hospital Leave (HL)') ?></th>
-            <td><?= $this->Number->format($user->num_hospital_leave) ?></td>
+            <td><?= $this->Number->format($num_HL) ?></td>
         </tr>
     </table>
   </div>
@@ -52,8 +65,7 @@
     <div class="">
     </div>
     <div class="ml-auto">
-      <?= $this->Html->link(__('Edit'), ['action' => 'edit', $user->id], ['class' => 'btn btn-secondary']) ?>
-      <?= $this->Html->link(__('Logout'), ['action' => 'logout'], ['class' => 'btn btn-default'],) ?>
+      <?= $this->Html->link(__('Edit Details'), ['action' => 'edit', $user->id], ['class' => 'btn btn-secondary']) ?>
     </div>
   </div>
 </div>
@@ -82,17 +94,28 @@
               </td>
           </tr>
         <?php } else{ ?>
-          <?php foreach ($user->leave_details as $leaveDetails) : ?>
-            <?php if ($leaveDetails->year === $input_year): ?>
-          <tr>
-              <td><?= h($leaveDetails->carried_over) ?></td>
-              <td><?= h($leaveDetails->max_carry_over) ?></td>
-              <td><?= h($leaveDetails->num_AL_given) ?></td>
-              <td><?= h($leaveDetails->num_ML_given) ?></td>
-              <td><?= h($leaveDetails->num_HL_given) ?></td>
-          </tr>
-            <?php endif; ?>
-          <?php endforeach; ?>
+          <?php
+              foreach ($user->leave_details as $leaveDetails) {
+                if ($leaveDetails->year === $input_year) {
+                  if ($leaveDetails->leave_type_id === 1) {
+                    $AL_entitled = $leaveDetails->entitled;
+                    $AL_balance = $leaveDetails->balance;
+                  } elseif ($leaveDetails->leave_type_id === 2) {
+                    $ML_entitled = $leaveDetails->entitled;
+                    $ML_balance = $leaveDetails->balance;
+                  } elseif ($leaveDetails->leave_type_id === 3) {
+                    $HL_entitled = $leaveDetails->entitled;
+                    $HL_balance = $leaveDetails->balance;
+                  }
+                }
+              }
+          ?>
+
+          <td><?= h($leaveDetails->carried_over) ?></td>
+          <td><?= h($leaveDetails->max_carry_over) ?></td>
+          <td><?= h($AL_entitled) ?></td>
+          <td><?= h($ML_entitled) ?></td>
+          <td><?= h($HL_entitled) ?></td>
         <?php } ?>
       </table>
 
@@ -111,15 +134,11 @@
               </td>
           </tr>
         <?php } else{ ?>
-          <?php foreach ($user->leave_details as $leaveDetails) : ?>
-            <?php if ($leaveDetails->year === $input_year): ?>
-              <tr>
-                  <td><?= h($leaveDetails->num_AL_left) ?></td>
-                  <td><?= h($leaveDetails->num_ML_left) ?></td>
-                  <td><?= h($leaveDetails->num_HL_left) ?></td>
-              </tr>
-            <?php endif; ?>
-          <?php endforeach; ?>
+          <tr>
+              <td><?= h($AL_balance) ?></td>
+              <td><?= h($ML_balance) ?></td>
+              <td><?= h($HL_balance) ?></td>
+          </tr>
         <?php } ?>
       </table>
     </div>

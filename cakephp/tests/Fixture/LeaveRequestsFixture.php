@@ -24,7 +24,7 @@ class LeaveRequestsFixture extends TestFixture
                 'leave_type_id' => 1,
                 'start_of_leave' => '2023-06-09',
                 'end_of_leave' => '2023-06-09',
-                'num_days' => 1,
+                'days' => 1,
                 'year' => 'Lorem ipsum dolor sit amet',
                 'description' => 'Lorem ipsum dolor sit amet',
                 'status' => 'Lorem ip',

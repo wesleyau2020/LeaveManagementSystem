@@ -33,9 +33,8 @@ $this->Breadcrumbs->add([
                 <tr>
                     <th><?= $this->Paginator->sort('id') ?></th>
                     <th><?= $this->Paginator->sort('username') ?></th>
-                    <th><?= $this->Paginator->sort('num_annual_leave') ?></th>
-                    <th><?= $this->Paginator->sort('num_medical_leave') ?></th>
-                    <th><?= $this->Paginator->sort('num_hospital_leave') ?></th>
+                    <th><?= $this->Paginator->sort('start_date') ?></th>
+                    <th><?= $this->Paginator->sort('end_date') ?></th>
                     <th><?= $this->Paginator->sort('is_admin') ?></th>
                     <th><?= $this->Paginator->sort('admin_level') ?></th>
                     <th class="actions"><?= __('Actions') ?></th>
@@ -46,9 +45,8 @@ $this->Breadcrumbs->add([
                     <tr>
                         <td><?= $this->Number->format($user->id) ?></td>
                         <td><?= h($user->username) ?></td>
-                        <td><?= $this->Number->format($user->num_annual_leave) ?></td>
-                        <td><?= $this->Number->format($user->num_medical_leave) ?></td>
-                        <td><?= $this->Number->format($user->num_hospital_leave) ?></td>
+                        <td><?= h($user->start_date) ?></td>
+                        <td><?= h($user->end_date) ?></td>
                         <td><?= ($user->is_admin) ? __('Yes') : __('No') ?></td>
                         <td><?= $this->Number->format($user->admin_level) ?></td>
                         <td class="actions">

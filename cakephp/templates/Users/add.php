@@ -20,9 +20,8 @@ $this->Breadcrumbs->add([
     <?php
       echo $this->Form->control('username');
       echo $this->Form->control('password');
-      echo $this->Form->control('num_annual_leave');
-      echo $this->Form->control('num_medical_leave');
-      echo $this->Form->control('num_hospital_leave');
+      echo $this->Form->control('start_date');
+      echo $this->Form->control('end_date', ['empty' => true]);
       echo $this->Form->control('is_admin', ['custom' => true]);
       echo $this->Form->control('admin_level');
     ?>
