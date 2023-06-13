@@ -5,8 +5,8 @@
  * @var \App\Model\Entity\User $user
  */
 
-/** @var string input_year */
-$input_year = $_POST["input_year"]??date('Y');
+/** @var string inputYear */
+$inputYear = $_POST["inputYear"]??date('Y');
 ?>
 
 <?php
@@ -76,13 +76,11 @@ $this->Breadcrumbs->add([
         </tr>
       <?php }else{ ?>
         <?php foreach ($user->leave_details as $leaveDetails) : ?>
-          <?php if ($leaveDetails->year === $input_year) : ?>
-            <?php
-              // get leaveType name
-            ?>
+          <?php if ($leaveDetails->year === $inputYear) : ?>
+            <?php $leaveTypeName = $LeaveTypeNames[$leaveDetails->leave_type_id]; ?>
           <tr>
               <td><?= h($leaveDetails->id) ?></td>
-              <td><?= h($leaveDetails->leave_type_id) ?></td>
+              <td><?= h($leaveTypeName) ?></td>
               <td><?= h($leaveDetails->carried_over) ?></td>
               <td><?= h($leaveDetails->max_carry_over) ?></td>
               <td><?= h($leaveDetails->entitled) ?></td>
@@ -114,10 +112,10 @@ $this->Breadcrumbs->add([
             ])
         ?>
         <?=
-            $this->Form->year('input_year', [
+            $this->Form->year('inputYear', [
                 'min' => 2000,
                 'max' => date('Y'),
-                'default' => $input_year,
+                'default' => $inputYear,
 
             ])
         ?>
