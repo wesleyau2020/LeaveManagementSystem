@@ -78,8 +78,7 @@ $this->Breadcrumbs->add([
         <?php foreach ($user->leave_details as $leaveDetails) : ?>
           <?php if ($leaveDetails->year === $input_year) : ?>
             <?php
-              // get leave type name
-              
+              // get leaveType name
             ?>
           <tr>
               <td><?= h($leaveDetails->id) ?></td>

@@ -55,26 +55,24 @@ class UsersController extends AppController
             if ($result) {
                 // Calculate $leaveEntitled
                 $monthsWorked = FrozenTime::now()->month - $user->start_date->month;
-                $maxLeave = 14;
-                $leaveEntitled = ($maxLeave / 12) * $monthsWorked; 
-                $leaveEntitled = ceil($leaveEntitled * 2) / 2;
+                $leaveEntitled = (14 / 12) * $monthsWorked; 
+                $leaveEntitled = ceil($leaveEntitled * 2) / 2; // round up to the nearest 0.5
     
                 // Auto-create leaveDetail for each user
                 $leaveDetailsController = new \App\Controller\LeaveDetailsController();
-                $leaveDetail = $leaveDetailsController->LeaveDetails->newEmptyEntity();
-                $leaveDetail->user_id = $result->id;
-                $leaveDetail->leave_type_id = 1;
-                $leaveDetail->year = FrozenTime::now()->year;
-                $leaveDetail->carried_over = 0;
-                $leaveDetail->max_carry_over = 7;
-                $leaveDetail->entitled = $leaveEntitled;
-                $leaveDetail->balance = 1.5;
-                $leaveDetail->earned = 1.5;
-
-                if ($leaveDetailsController->LeaveDetails->save($leaveDetail)) {
-                    $this->Flash->success(__('The user has been saved.'));
-                    return $this->redirect(['action' => 'index']);
+                for ($i = 0; $i < 3; $i++) {
+                    $leaveDetail = $leaveDetailsController->LeaveDetails->newEmptyEntity();
+                    $leaveDetail->user_id = $result->id;
+                    $leaveDetail->leave_type_id = $i + 1;
+                    // $leaveDetail->year = FrozenTime::now()->year;
+                    if ($leaveDetail->leave_type_id == 1) {
+                        $leaveDetail->entitled = $leaveEntitled;
+                    }
+                    $leaveDetailsController->LeaveDetails->save($leaveDetail);
                 }
+
+                $this->Flash->success(__('The user has been saved.'));
+                return $this->redirect(['action' => 'index']);
             }
             $this->Flash->error(__('The user could not be saved. Please, try again.'));
         }
