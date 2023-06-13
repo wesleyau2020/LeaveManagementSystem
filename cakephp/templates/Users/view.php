@@ -34,31 +34,6 @@
             <th><?= __('Username') ?></th>
             <td><?= h($user->username) ?></td>
         </tr>
-        <?php
-            foreach ($user->leave_details as $leaveDetails) {
-              if ($leaveDetails->year === date('Y')) {
-                if ($leaveDetails->leave_type_id === 1) {
-                  $num_AL = $leaveDetails->balance;
-                } elseif ($leaveDetails->leave_type_id === 2) {
-                  $num_ML = $leaveDetails->balance;
-                } elseif ($leaveDetails->leave_type_id === 3) {
-                  $num_HL = $leaveDetails->balance;
-                }
-              }
-            }
-        ?>
-        <tr>
-            <th><?= __('Annual Leave (AL)') ?></th>
-            <td><?= $this->Number->format($num_AL) ?></td>
-        </tr>
-        <tr>
-            <th><?= __('Medical Leave (ML)') ?></th>
-            <td><?= $this->Number->format($num_ML) ?></td>
-        </tr>
-        <tr>
-            <th><?= __('Hospital Leave (HL)') ?></th>
-            <td><?= $this->Number->format($num_HL) ?></td>
-        </tr>
     </table>
   </div>
   <div class="card-footer d-flex">
