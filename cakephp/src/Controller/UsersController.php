@@ -41,11 +41,10 @@ class UsersController extends AppController
         $LeaveTypeNames = array();
 
         for ($i = 0; $i < 3; $i++) {
+            // 
             $LeaveTypeName = $leaveTypeController->LeaveType->get($i + 1)->name;
             array_push($LeaveTypeNames, $LeaveTypeName);
         }
-
-        debug($leaveTypeController->LeaveType->get(1)->name);
 
         $this->set(compact('user'));
         $this->set(compact('LeaveTypeNames'));
