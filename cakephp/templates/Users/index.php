@@ -70,6 +70,10 @@ $this->Breadcrumbs->add([
             </thead>
             <tbody>
                 <?php foreach ($users as $user) : ?>
+                    <?php 
+                        // display user's annual leave
+                        $userLeaveDetails = array();
+                    ?>
                         <tr>
                             <td><?= $this->Number->format($user->id) ?></td>
                             <td><?= h($user->username) ?></td>

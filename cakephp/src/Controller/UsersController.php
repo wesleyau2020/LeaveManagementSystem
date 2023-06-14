@@ -21,7 +21,18 @@ class UsersController extends AppController
     {
         $users = $this->paginate($this->Users);
 
+        // Pass LeaveDetails to templates/Users/index.php
+        $leaveDetailsController = new \App\Controller\LeaveDetailsController();
+        $leaveDetailsController->paginate = [
+            'contain' => ['Users'],
+        ];
+        $leaveDetails = $leaveDetailsController->paginate($leaveDetailsController->LeaveDetails);
+
+        // annual leave put in array
+        // map annual leave to user in hashmap
+
         $this->set(compact('users'));
+        $this->set(compact('leaveDetails'));
     }
 
     /**
@@ -64,8 +75,13 @@ class UsersController extends AppController
 
             if ($result) {
                 // Calculate $leaveEntitled
-                $monthsWorked = FrozenTime::now()->month - $user->start_date->month;
+                $monthsWorked = 12 - $user->start_date->month + 1;
                 $leaveEntitled = (14 / 12) * $monthsWorked; 
+                $leaveEntitled = ceil($leaveEntitled * 2) / 2; // round up to the nearest 0.5
+
+                // Calculate $leaveBalance
+                $monthsWorked = FrozenTime::now()->month - $user->start_date->month + 1;
+                $leaveBalance = $monthsWorked * 1.5; 
                 $leaveEntitled = ceil($leaveEntitled * 2) / 2; // round up to the nearest 0.5
     
                 // Auto-create leaveDetail for each user
@@ -77,6 +93,7 @@ class UsersController extends AppController
                     // $leaveDetail->year = FrozenTime::now()->year;
                     if ($leaveDetail->leave_type_id == 1) {
                         $leaveDetail->entitled = $leaveEntitled;
+                        $leaveDetail->balance = $leaveBalance;
                     }
                     $leaveDetailsController->LeaveDetails->save($leaveDetail);
                 }
