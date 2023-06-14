@@ -77,7 +77,7 @@ $this->Breadcrumbs->add([
       <?php }else{ ?>
         <?php foreach ($user->leave_details as $leaveDetails) : ?>
           <?php if ($leaveDetails->year === $inputYear) : ?>
-            <?php $leaveTypeName = $LeaveTypeNames[$leaveDetails->leave_type_id - 1]; ?>
+            <?php $leaveTypeName = $leaveTypeNames[$leaveDetails->leave_type_id - 1]; ?>
           <tr>
               <td><?= h($leaveDetails->id) ?></td>
               <td><?= h($leaveTypeName) ?></td>

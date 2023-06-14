@@ -37,17 +37,17 @@ class UsersController extends AppController
             'contain' => ['LeaveDetails', 'LeaveRequests'],
         ]);
 
+        // Pass leaveTypeNames to templates/Users/view.php
         $leaveTypeController = new \App\Controller\LeaveTypeController();
-        $LeaveTypeNames = array();
+        $leaveTypeNames = array();
 
         for ($i = 0; $i < 3; $i++) {
-            // 
             $LeaveTypeName = $leaveTypeController->LeaveType->get($i + 1)->name;
-            array_push($LeaveTypeNames, $LeaveTypeName);
+            array_push($leaveTypeNames, $LeaveTypeName);
         }
 
         $this->set(compact('user'));
-        $this->set(compact('LeaveTypeNames'));
+        $this->set(compact('leaveTypeNames'));
     }
 
     /**

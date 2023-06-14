@@ -3,7 +3,11 @@
 /**
  * @var \App\View\AppView $this
  * @var \App\Model\Entity\User[]|\Cake\Collection\CollectionInterface $users
+ * 
  */
+
+/** @var string inputYear */
+$inputYear = $_POST["inputYear"]??date('Y');
 ?>
 <?php
 $this->assign('title', __('Users'));
@@ -18,6 +22,31 @@ $this->Breadcrumbs->add([
         <h2 class="card-title">
             <!-- -->
         </h2>
+        <div>
+            <!-- select year via dropdown menu -->
+            <div style="float: left">
+                <?= 
+                    $this->Form->create(null, [
+                        'type' => 'post',
+                        'valueSources' => ['query', 'data'],
+                        'url' => ['action' => 'index/'],
+                        'style' => "margin-right: 5px"
+                    ])
+                ?>
+                <?=
+                    $this->Form->year('inputYear', [
+                        'min' => 2000,
+                        'max' => date('Y'),
+                        'default' => $inputYear,
+
+                    ])
+                ?>
+            </div>
+            <?php
+                echo $this->Form->button('Submit');
+                echo $this->Form->end();
+            ?>
+        </div>
         <div class="card-toolbox">
             <?= $this->Paginator->limitControl([], null, [
                 'label' => false,
@@ -31,30 +60,25 @@ $this->Breadcrumbs->add([
         <table class="table table-hover text-nowrap">
             <thead>
                 <tr>
-                    <th><?= $this->Paginator->sort('id') ?></th>
-                    <th><?= $this->Paginator->sort('username') ?></th>
-                    <th><?= $this->Paginator->sort('start_date') ?></th>
-                    <th><?= $this->Paginator->sort('end_date') ?></th>
-                    <th><?= $this->Paginator->sort('is_admin') ?></th>
-                    <th><?= $this->Paginator->sort('admin_level') ?></th>
+                    <th><?= $this->Paginator->sort('ID') ?></th>
+                    <th><?= $this->Paginator->sort('Name') ?></th>
+                    <!-- <th><?= $this->Paginator->sort('Leave Carried') ?></th>
+                    <th><?= $this->Paginator->sort('Leave Total') ?></th>
+                    <th><?= $this->Paginator->sort('Leave Balance') ?></th> -->
                     <th class="actions"><?= __('Actions') ?></th>
                 </tr>
             </thead>
             <tbody>
                 <?php foreach ($users as $user) : ?>
-                    <tr>
-                        <td><?= $this->Number->format($user->id) ?></td>
-                        <td><?= h($user->username) ?></td>
-                        <td><?= h($user->start_date) ?></td>
-                        <td><?= h($user->end_date) ?></td>
-                        <td><?= ($user->is_admin) ? __('Yes') : __('No') ?></td>
-                        <td><?= $this->Number->format($user->admin_level) ?></td>
-                        <td class="actions">
-                            <?= $this->Html->link(__('View'), ['action' => 'view', $user->id], ['class' => 'btn btn-xs btn-outline-primary', 'escape' => false]) ?>
-                            <?= $this->Html->link(__('Edit'), ['action' => 'edit', $user->id], ['class' => 'btn btn-xs btn-outline-primary', 'escape' => false]) ?>
-                            <?= $this->Form->postLink(__('Delete'), ['action' => 'delete', $user->id], ['class' => 'btn btn-xs btn-outline-danger', 'escape' => false, 'confirm' => __('Are you sure you want to delete # {0}?', $user->id)]) ?>
-                        </td>
-                    </tr>
+                        <tr>
+                            <td><?= $this->Number->format($user->id) ?></td>
+                            <td><?= h($user->username) ?></td>
+                            <td class="actions">
+                                <?= $this->Html->link(__('View'), ['action' => 'view', $user->id], ['class' => 'btn btn-xs btn-outline-primary', 'escape' => false]) ?>
+                                <?= $this->Html->link(__('Edit'), ['action' => 'edit', $user->id], ['class' => 'btn btn-xs btn-outline-primary', 'escape' => false]) ?>
+                                <?= $this->Form->postLink(__('Delete'), ['action' => 'delete', $user->id], ['class' => 'btn btn-xs btn-outline-danger', 'escape' => false, 'confirm' => __('Are you sure you want to delete # {0}?', $user->id)]) ?>
+                            </td>
+                        </tr>
                 <?php endforeach; ?>
             </tbody>
         </table>
