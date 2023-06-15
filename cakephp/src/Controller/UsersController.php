@@ -186,14 +186,22 @@ class UsersController extends AppController
         $result = $this->Authentication->getResult();
         // regardless of POST or GET, redirect if user is logged in
         $id  = $result->getData()->id??0;
+        $is_admin = $result->getData()->is_admin??false;
         if ($result && $result->isValid()) {
-            // redirect to /articles after login success
-            $redirect = $this->request->getQuery('redirect', [
-                'controller' => 'Users',
-                'action' => 'view',
-                $id
-            ]);
-
+            if ($is_admin == true) {
+                // redirect to /Users/index after login success
+                $redirect = $this->request->getQuery('redirect', [
+                    'controller' => 'Users',
+                    'action' => 'index'
+                ]);
+            } else {
+                // redirect to /Users/view/{$id} after login success
+                $redirect = $this->request->getQuery('redirect', [
+                    'controller' => 'Users',
+                    'action' => 'view',
+                    $id
+                ]);
+            }
             return $this->redirect($redirect);
         }
         // display error if user submitted and authentication failed
