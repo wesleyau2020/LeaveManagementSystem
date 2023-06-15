@@ -28,11 +28,20 @@ class UsersController extends AppController
         ];
         $leaveDetails = $leaveDetailsController->paginate($leaveDetailsController->LeaveDetails);
 
-        // annual leave put in array
-        // map annual leave to user in hashmap
+        // Store all AL in an array
+        $userLeaveDetails = array();
+        foreach ($leaveDetails as $leaveDetail) {
+            if ($leaveDetail->leave_type_id == 1) {
+                array_push($userLeaveDetails, $leaveDetail);  
+            }
+        }
+
+        // foreach($userLeaveDetails as $k => $v) {  
+        // debug("Key: ".$k." Value: ".$v."");
+        // }  
 
         $this->set(compact('users'));
-        $this->set(compact('leaveDetails'));
+        $this->set(compact('userLeaveDetails'));
     }
 
     /**

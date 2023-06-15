@@ -62,27 +62,31 @@ $this->Breadcrumbs->add([
                 <tr>
                     <th><?= $this->Paginator->sort('ID') ?></th>
                     <th><?= $this->Paginator->sort('Name') ?></th>
-                    <!-- <th><?= $this->Paginator->sort('Leave Carried') ?></th>
-                    <th><?= $this->Paginator->sort('Leave Total') ?></th>
-                    <th><?= $this->Paginator->sort('Leave Balance') ?></th> -->
+                    <th><?= $this->Paginator->sort('Carried Over') ?></th>
+                    <th><?= $this->Paginator->sort('Entitled') ?></th>
+                    <th><?= $this->Paginator->sort('Balance') ?></th>
                     <th class="actions"><?= __('Actions') ?></th>
                 </tr>
             </thead>
             <tbody>
                 <?php foreach ($users as $user) : ?>
-                    <?php 
-                        // display user's annual leave
-                        $userLeaveDetails = array();
-                    ?>
-                        <tr>
-                            <td><?= $this->Number->format($user->id) ?></td>
-                            <td><?= h($user->username) ?></td>
-                            <td class="actions">
-                                <?= $this->Html->link(__('View'), ['action' => 'view', $user->id], ['class' => 'btn btn-xs btn-outline-primary', 'escape' => false]) ?>
-                                <?= $this->Html->link(__('Edit'), ['action' => 'edit', $user->id], ['class' => 'btn btn-xs btn-outline-primary', 'escape' => false]) ?>
-                                <?= $this->Form->postLink(__('Delete'), ['action' => 'delete', $user->id], ['class' => 'btn btn-xs btn-outline-danger', 'escape' => false, 'confirm' => __('Are you sure you want to delete # {0}?', $user->id)]) ?>
-                            </td>
-                        </tr>
+                    <?php foreach ($userLeaveDetails as $userLeaveDetail) : ?>
+                        <?php if ($userLeaveDetail->user_id == $user->id 
+                        and $userLeaveDetail->year == $inputYear) : ?>
+                            <tr>
+                                <td><?= $this->Number->format($user->id) ?></td>
+                                <td><?= h($user->username) ?></td>
+                                <td><?= h($userLeaveDetail->carried_over) ?></td>
+                                <td><?= h($userLeaveDetail->entitled) ?></td>
+                                <td><?= h($userLeaveDetail->balance) ?></td>
+                                <td class="actions">
+                                    <?= $this->Html->link(__('View'), ['action' => 'view', $user->id], ['class' => 'btn btn-xs btn-outline-primary', 'escape' => false]) ?>
+                                    <?= $this->Html->link(__('Edit'), ['action' => 'edit', $user->id], ['class' => 'btn btn-xs btn-outline-primary', 'escape' => false]) ?>
+                                    <?= $this->Form->postLink(__('Delete'), ['action' => 'delete', $user->id], ['class' => 'btn btn-xs btn-outline-danger', 'escape' => false, 'confirm' => __('Are you sure you want to delete # {0}?', $user->id)]) ?>
+                                </td>
+                            </tr>
+                        <?php endif; ?>
+                    <?php endforeach; ?>
                 <?php endforeach; ?>
             </tbody>
         </table>
