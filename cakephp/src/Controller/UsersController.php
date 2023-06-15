@@ -21,18 +21,17 @@ class UsersController extends AppController
     {
         $users = $this->paginate($this->Users);
 
-        // Pass LeaveDetails to templates/Users/index.php
+        // Pass annualLeaveDetails to templates/Users/index.php
         $leaveDetailsController = new \App\Controller\LeaveDetailsController();
         $leaveDetailsController->paginate = [
             'contain' => ['Users'],
         ];
         $leaveDetails = $leaveDetailsController->paginate($leaveDetailsController->LeaveDetails);
 
-        // Store all AL in an array
-        $userLeaveDetails = array();
+        $annualLeaveDetails = array();
         foreach ($leaveDetails as $leaveDetail) {
             if ($leaveDetail->leave_type_id == 1) {
-                array_push($userLeaveDetails, $leaveDetail);  
+                array_push($annualLeaveDetails, $leaveDetail);  
             }
         }
 
@@ -41,7 +40,7 @@ class UsersController extends AppController
         // }  
 
         $this->set(compact('users'));
-        $this->set(compact('userLeaveDetails'));
+        $this->set(compact('annualLeaveDetails'));
     }
 
     /**

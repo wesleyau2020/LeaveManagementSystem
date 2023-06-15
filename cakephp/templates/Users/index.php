@@ -70,15 +70,15 @@ $this->Breadcrumbs->add([
             </thead>
             <tbody>
                 <?php foreach ($users as $user) : ?>
-                    <?php foreach ($userLeaveDetails as $userLeaveDetail) : ?>
-                        <?php if ($userLeaveDetail->user_id == $user->id 
-                        and $userLeaveDetail->year == $inputYear) : ?>
+                    <?php foreach ($annualLeaveDetails as $annualLeaveDetail) : ?>
+                        <?php if ($annualLeaveDetail->user_id == $user->id 
+                        and $annualLeaveDetail->year == $inputYear) : ?>
                             <tr>
                                 <td><?= $this->Number->format($user->id) ?></td>
                                 <td><?= h($user->username) ?></td>
-                                <td><?= h($userLeaveDetail->carried_over) ?></td>
-                                <td><?= h($userLeaveDetail->entitled) ?></td>
-                                <td><?= h($userLeaveDetail->balance) ?></td>
+                                <td><?= h($annualLeaveDetail->carried_over) ?></td>
+                                <td><?= h($annualLeaveDetail->entitled) ?></td>
+                                <td><?= h($annualLeaveDetail->balance) ?></td>
                                 <td class="actions">
                                     <?= $this->Html->link(__('View'), ['action' => 'view', $user->id], ['class' => 'btn btn-xs btn-outline-primary', 'escape' => false]) ?>
                                     <?= $this->Html->link(__('Edit'), ['action' => 'edit', $user->id], ['class' => 'btn btn-xs btn-outline-primary', 'escape' => false]) ?>
