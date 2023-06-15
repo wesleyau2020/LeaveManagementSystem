@@ -31,7 +31,8 @@ class UsersController extends AppController
         $annualLeaveDetails = array();
         foreach ($leaveDetails as $leaveDetail) {
             if ($leaveDetail->leave_type_id == 1) {
-                array_push($annualLeaveDetails, $leaveDetail);  
+                $k = $leaveDetail->user_id.", ".$leaveDetail->year;
+                $annualLeaveDetails[$k] = $leaveDetail;
             }
         }
 

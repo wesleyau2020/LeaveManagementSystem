@@ -70,23 +70,22 @@ $this->Breadcrumbs->add([
             </thead>
             <tbody>
                 <?php foreach ($users as $user) : ?>
-                    <?php foreach ($annualLeaveDetails as $annualLeaveDetail) : ?>
-                        <?php if ($annualLeaveDetail->user_id == $user->id 
-                        and $annualLeaveDetail->year == $inputYear) : ?>
-                            <tr>
-                                <td><?= $this->Number->format($user->id) ?></td>
-                                <td><?= h($user->username) ?></td>
-                                <td><?= h($annualLeaveDetail->carried_over) ?></td>
-                                <td><?= h($annualLeaveDetail->entitled) ?></td>
-                                <td><?= h($annualLeaveDetail->balance) ?></td>
-                                <td class="actions">
-                                    <?= $this->Html->link(__('View'), ['action' => 'view', $user->id], ['class' => 'btn btn-xs btn-outline-primary', 'escape' => false]) ?>
-                                    <?= $this->Html->link(__('Edit'), ['action' => 'edit', $user->id], ['class' => 'btn btn-xs btn-outline-primary', 'escape' => false]) ?>
-                                    <?= $this->Form->postLink(__('Delete'), ['action' => 'delete', $user->id], ['class' => 'btn btn-xs btn-outline-danger', 'escape' => false, 'confirm' => __('Are you sure you want to delete # {0}?', $user->id)]) ?>
-                                </td>
-                            </tr>
-                        <?php endif; ?>
-                    <?php endforeach; ?>
+                    <?php 
+                        $k = $user->id.", ".$inputYear;
+                        $userALDetail = $annualLeaveDetails[$k];
+                    ?>
+                    <tr>
+                        <td><?= $this->Number->format($user->id) ?></td>
+                        <td><?= h($user->username) ?></td>
+                        <td><?= h($userALDetail->carried_over) ?></td>
+                        <td><?= h($userALDetail->entitled) ?></td>
+                        <td><?= h($userALDetail->balance) ?></td>
+                        <td class="actions">
+                            <?= $this->Html->link(__('View'), ['action' => 'view', $user->id], ['class' => 'btn btn-xs btn-outline-primary', 'escape' => false]) ?>
+                            <?= $this->Html->link(__('Edit'), ['action' => 'edit', $user->id], ['class' => 'btn btn-xs btn-outline-primary', 'escape' => false]) ?>
+                            <?= $this->Form->postLink(__('Delete'), ['action' => 'delete', $user->id], ['class' => 'btn btn-xs btn-outline-danger', 'escape' => false, 'confirm' => __('Are you sure you want to delete # {0}?', $user->id)]) ?>
+                        </td>
+                    </tr>
                 <?php endforeach; ?>
             </tbody>
         </table>
