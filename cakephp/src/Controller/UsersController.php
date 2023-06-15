@@ -20,7 +20,7 @@ class UsersController extends AppController
     public function index()
     {
         // Authorization check
-        $this->checkAuthorization();
+        $this->checkAuthorization(null);
 
         $users = $this->paginate($this->Users);
 
@@ -57,7 +57,7 @@ class UsersController extends AppController
     public function view($id = null)
     {
         // Authorization check
-        $this->checkAuthorization();
+        $this->checkAuthorization($id);
 
         $user = $this->Users->get($id, [
             'contain' => ['LeaveDetails', 'LeaveRequests'],
@@ -84,7 +84,7 @@ class UsersController extends AppController
     public function add()
     {
         // Authorization check
-        $this->checkAuthorization();
+        $this->checkAuthorization(null);
         // $this->Authorization->skipAuthorization(); // skip if you need to add admins
 
         $user = $this->Users->newEmptyEntity();
@@ -136,7 +136,7 @@ class UsersController extends AppController
     public function edit($id = null)
     {
         // Authorization check
-        $this->checkAuthorization();
+        $this->checkAuthorization($id);
         
         $user = $this->Users->get($id, [
             'contain' => [],
@@ -164,7 +164,7 @@ class UsersController extends AppController
     public function delete($id = null)
     {
         // Authorization check
-        $this->checkAuthorization();
+        $this->checkAuthorization($id);
 
         $this->request->allowMethod(['post', 'delete']);
         $user = $this->Users->get($id);
@@ -190,8 +190,9 @@ class UsersController extends AppController
         $this->Authorization->skipAuthorization();
         $this->request->allowMethod(['get', 'post']);
         $result = $this->Authentication->getResult();
+        
         // regardless of POST or GET, redirect if user is logged in
-        $id  = $result->getData()->id??0;
+        $id = $result->getData()->id??0;
         $is_admin = $result->getData()->is_admin??false;
         if ($result && $result->isValid()) {
             if ($is_admin == true) {
@@ -200,7 +201,9 @@ class UsersController extends AppController
                     'controller' => 'Users',
                     'action' => 'index'
                 ]);
-            } else {
+            } 
+            
+            else {
                 // redirect to /Users/view/{$id} after login success
                 $redirect = $this->request->getQuery('redirect', [
                     'controller' => 'Users',
@@ -208,6 +211,7 @@ class UsersController extends AppController
                     $id
                 ]);
             }
+
             return $this->redirect($redirect);
         }
         // display error if user submitted and authentication failed
@@ -227,21 +231,20 @@ class UsersController extends AppController
         }
     }
 
-    private function checkAuthorization() {
+    private function checkAuthorization(String $resourceID) {
         $result = $this->Authentication->getResult();
-        $id  = $result->getData()->id??0;
-        $user = $this->Users->get($id, [
-            'contain' => [],
-        ]);
+        $userID  = $result->getData()->id;
+        $user = $this->Users->get($userID);
+        $resourceID = $resourceID??$userID;
 
-        if (!$this->Authorization->can($user)) {
+        if (!$this->Authorization->can($user) || $resourceID != $userID) {
             $this->Flash->error("You don't have permission.");
         
             throw new \Cake\Http\Exception\RedirectException(
                 \Cake\Routing\Router::url([
                     'controller' => 'Users',
                     'action' => 'view',
-                    $id
+                    $userID
                 ])
             );
         }
