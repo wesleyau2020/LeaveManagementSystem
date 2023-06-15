@@ -19,13 +19,10 @@ class UsersController extends AppController
      */
     public function index()
     {
-        $users = $this->paginate($this->Users);
-
         // Authorization check
-        $result = $this->Authentication->getResult();
-        $id = $result->getData()->id??0;
-        $user = $this->Users->get($id);
-        $this->Authorization->authorize($user);
+        $this->checkAuthorization();
+
+        $users = $this->paginate($this->Users);
 
         // Pass annualLeaveDetails to templates/Users/index.php
         $leaveDetailsController = new \App\Controller\LeaveDetailsController();
@@ -59,10 +56,12 @@ class UsersController extends AppController
      */
     public function view($id = null)
     {
+        // Authorization check
+        $this->checkAuthorization();
+
         $user = $this->Users->get($id, [
             'contain' => ['LeaveDetails', 'LeaveRequests'],
         ]);
-        $this->Authorization->authorize($user);
 
         // Pass leaveTypeNames to templates/Users/view.php
         $leaveTypeController = new \App\Controller\LeaveTypeController();
@@ -84,9 +83,12 @@ class UsersController extends AppController
      */
     public function add()
     {
+        // Authorization check
+        $this->checkAuthorization();
         // $this->Authorization->skipAuthorization(); // skip if you need to add admins
+
         $user = $this->Users->newEmptyEntity();
-        $this->Authorization->authorize($user);
+
         if ($this->request->is('post')) {
             $user = $this->Users->patchEntity($user, $this->request->getData());
             $result = $this->Users->save($user);
@@ -133,10 +135,12 @@ class UsersController extends AppController
      */
     public function edit($id = null)
     {
+        // Authorization check
+        $this->checkAuthorization();
+        
         $user = $this->Users->get($id, [
             'contain' => [],
         ]);
-        $this->Authorization->authorize($user);
 
         if ($this->request->is(['patch', 'post', 'put'])) {
             $user = $this->Users->patchEntity($user, $this->request->getData());
@@ -159,9 +163,11 @@ class UsersController extends AppController
      */
     public function delete($id = null)
     {
+        // Authorization check
+        $this->checkAuthorization();
+
         $this->request->allowMethod(['post', 'delete']);
         $user = $this->Users->get($id);
-        $this->Authorization->authorize($user);
         if ($this->Users->delete($user)) {
             $this->Flash->success(__('The user has been deleted.'));
         } else {
@@ -218,6 +224,26 @@ class UsersController extends AppController
         if ($result && $result->isValid()) {
             $this->Authentication->logout();
             return $this->redirect(['controller' => 'Users', 'action' => 'login']);
+        }
+    }
+
+    private function checkAuthorization() {
+        $result = $this->Authentication->getResult();
+        $id  = $result->getData()->id??0;
+        $user = $this->Users->get($id, [
+            'contain' => [],
+        ]);
+
+        if (!$this->Authorization->can($user)) {
+            $this->Flash->error("You don't have permission.");
+        
+            throw new \Cake\Http\Exception\RedirectException(
+                \Cake\Routing\Router::url([
+                    'controller' => 'Users',
+                    'action' => 'view',
+                    $id
+                ])
+            );
         }
     }
 }
