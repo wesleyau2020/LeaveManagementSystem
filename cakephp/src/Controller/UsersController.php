@@ -21,6 +21,12 @@ class UsersController extends AppController
     {
         $users = $this->paginate($this->Users);
 
+        // Authorization check
+        $result = $this->Authentication->getResult();
+        $id = $result->getData()->id??0;
+        $user = $this->Users->get($id);
+        $this->Authorization->authorize($user);
+
         // Pass annualLeaveDetails to templates/Users/index.php
         $leaveDetailsController = new \App\Controller\LeaveDetailsController();
         $leaveDetailsController->paginate = [
@@ -56,6 +62,7 @@ class UsersController extends AppController
         $user = $this->Users->get($id, [
             'contain' => ['LeaveDetails', 'LeaveRequests'],
         ]);
+        $this->Authorization->authorize($user);
 
         // Pass leaveTypeNames to templates/Users/view.php
         $leaveTypeController = new \App\Controller\LeaveTypeController();
@@ -77,7 +84,9 @@ class UsersController extends AppController
      */
     public function add()
     {
+        // $this->Authorization->skipAuthorization(); // skip if you need to add admins
         $user = $this->Users->newEmptyEntity();
+        $this->Authorization->authorize($user);
         if ($this->request->is('post')) {
             $user = $this->Users->patchEntity($user, $this->request->getData());
             $result = $this->Users->save($user);
@@ -127,6 +136,8 @@ class UsersController extends AppController
         $user = $this->Users->get($id, [
             'contain' => [],
         ]);
+        $this->Authorization->authorize($user);
+
         if ($this->request->is(['patch', 'post', 'put'])) {
             $user = $this->Users->patchEntity($user, $this->request->getData());
             if ($this->Users->save($user)) {
@@ -150,6 +161,7 @@ class UsersController extends AppController
     {
         $this->request->allowMethod(['post', 'delete']);
         $user = $this->Users->get($id);
+        $this->Authorization->authorize($user);
         if ($this->Users->delete($user)) {
             $this->Flash->success(__('The user has been deleted.'));
         } else {
@@ -169,6 +181,7 @@ class UsersController extends AppController
 
     public function login()
     {
+        $this->Authorization->skipAuthorization();
         $this->request->allowMethod(['get', 'post']);
         $result = $this->Authentication->getResult();
         // regardless of POST or GET, redirect if user is logged in
@@ -191,6 +204,7 @@ class UsersController extends AppController
 
     public function logout()
     {
+        $this->Authorization->skipAuthorization();
         $result = $this->Authentication->getResult();
         // regardless of POST or GET, redirect if user is logged in
         if ($result && $result->isValid()) {
