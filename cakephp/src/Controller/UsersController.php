@@ -262,8 +262,8 @@ class UsersController extends AppController
     // At the start of a new year, create new leave details
     public function update() {
         $this->Authorization->skipAuthorization();
-        if (FrozenTime::now()->month === 6) { // for testing, set to current month
-            $prevYear = FrozenTime::now()->year; // for testing, set to current year 
+        if (FrozenTime::now()->month === 1) { // for testing, set to current month
+            $prevYear = FrozenTime::now()->year - 1; // for testing, set to current year 
 
             // get latest $latestLeaveDetail
             $leaveDetailsController = new \App\Controller\LeaveDetailsController();

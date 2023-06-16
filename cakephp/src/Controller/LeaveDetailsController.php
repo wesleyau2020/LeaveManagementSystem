@@ -114,25 +114,27 @@ class LeaveDetailsController extends AppController
         return $this->redirect(['action' => 'index']);
     }
 
-    // Update leave balance every month (in current month)
+    // Update leave balance every month (in current year)
     public function update() {
         $this->Authorization->skipAuthorization();
         $currYear = FrozenTime::now()->year;
 
-        $entries = $this->LeaveDetails->find()->count();
-        for ($id = 1; $id < $entries + 1; $id++) {
-            try {
-                $leaveDetail = $this->LeaveDetails->get($id);
-            } catch (\Exception $e) {
-                continue;
-            }
+        $this->paginate = [
+            'contain' => ['Users'],
+        ];
+        $leaveDetails = $this->paginate($this->LeaveDetails);
+        $usersController = new \App\Controller\UsersController();
 
-            if ($leaveDetail->year === $currYear) {
+        foreach ($leaveDetails as $leaveDetail) {
+            if ($leaveDetail->year == $currYear && $leaveDetail->leave_type_id === 1) {
                 // Update $leaveBalance
+                $user = $usersController->Users->get($leaveDetail->user_id);
                 $monthsWorked = FrozenTime::now()->month - $user->start_date->month + 1;
-                $leaveBalance = $monthsWorked * 1.5 + $leaveDetail->carried_over; 
+                $leaveBalance = min($monthsWorked * 1.5 + $leaveDetail->carried_over, $leaveDetail->entitled); 
                 $leaveBalance = ceil($leaveBalance * 2) / 2; // round up to the nearest 0.5
                 $leaveDetail->balance = $leaveBalance;
+                // debug($leaveDetail);
+                $this->LeaveDetails->save($leaveDetail);
             }
         }
         $this->Flash->success(__('All leave balances have been updated for current month.'));
