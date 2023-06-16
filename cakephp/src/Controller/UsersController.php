@@ -20,7 +20,7 @@ class UsersController extends AppController
     public function index()
     {
         // Authorization check
-        $this->checkAuthorization(null);
+        $this->checkAdminAuthorization();
 
         $users = $this->paginate($this->Users);
 
@@ -57,7 +57,7 @@ class UsersController extends AppController
     public function view($id = null)
     {
         // Authorization check
-        $this->checkAuthorization($id);
+        $this->checkAdminAuthorization();
 
         $user = $this->Users->get($id, [
             'contain' => ['LeaveDetails', 'LeaveRequests'],
@@ -84,7 +84,7 @@ class UsersController extends AppController
     public function add()
     {
         // Authorization check
-        $this->checkAuthorization(null);
+        $this->checkAdminAuthorization();
         // $this->Authorization->skipAuthorization(); // skip if you need to add admins
 
         $user = $this->Users->newEmptyEntity();
@@ -136,7 +136,8 @@ class UsersController extends AppController
     public function edit($id = null)
     {
         // Authorization check
-        $this->checkAuthorization($id);
+        $this->checkAdminAuthorization();
+        $this->checkResourceAccessAuth($id);
         
         $user = $this->Users->get($id, [
             'contain' => [],
@@ -164,7 +165,7 @@ class UsersController extends AppController
     public function delete($id = null)
     {
         // Authorization check
-        $this->checkAuthorization($id);
+        $this->checkAdminAuthorization();
 
         $this->request->allowMethod(['post', 'delete']);
         $user = $this->Users->get($id);
@@ -231,13 +232,29 @@ class UsersController extends AppController
         }
     }
 
-    private function checkAuthorization(String $resourceID) {
+    private function checkAdminAuthorization() {
         $result = $this->Authentication->getResult();
         $userID  = $result->getData()->id;
         $user = $this->Users->get($userID);
-        $resourceID = $resourceID??$userID;
 
-        if (!$this->Authorization->can($user) || $userID != $resourceID) {
+        if (!$this->Authorization->can($user)) {
+            $this->Flash->error("You don't have permission.");
+        
+            throw new \Cake\Http\Exception\RedirectException(
+                \Cake\Routing\Router::url([
+                    'controller' => 'Users',
+                    'action' => 'view',
+                    $userID
+                ])
+            );
+        }
+    }
+
+    private function checkResourceAccessAuth(String $resourceID) {
+        $result = $this->Authentication->getResult();
+        $userID  = $result->getData()->id;
+
+        if ($resourceID != $userID) {
             $this->Flash->error("You don't have permission.");
         
             throw new \Cake\Http\Exception\RedirectException(

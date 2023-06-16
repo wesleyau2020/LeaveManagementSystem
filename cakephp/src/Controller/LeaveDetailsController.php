@@ -18,6 +18,7 @@ class LeaveDetailsController extends AppController
      */
     public function index()
     {
+        $this->Authorization->skipAuthorization();
         $this->paginate = [
             'contain' => ['Users'],
         ];
@@ -35,6 +36,7 @@ class LeaveDetailsController extends AppController
      */
     public function view($id = null)
     {
+        $this->Authorization->skipAuthorization();
         $leaveDetail = $this->LeaveDetails->get($id, [
             'contain' => ['Users'],
         ]);
@@ -49,6 +51,7 @@ class LeaveDetailsController extends AppController
      */
     public function add()
     {
+        $this->Authorization->skipAuthorization();
         $leaveDetail = $this->LeaveDetails->newEmptyEntity();
         if ($this->request->is('post')) {
             $leaveDetail = $this->LeaveDetails->patchEntity($leaveDetail, $this->request->getData());
@@ -72,6 +75,7 @@ class LeaveDetailsController extends AppController
      */
     public function edit($id = null)
     {
+        $this->Authorization->skipAuthorization();
         $leaveDetail = $this->LeaveDetails->get($id, [
             'contain' => [],
         ]);
@@ -97,6 +101,7 @@ class LeaveDetailsController extends AppController
      */
     public function delete($id = null)
     {
+        $this->Authorization->skipAuthorization();
         $this->request->allowMethod(['post', 'delete']);
         $leaveDetail = $this->LeaveDetails->get($id);
         if ($this->LeaveDetails->delete($leaveDetail)) {
@@ -106,5 +111,12 @@ class LeaveDetailsController extends AppController
         }
 
         return $this->redirect(['action' => 'index']);
+    }
+
+    // For all leave details in current year, update leave balance every month
+    // At the start of a new year, add carry_over to the first month of the new year
+    public function update() {
+        $this->Authorization->skipAuthorization();
+        $leaveDetail->year = FrozenTime::now()->year;
     }
 }
