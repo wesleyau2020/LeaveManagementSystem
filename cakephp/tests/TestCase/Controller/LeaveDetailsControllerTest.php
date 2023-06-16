@@ -80,4 +80,15 @@ class LeaveDetailsControllerTest extends TestCase
     {
         $this->markTestIncomplete('Not implemented yet.');
     }
+
+    /**
+     * Test update method
+     *
+     * @return void
+     * @uses \App\Controller\LeaveDetailsController::update()
+     */
+    public function testUpdate(): void
+    {
+        $this->markTestIncomplete('Not implemented yet.');
+    }
 }

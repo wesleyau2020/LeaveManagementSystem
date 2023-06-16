@@ -68,32 +68,26 @@ class LeaveDetailsTable extends Table
 
         $validator
             ->scalar('year')
-            ->requirePresence('year', 'create')
             ->notEmptyString('year');
 
         $validator
             ->numeric('carried_over')
-            ->requirePresence('carried_over', 'create')
             ->notEmptyString('carried_over');
 
         $validator
             ->numeric('max_carry_over')
-            ->requirePresence('max_carry_over', 'create')
             ->notEmptyString('max_carry_over');
 
         $validator
             ->numeric('entitled')
-            ->requirePresence('entitled', 'create')
             ->notEmptyString('entitled');
 
         $validator
             ->numeric('balance')
-            ->requirePresence('balance', 'create')
             ->notEmptyString('balance');
 
         $validator
             ->numeric('earned')
-            ->requirePresence('earned', 'create')
             ->notEmptyString('earned');
 
         return $validator;
