@@ -128,14 +128,12 @@ class LeaveDetailsController extends AppController
             }
 
             if ($leaveDetail->year === $currYear) {
-                // Calculate $leaveBalance
+                // Calculate & update $leaveBalance
                 $monthsWorked = FrozenTime::now()->month - $user->start_date->month + 1;
                 $leaveBalance = $monthsWorked * 1.5 + $leaveDetail->carried_over; 
                 $leaveBalance = ceil($leaveBalance * 2) / 2; // round up to the nearest 0.5
-                // Update $leaveDetail->balance
                 $leaveDetail->balance = $leaveBalance;
             }
-            // debug($leaveDetail);
         }
         return $this->redirect(['action' => 'index']);
     }

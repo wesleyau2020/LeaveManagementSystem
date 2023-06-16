@@ -100,25 +100,14 @@ class UsersController extends AppController
     
                 // Auto-create leaveDetail for each user
                 $leaveDetailsController = new \App\Controller\LeaveDetailsController();
-                for ($i = 0; $i < 3; $i++) {
-                    $leaveDetail = $leaveDetailsController->LeaveDetails->newEmptyEntity();
-                    $leaveDetail->user_id = $result->id;
-                    $leaveDetail->leave_type_id = $i + 1;
-                    if ($leaveDetail->leave_type_id == 1) {
-                        $leaveDetail->max_carry_over = 7;
-                        $leaveDetail->entitled = $leaveEntitled;
-                        $leaveDetail->balance = $leaveBalance;
-                        $leaveDetail->earned = 1.5;
-                    } else if ($leaveDetail->leave_type_id == 2) {
-                        $leaveDetail->max_carry_over = 0;
-                        $leaveDetail->entitled = 14;
-                        $leaveDetail->balance = 14;
-                        $leaveDetail->earned = 14;
-                    } else if ($leaveDetail->leave_type_id == 3) {
-                        $leaveDetail->max_carry_over = 0;
-                        $leaveDetail->entitled = 60;
-                        $leaveDetail->balance = 60;
-                        $leaveDetail->earned = 60;
+                for ($i = 1; $i < 4; $i++) {
+                    $leaveDetail = null;
+                    if ($i === 1) {
+                        $leaveDetail = $this->createLeaveDetail($result->id, $i, 7, 0, $leaveEntitled, $leaveBalance, 1.5);
+                    } else if ($i === 2) {
+                        $leaveDetail = $this->createLeaveDetail($result->id, $i, 0, 0, 14, 14, 14);
+                    } else if ($i === 3) {
+                        $leaveDetail = $this->createLeaveDetail($result->id, $i, 0, 0, 60, 60, 60);
                     }
                     $leaveDetailsController->LeaveDetails->save($leaveDetail);
                 }
@@ -183,8 +172,8 @@ class UsersController extends AppController
     public function beforeFilter(\Cake\Event\EventInterface $event)
     {
         parent::beforeFilter($event);
-        // Configure the login action to not require authentication, preventing
-        // the infinite redirect loop issue
+        // Configure the login action to not require authentication, 
+        // preventing the infinite redirect loop issue
         $this->Authentication->addUnauthenticatedActions(['login', 'add']);
     }
 
@@ -270,7 +259,7 @@ class UsersController extends AppController
         }
     }
 
-    // At the start of a new year, update new leave details
+    // At the start of a new year, create new leave details
     public function update() {
         $this->Authorization->skipAuthorization();
         if (FrozenTime::now()->month === 1) { // for testing, set to current month
@@ -285,26 +274,14 @@ class UsersController extends AppController
 
                 foreach ($mapUsersPrevYearALBalance as $k => $v) {  
                     // auto-create new leaveDetail for each user
-                    for ($i = 0; $i < 3; $i++) {
-                        $leaveDetail = $leaveDetailsController->LeaveDetails->newEmptyEntity();
-                        $leaveDetail->user_id = $k;
-                        $leaveDetail->leave_type_id = $i + 1;
-                        if ($leaveDetail->leave_type_id === 1) {
-                            $leaveDetail->max_carry_over = 7;
-                            $leaveDetail->carried_over = min($v, $leaveDetail->max_carry_over);
-                            $leaveDetail->entitled = 14;
-                            $leaveDetail->balance = $leaveDetail->carried_over;
-                            $leaveDetail->earned = 14;
-                        } else if ($leaveDetail->leave_type_id == 2) {
-                            $leaveDetail->max_carry_over = 0;
-                            $leaveDetail->entitled = 14;
-                            $leaveDetail->balance = 14;
-                            $leaveDetail->earned = 14;
-                        } else if ($leaveDetail->leave_type_id == 3) {
-                            $leaveDetail->max_carry_over = 0;
-                            $leaveDetail->entitled = 60;
-                            $leaveDetail->balance = 60;
-                            $leaveDetail->earned = 60;
+                    for ($i = 1; $i < 4; $i++) {
+                        $leaveDetail = null;
+                        if ($i === 1) {
+                            $leaveDetail = $this->createLeaveDetail($result->id, $i, 7, min($v, 7), 14, min($v, 7), 1.5);
+                        } else if ($i === 2) {
+                            $leaveDetail = $this->createLeaveDetail($result->id, $i, 0, 0, 14, 14, 14);
+                        } else if ($i === 3) {
+                            $leaveDetail = $this->createLeaveDetail($result->id, $i, 0, 0, 60, 60, 60);
                         }
                         $leaveDetailsController->LeaveDetails->save($leaveDetail);
                     }
@@ -333,5 +310,19 @@ class UsersController extends AppController
             }
         }
         return $mapUsersPrevYearALBalance;
+    }
+
+    // Create new leaveDetail
+    public function createLeaveDetail(int $userID, int $leaveTypeID, int $maxCarryOver, float $carriedOver, float $entited, float $balance, float $earned) {
+        $leaveDetailsController = new \App\Controller\LeaveDetailsController();
+        $leaveDetail = $leaveDetailsController->LeaveDetails->newEmptyEntity();
+        $leaveDetail->user_id = $userID;
+        $leaveDetail->leave_type_id = $leaveTypeID;
+        $leaveDetail->max_carry_over = $maxCarryOver;
+        $leaveDetail->carried_over = $carriedOver;
+        $leaveDetail->entitled = $entited;
+        $leaveDetail->balance = $balance;
+        $leaveDetail->earned = $earned;
+        return $leaveDetail;
     }
 }
