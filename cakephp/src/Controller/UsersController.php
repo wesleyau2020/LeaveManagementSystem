@@ -259,28 +259,41 @@ class UsersController extends AppController
         }
     }
 
-    // At the start of a new year, add leftover balance from last year to this year's balance
-    // Check if month == 1 (Jan), latestLeaveDetail->year == currYear - 1
+    // At the start of a new year, add last year's leftover balance to current year's AL balance,
     public function update() {
         $this->Authorization->skipAuthorization();
-        if (FrozenTime::now()->month === 6) {
-            // $prevYear = FrozenTime::now()->year - 1;
-            $prevYear = FrozenTime::now()->year; // for testing, set to current year
+        if (FrozenTime::now()->month === 1) {
+            $prevYear = FrozenTime::now()->year - 1;
 
             // get latest $latestLeaveDetail
             $leaveDetailsController = new \App\Controller\LeaveDetailsController();
             $latestLeaveDetail = $leaveDetailsController->LeaveDetails->find()->last();
-            debug($latestLeaveDetail);
-            debug($latestLeaveDetail->year);
 
-            if ($latestLeaveDetail->year == $prevYear) {
-                $mapUsersPrevYearALBalance = getUsersPrevYearsALBalance();
-                debug($mapUsersPrevYearALBalance);
+            if ($latestLeaveDetail->year === strval($prevYear)) {
+                $mapUsersPrevYearALBalance = $this->getMapUsersPrevYearsALBalance();
+
+                foreach ($mapUsersPrevYearALBalance as $k => $v) {  
+                    // Auto-create new leaveDetail for each user
+                    for ($i = 0; $i < 3; $i++) {
+                        $leaveDetail = $leaveDetailsController->LeaveDetails->newEmptyEntity();
+                        $leaveDetail->user_id = $k;
+                        $leaveDetail->leave_type_id = $i + 1;
+                        if ($leaveDetail->leave_type_id === 1) {
+                            $leaveDetail->carried_over = min($v, 7);
+                            $leaveDetail->balance = $leaveDetail->carried_over;
+                            debug($leaveDetail);
+                        }
+                        $leaveDetailsController->LeaveDetails->save($leaveDetail);
+                    }
+                }  
             }
         }
+
+        $userID = $this->Authentication->getResult()->getData()->id;
+        return $this->redirect(['controller' => 'Users', 'action' => 'view', $userID]);
     }
 
-    public function getUsersPrevYearsALBalance() {
+    public function getMapUsersPrevYearsALBalance() {
         $leaveDetailsController = new \App\Controller\LeaveDetailsController();
         $leaveDetailsController->paginate = [
             'contain' => ['Users'],
