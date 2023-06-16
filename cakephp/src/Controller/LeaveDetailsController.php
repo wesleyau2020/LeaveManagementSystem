@@ -114,7 +114,7 @@ class LeaveDetailsController extends AppController
         return $this->redirect(['action' => 'index']);
     }
 
-    // For all leave details in current year, update leave balance every month
+    // Update leave balance every month (in current month)
     public function update() {
         $this->Authorization->skipAuthorization();
         $currYear = FrozenTime::now()->year;

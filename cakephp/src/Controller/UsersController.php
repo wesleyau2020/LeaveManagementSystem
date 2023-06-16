@@ -61,10 +61,8 @@ class UsersController extends AppController
             'contain' => ['LeaveDetails', 'LeaveRequests'],
         ]);
 
-        // Pass leaveTypeNames to templates/Users/view.php
         $leaveTypeController = new \App\Controller\LeaveTypeController();
         $leaveTypeNames = array();
-
         for ($i = 0; $i < 3; $i++) {
             $LeaveTypeName = $leaveTypeController->LeaveType->get($i + 1)->name;
             array_push($leaveTypeNames, $LeaveTypeName);
@@ -81,7 +79,8 @@ class UsersController extends AppController
      */
     public function add()
     {
-        $this->checkAdminAuthorization();
+        $this->Authorization->skipAuthorization();
+        // $this->checkAdminAuthorization();
         $user = $this->Users->newEmptyEntity();
 
         if ($this->request->is('post')) {
@@ -106,8 +105,20 @@ class UsersController extends AppController
                     $leaveDetail->user_id = $result->id;
                     $leaveDetail->leave_type_id = $i + 1;
                     if ($leaveDetail->leave_type_id == 1) {
+                        $leaveDetail->max_carry_over = 7;
                         $leaveDetail->entitled = $leaveEntitled;
                         $leaveDetail->balance = $leaveBalance;
+                        $leaveDetail->earned = 1.5;
+                    } else if ($leaveDetail->leave_type_id == 2) {
+                        $leaveDetail->max_carry_over = 0;
+                        $leaveDetail->entitled = 14;
+                        $leaveDetail->balance = 14;
+                        $leaveDetail->earned = 14;
+                    } else if ($leaveDetail->leave_type_id == 3) {
+                        $leaveDetail->max_carry_over = 0;
+                        $leaveDetail->entitled = 60;
+                        $leaveDetail->balance = 60;
+                        $leaveDetail->earned = 60;
                     }
                     $leaveDetailsController->LeaveDetails->save($leaveDetail);
                 }
@@ -259,29 +270,41 @@ class UsersController extends AppController
         }
     }
 
-    // At the start of a new year, add last year's leftover balance to current year's AL balance,
+    // At the start of a new year, update new leave details
     public function update() {
         $this->Authorization->skipAuthorization();
-        if (FrozenTime::now()->month === 1) {
-            $prevYear = FrozenTime::now()->year - 1;
+        if (FrozenTime::now()->month === 1) { // for testing, set to current month
+            $prevYear = FrozenTime::now()->year - 1; // for testing, set to current year 
 
             // get latest $latestLeaveDetail
             $leaveDetailsController = new \App\Controller\LeaveDetailsController();
             $latestLeaveDetail = $leaveDetailsController->LeaveDetails->find()->last();
 
-            if ($latestLeaveDetail->year === strval($prevYear)) {
+            if ($latestLeaveDetail->year == $prevYear) {
                 $mapUsersPrevYearALBalance = $this->getMapUsersPrevYearsALBalance();
 
                 foreach ($mapUsersPrevYearALBalance as $k => $v) {  
-                    // Auto-create new leaveDetail for each user
+                    // auto-create new leaveDetail for each user
                     for ($i = 0; $i < 3; $i++) {
                         $leaveDetail = $leaveDetailsController->LeaveDetails->newEmptyEntity();
                         $leaveDetail->user_id = $k;
                         $leaveDetail->leave_type_id = $i + 1;
                         if ($leaveDetail->leave_type_id === 1) {
-                            $leaveDetail->carried_over = min($v, 7);
+                            $leaveDetail->max_carry_over = 7;
+                            $leaveDetail->carried_over = min($v, $leaveDetail->max_carry_over);
+                            $leaveDetail->entitled = 14;
                             $leaveDetail->balance = $leaveDetail->carried_over;
-                            debug($leaveDetail);
+                            $leaveDetail->earned = 14;
+                        } else if ($leaveDetail->leave_type_id == 2) {
+                            $leaveDetail->max_carry_over = 0;
+                            $leaveDetail->entitled = 14;
+                            $leaveDetail->balance = 14;
+                            $leaveDetail->earned = 14;
+                        } else if ($leaveDetail->leave_type_id == 3) {
+                            $leaveDetail->max_carry_over = 0;
+                            $leaveDetail->entitled = 60;
+                            $leaveDetail->balance = 60;
+                            $leaveDetail->earned = 60;
                         }
                         $leaveDetailsController->LeaveDetails->save($leaveDetail);
                     }
@@ -293,6 +316,8 @@ class UsersController extends AppController
         return $this->redirect(['controller' => 'Users', 'action' => 'view', $userID]);
     }
 
+    // Map user's ID to their previous year AL balance
+    // e.g. ['ID: 1' => 'AL Balance: 7', 'ID: 2' => 'AL Balance: 5']
     public function getMapUsersPrevYearsALBalance() {
         $leaveDetailsController = new \App\Controller\LeaveDetailsController();
         $leaveDetailsController->paginate = [
@@ -301,7 +326,6 @@ class UsersController extends AppController
         $leaveDetails = $leaveDetailsController->paginate($leaveDetailsController->LeaveDetails);
         $mapUsersPrevYearALBalance = array();
         foreach ($leaveDetails as $leaveDetail) {
-            // $prevYear = FrozenTime::now()->year - 1;
             $prevYear = FrozenTime::now()->year; // for testing, set to current year
             if ($leaveDetail->year == $prevYear
             && $leaveDetail->leave_type_id === 1 ) {
