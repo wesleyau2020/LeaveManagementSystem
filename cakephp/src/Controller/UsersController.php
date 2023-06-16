@@ -262,12 +262,13 @@ class UsersController extends AppController
     // At the start of a new year, create new leave details
     public function update() {
         $this->Authorization->skipAuthorization();
-        if (FrozenTime::now()->month === 1) { // for testing, set to current month
-            $prevYear = FrozenTime::now()->year - 1; // for testing, set to current year 
+        if (FrozenTime::now()->month === 6) { // for testing, set to current month
+            $prevYear = FrozenTime::now()->year; // for testing, set to current year 
 
             // get latest $latestLeaveDetail
             $leaveDetailsController = new \App\Controller\LeaveDetailsController();
             $latestLeaveDetail = $leaveDetailsController->LeaveDetails->find()->last();
+            $userID = $this->Authentication->getResult()->getData()->id;
 
             if ($latestLeaveDetail->year == $prevYear) {
                 $mapUsersPrevYearALBalance = $this->getMapUsersPrevYearsALBalance();
@@ -277,11 +278,11 @@ class UsersController extends AppController
                     for ($i = 1; $i < 4; $i++) {
                         $leaveDetail = null;
                         if ($i === 1) {
-                            $leaveDetail = $this->createLeaveDetail($result->id, $i, 7, min($v, 7), 14, min($v, 7), 1.5);
+                            $leaveDetail = $this->createLeaveDetail($userID, $i, 7, min($v, 7), 14, min($v, 7), 1.5);
                         } else if ($i === 2) {
-                            $leaveDetail = $this->createLeaveDetail($result->id, $i, 0, 0, 14, 14, 14);
+                            $leaveDetail = $this->createLeaveDetail($userID, $i, 0, 0, 14, 14, 14);
                         } else if ($i === 3) {
-                            $leaveDetail = $this->createLeaveDetail($result->id, $i, 0, 0, 60, 60, 60);
+                            $leaveDetail = $this->createLeaveDetail($userID, $i, 0, 0, 60, 60, 60);
                         }
                         $leaveDetailsController->LeaveDetails->save($leaveDetail);
                     }
@@ -290,6 +291,7 @@ class UsersController extends AppController
         }
 
         $userID = $this->Authentication->getResult()->getData()->id;
+        $this->Flash->success(__('New leave balances have been created for current year.'));
         return $this->redirect(['controller' => 'Users', 'action' => 'view', $userID]);
     }
 
