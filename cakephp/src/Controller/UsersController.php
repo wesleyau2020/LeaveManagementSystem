@@ -2,7 +2,7 @@
 declare(strict_types=1);
 
 namespace App\Controller;
-use Cake\I18n\FrozenTime;
+// use Cake\I18n\FrozenTime;
 
 /**
  * Users Controller
@@ -19,9 +19,7 @@ class UsersController extends AppController
      */
     public function index()
     {
-        // Authorization check
         $this->checkAdminAuthorization();
-
         $users = $this->paginate($this->Users);
 
         // Pass annualLeaveDetails to templates/Users/index.php
@@ -56,8 +54,8 @@ class UsersController extends AppController
      */
     public function view($id = null)
     {
-        // Authorization check
         $this->checkAdminAuthorization();
+        $this->checkResourceAccessAuth($id);
 
         $user = $this->Users->get($id, [
             'contain' => ['LeaveDetails', 'LeaveRequests'],
@@ -83,10 +81,7 @@ class UsersController extends AppController
      */
     public function add()
     {
-        // Authorization check
         $this->checkAdminAuthorization();
-        // $this->Authorization->skipAuthorization(); // skip if you need to add admins
-
         $user = $this->Users->newEmptyEntity();
 
         if ($this->request->is('post')) {
@@ -102,7 +97,7 @@ class UsersController extends AppController
                 // Calculate $leaveBalance
                 $monthsWorked = FrozenTime::now()->month - $user->start_date->month + 1;
                 $leaveBalance = $monthsWorked * 1.5; 
-                $leaveEntitled = ceil($leaveEntitled * 2) / 2; // round up to the nearest 0.5
+                $leaveBalance = ceil($leaveBalance * 2) / 2; // round up to the nearest 0.5
     
                 // Auto-create leaveDetail for each user
                 $leaveDetailsController = new \App\Controller\LeaveDetailsController();
@@ -110,7 +105,6 @@ class UsersController extends AppController
                     $leaveDetail = $leaveDetailsController->LeaveDetails->newEmptyEntity();
                     $leaveDetail->user_id = $result->id;
                     $leaveDetail->leave_type_id = $i + 1;
-                    // $leaveDetail->year = FrozenTime::now()->year;
                     if ($leaveDetail->leave_type_id == 1) {
                         $leaveDetail->entitled = $leaveEntitled;
                         $leaveDetail->balance = $leaveBalance;
@@ -135,7 +129,6 @@ class UsersController extends AppController
      */
     public function edit($id = null)
     {
-        // Authorization check
         $this->checkAdminAuthorization();
         $this->checkResourceAccessAuth($id);
         
@@ -164,9 +157,7 @@ class UsersController extends AppController
      */
     public function delete($id = null)
     {
-        // Authorization check
         $this->checkAdminAuthorization();
-
         $this->request->allowMethod(['post', 'delete']);
         $user = $this->Users->get($id);
         if ($this->Users->delete($user)) {
@@ -237,16 +228,10 @@ class UsersController extends AppController
         $userID  = $result->getData()->id;
         $user = $this->Users->get($userID);
 
-        if (!$this->Authorization->can($user)) {
-            $this->Flash->error("You don't have permission.");
-        
-            throw new \Cake\Http\Exception\RedirectException(
-                \Cake\Routing\Router::url([
-                    'controller' => 'Users',
-                    'action' => 'view',
-                    $userID
-                ])
-            );
+        try {
+            $this->Authorization->authorize($user);
+        } catch (\Exception $e) {
+            return $this->redirect(['controller' => 'Users', 'action' => 'view', $userID]);
         }
     }
 
@@ -254,6 +239,13 @@ class UsersController extends AppController
         $result = $this->Authentication->getResult();
         $userID  = $result->getData()->id;
 
+        // Admin has all permissions
+        if ($this->Users->get($userID)->is_admin === true) {
+            // debug($this->Users->get($userID)->is_admin);
+            return;
+        }
+
+        // User can only edit his own resources
         if ($resourceID != $userID) {
             $this->Flash->error("You don't have permission.");
         

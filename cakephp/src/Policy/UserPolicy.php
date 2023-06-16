@@ -80,9 +80,10 @@ class UserPolicy
 
     protected function isOwner(IdentityInterface $user, User $resource)
     // Checks if user is owner of the resource
-    // User can view his own leave details
+    // User can view his own details
     // User can edit his own username and password
     {
+        // In this case, the resource is the user himself
         return $resource->id === $user->getIdentifier();
     }
 }
