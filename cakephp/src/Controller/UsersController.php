@@ -237,7 +237,7 @@ class UsersController extends AppController
         $user = $this->Users->get($userID);
         $resourceID = $resourceID??$userID;
 
-        if (!$this->Authorization->can($user) || $resourceID != $userID) {
+        if (!$this->Authorization->can($user) || $userID != $resourceID) {
             $this->Flash->error("You don't have permission.");
         
             throw new \Cake\Http\Exception\RedirectException(
