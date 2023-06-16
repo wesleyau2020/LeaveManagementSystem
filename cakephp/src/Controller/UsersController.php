@@ -2,7 +2,7 @@
 declare(strict_types=1);
 
 namespace App\Controller;
-// use Cake\I18n\FrozenTime;
+use Cake\I18n\FrozenTime;
 
 /**
  * Users Controller
@@ -257,5 +257,44 @@ class UsersController extends AppController
                 ])
             );
         }
+    }
+
+    // At the start of a new year, add leftover balance from last year to this year's balance
+    // Check if month == 1 (Jan), latestLeaveDetail->year == currYear - 1
+    public function update() {
+        $this->Authorization->skipAuthorization();
+        if (FrozenTime::now()->month === 6) {
+            // $prevYear = FrozenTime::now()->year - 1;
+            $prevYear = FrozenTime::now()->year; // for testing, set to current year
+
+            // get latest $latestLeaveDetail
+            $leaveDetailsController = new \App\Controller\LeaveDetailsController();
+            $latestLeaveDetail = $leaveDetailsController->LeaveDetails->find()->last();
+            debug($latestLeaveDetail);
+            debug($latestLeaveDetail->year);
+
+            if ($latestLeaveDetail->year == $prevYear) {
+                $mapUsersPrevYearALBalance = getUsersPrevYearsALBalance();
+                debug($mapUsersPrevYearALBalance);
+            }
+        }
+    }
+
+    public function getUsersPrevYearsALBalance() {
+        $leaveDetailsController = new \App\Controller\LeaveDetailsController();
+        $leaveDetailsController->paginate = [
+            'contain' => ['Users'],
+        ];
+        $leaveDetails = $leaveDetailsController->paginate($leaveDetailsController->LeaveDetails);
+        $mapUsersPrevYearALBalance = array();
+        foreach ($leaveDetails as $leaveDetail) {
+            // $prevYear = FrozenTime::now()->year - 1;
+            $prevYear = FrozenTime::now()->year; // for testing, set to current year
+            if ($leaveDetail->year == $prevYear
+            && $leaveDetail->leave_type_id === 1 ) {
+                $mapUsersPrevYearALBalance[$leaveDetail->user_id] = $leaveDetail->balance;
+            }
+        }
+        return $mapUsersPrevYearALBalance;
     }
 }

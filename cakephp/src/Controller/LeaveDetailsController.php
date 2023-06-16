@@ -115,7 +115,6 @@ class LeaveDetailsController extends AppController
     }
 
     // For all leave details in current year, update leave balance every month
-    // At the start of a new year, add carry_over to leave balance
     public function update() {
         $this->Authorization->skipAuthorization();
         $currYear = FrozenTime::now()->year;
@@ -136,11 +135,8 @@ class LeaveDetailsController extends AppController
                 // Update $leaveDetail->balance
                 $leaveDetail->balance = $leaveBalance;
             }
-
             // debug($leaveDetail);
         }
-
-        // Check if month == 1 (Jan), year == latestLeaveDetail->year + 1
         return $this->redirect(['action' => 'index']);
     }
 }

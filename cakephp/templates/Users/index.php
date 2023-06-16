@@ -66,7 +66,6 @@ $this->Breadcrumbs->add([
                     <th><?= $this->Paginator->sort('Carried Over') ?></th>
                     <th><?= $this->Paginator->sort('Entitled') ?></th>
                     <th><?= $this->Paginator->sort('Balance') ?></th>
-                    <th class="actions"><?= __('Actions') ?></th>
                 </tr>
             </thead>
             <tbody>
