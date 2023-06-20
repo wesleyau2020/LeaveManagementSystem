@@ -123,3 +123,5 @@ $this->Breadcrumbs->add([
         </ul>
     </div>
     <!-- /.card-footer -->
+  </div>
+</div>

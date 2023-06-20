@@ -19,24 +19,15 @@ class LeaveRequestsController extends AppController
     public function index()
     {
         $this->Authorization->skipAuthorization();
+        
         // fetches a paginated set of leaveRequests from DB
         $this->paginate = [
             'contain' => ['Users', 'LeaveType'],
         ];
         $leaveRequests = $this->paginate($this->LeaveRequests);
 
-        // show only user's own requests
-        $result = $this->Authentication->getResult();
-        $id  = $result->getData()->id??0;
-        $userLeaveRequests = [];
-        foreach ($leaveRequests as $leaveRequest) {
-            if ($leaveRequest->user_id === $id) {
-                array_push($userLeaveRequests, $leaveRequest);
-            }
-        }
-
         // pass to template
-        $this->set(compact('userLeaveRequests')); 
+        $this->set(compact('leaveRequests')); 
     }
 
     /**

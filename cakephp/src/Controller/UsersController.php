@@ -54,7 +54,6 @@ class UsersController extends AppController
      */
     public function view($id = null)
     {
-        $this->checkAdminAuthorization();
         $this->checkResourceAccessAuth($id);
 
         $user = $this->Users->get($id, [
@@ -79,8 +78,8 @@ class UsersController extends AppController
      */
     public function add()
     {
-        $this->Authorization->skipAuthorization();
-        // $this->checkAdminAuthorization();
+        // $this->Authorization->skipAuthorization(); // uncomment to add Admins
+        $this->checkAdminAuthorization();
         $user = $this->Users->newEmptyEntity();
 
         if ($this->request->is('post')) {
