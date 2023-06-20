@@ -19,9 +19,9 @@ class LeaveTypesController extends AppController
     public function index()
     {
         $this->Authorization->skipAuthorization();
-        $leaveType = $this->paginate($this->LeaveType);
+        $leaveTypes = $this->paginate($this->LeaveTypes);
 
-        $this->set(compact('leaveType'));
+        $this->set(compact('leaveTypes'));
     }
 
     /**
@@ -34,11 +34,11 @@ class LeaveTypesController extends AppController
     public function view($id = null)
     {
         $this->Authorization->skipAuthorization();
-        $leaveType = $this->LeaveType->get($id, [
-            'contain' => ['LeaveType', 'LeaveRequests'],
+        $leaveType = $this->LeaveTypes->get($id, [
+            'contain' => ['LeaveTypes', 'LeaveRequests'],
         ]);
 
-        $this->set(compact('leaveType'));
+        $this->set(compact('leaveTypes'));
     }
 
     /**
@@ -49,7 +49,7 @@ class LeaveTypesController extends AppController
     public function add()
     {
         $this->Authorization->skipAuthorization();
-        $leaveType = $this->LeaveType->newEmptyEntity();
+        $leaveType = $this->LeaveTypes->newEmptyEntity();
         if ($this->request->is('post')) {
             $leaveType = $this->LeaveType->patchEntity($leaveType, $this->request->getData());
             if ($this->LeaveType->save($leaveType)) {
@@ -72,7 +72,7 @@ class LeaveTypesController extends AppController
     public function edit($id = null)
     {
         $this->Authorization->skipAuthorization();
-        $leaveType = $this->LeaveType->get($id, [
+        $leaveType = $this->LeaveTypes->get($id, [
             'contain' => [],
         ]);
         if ($this->request->is(['patch', 'post', 'put'])) {
@@ -98,7 +98,7 @@ class LeaveTypesController extends AppController
     {
         $this->Authorization->skipAuthorization();
         $this->request->allowMethod(['post', 'delete']);
-        $leaveType = $this->LeaveType->get($id);
+        $leaveType = $this->LeaveTypes->get($id);
         if ($this->LeaveType->delete($leaveType)) {
             $this->Flash->success(__('The leave type has been deleted.'));
         } else {
