@@ -60,7 +60,7 @@ class UsersController extends AppController
             'contain' => ['LeaveDetails', 'LeaveRequests'],
         ]);
 
-        $leaveTypeController = new \App\Controller\LeaveTypeController();
+        $leaveTypeController = new \App\Controller\LeaveTypesController();
         $leaveTypeNames = array();
         for ($i = 0; $i < 3; $i++) {
             $LeaveTypeName = $leaveTypeController->LeaveType->get($i + 1)->name;
@@ -325,7 +325,7 @@ class UsersController extends AppController
         $leaveDetail->max_carry_over = $maxCarryOver;
         $leaveDetail->carried_over = $carriedOver;
 
-        $leaveTypeController = new \App\Controller\LeaveTypeController();
+        $leaveTypeController = new \App\Controller\LeaveTypesController();
         $leaveType = $leaveTypeController->LeaveType->get($leaveTypeID);
 
         $leaveDetail->entitled = $leaveType->entitled;

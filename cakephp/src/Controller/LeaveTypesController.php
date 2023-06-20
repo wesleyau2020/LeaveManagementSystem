@@ -9,7 +9,7 @@ namespace App\Controller;
  * @property \App\Model\Table\LeaveTypeTable $LeaveType
  * @method \App\Model\Entity\LeaveType[]|\Cake\Datasource\ResultSetInterface paginate($object = null, array $settings = [])
  */
-class LeaveTypeController extends AppController
+class LeaveTypesController extends AppController
 {
     /**
      * Index method
