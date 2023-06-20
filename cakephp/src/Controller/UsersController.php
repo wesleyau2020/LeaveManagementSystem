@@ -130,7 +130,6 @@ class UsersController extends AppController
      */
     public function edit($id = null)
     {
-        $this->checkAdminAuthorization();
         $this->checkResourceAccessAuth($id);
         
         $user = $this->Users->get($id, [
@@ -330,7 +329,7 @@ class UsersController extends AppController
         $leaveDetail->entitled = $leaveType->entitled;
         $leaveDetail->balance = $leaveType->entitled;
         $leaveDetail->earned = $leaveType->earned;
-        
+
         return $leaveDetail;
     }
 }
