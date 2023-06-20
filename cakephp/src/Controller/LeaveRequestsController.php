@@ -18,6 +18,7 @@ class LeaveRequestsController extends AppController
      */
     public function index()
     {
+        $this->Authorization->skipAuthorization();
         // fetches a paginated set of leaveRequests from DB
         $this->paginate = [
             'contain' => ['Users', 'LeaveType'],
@@ -47,6 +48,7 @@ class LeaveRequestsController extends AppController
      */
     public function view($id = null)
     {
+        $this->Authorization->skipAuthorization();
         $leaveRequest = $this->LeaveRequests->get($id, [
             'contain' => ['Users', 'LeaveType'],
         ]);
@@ -61,6 +63,7 @@ class LeaveRequestsController extends AppController
      */
     public function add()
     {
+        $this->Authorization->skipAuthorization();
         $leaveRequest = $this->LeaveRequests->newEmptyEntity();
         if ($this->request->is('post')) {
             $leaveRequest = $this->LeaveRequests->patchEntity($leaveRequest, $this->request->getData());
@@ -96,6 +99,7 @@ class LeaveRequestsController extends AppController
      */
     public function edit($id = null)
     {
+        $this->Authorization->skipAuthorization();
         $leaveRequest = $this->LeaveRequests->get($id, [
             'contain' => [],
         ]);
@@ -122,6 +126,7 @@ class LeaveRequestsController extends AppController
      */
     public function delete($id = null)
     {
+        $this->Authorization->skipAuthorization();
         $this->request->allowMethod(['post', 'delete']);
         $leaveRequest = $this->LeaveRequests->get($id);
         if ($this->LeaveRequests->delete($leaveRequest)) {

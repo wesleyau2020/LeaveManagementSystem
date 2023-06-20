@@ -18,6 +18,7 @@ class LeaveTypeController extends AppController
      */
     public function index()
     {
+        $this->Authorization->skipAuthorization();
         $leaveType = $this->paginate($this->LeaveType);
 
         $this->set(compact('leaveType'));
@@ -32,6 +33,7 @@ class LeaveTypeController extends AppController
      */
     public function view($id = null)
     {
+        $this->Authorization->skipAuthorization();
         $leaveType = $this->LeaveType->get($id, [
             'contain' => ['LeaveType', 'LeaveRequests'],
         ]);
@@ -46,6 +48,7 @@ class LeaveTypeController extends AppController
      */
     public function add()
     {
+        $this->Authorization->skipAuthorization();
         $leaveType = $this->LeaveType->newEmptyEntity();
         if ($this->request->is('post')) {
             $leaveType = $this->LeaveType->patchEntity($leaveType, $this->request->getData());
@@ -68,6 +71,7 @@ class LeaveTypeController extends AppController
      */
     public function edit($id = null)
     {
+        $this->Authorization->skipAuthorization();
         $leaveType = $this->LeaveType->get($id, [
             'contain' => [],
         ]);
@@ -92,6 +96,7 @@ class LeaveTypeController extends AppController
      */
     public function delete($id = null)
     {
+        $this->Authorization->skipAuthorization();
         $this->request->allowMethod(['post', 'delete']);
         $leaveType = $this->LeaveType->get($id);
         if ($this->LeaveType->delete($leaveType)) {
