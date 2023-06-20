@@ -107,4 +107,26 @@ class WorkdaysController extends AppController
 
         return $this->redirect(['action' => 'index']);
     }
+
+    public function update($id = null)
+    {
+        $this->Authorization->skipAuthorization();
+        $workdays = $this->paginate($this->Workdays);
+
+        $this->set(compact('workdays'));
+
+        $workday = $this->Workdays->get($id, [
+            'contain' => [],
+        ]);
+
+        if ($this->request->is(['patch', 'post', 'put'])) {
+            $workday = $this->Workdays->patchEntity($workday, $this->request->getData());
+            if ($this->Workdays->save($workday)) {
+                $this->Flash->success(__('The workday has been saved.'));
+
+                return $this->redirect(['action' => 'index']);
+            }
+            $this->Flash->error(__('The workday could not be saved. Please, try again.'));
+        }
+    }
 }
