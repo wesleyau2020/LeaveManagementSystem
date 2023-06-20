@@ -11,11 +11,6 @@ use Authorization\IdentityInterface;
  */
 class LeaveRequestsPolicy
 {
-    public function canIndex(IdentityInterface $user, LeaveRequests $leaveRequests)
-    {
-        return $this->isOwner($user, $resource);
-    }
-
     /**
      * Check if $user can add LeaveRequests
      *
@@ -25,7 +20,6 @@ class LeaveRequestsPolicy
      */
     public function canAdd(IdentityInterface $user, LeaveRequests $leaveRequests)
     {
-        return $this->isOwner($user, $resource);
     }
 
     /**
@@ -37,7 +31,6 @@ class LeaveRequestsPolicy
      */
     public function canEdit(IdentityInterface $user, LeaveRequests $leaveRequests)
     {
-        return $this->isOwner($user, $resource);
     }
 
     /**
@@ -49,7 +42,6 @@ class LeaveRequestsPolicy
      */
     public function canDelete(IdentityInterface $user, LeaveRequests $leaveRequests)
     {
-        return $this->isOwner($user, $resource);
     }
 
     /**
@@ -61,16 +53,5 @@ class LeaveRequestsPolicy
      */
     public function canView(IdentityInterface $user, LeaveRequests $leaveRequests)
     {
-        return $this->isOwner($user, $resource);
-    }
-
-    protected function isAdmin(IdentityInterface $user, LeaveRequests $leaveRequests)
-    {
-        return $user->is_admin === true;
-    }
-
-    protected function isOwner(IdentityInterface $user, LeaveRequests $leaveRequests)
-    {
-        return $leaveRequests->id === $user->getIdentifier();
     }
 }
