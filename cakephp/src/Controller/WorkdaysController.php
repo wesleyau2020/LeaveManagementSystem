@@ -85,6 +85,9 @@ class WorkdaysController extends AppController
             $this->Flash->error(__('The workday could not be saved. Please, try again.'));
         }
         $this->set(compact('workday'));
+
+        $workdays = $this->paginate($this->Workdays);
+        $this->set(compact('workdays'));
     }
 
     /**
