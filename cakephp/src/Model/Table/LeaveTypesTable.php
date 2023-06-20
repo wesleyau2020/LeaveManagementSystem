@@ -97,7 +97,7 @@ class LeaveTypesTable extends Table
      */
     public function buildRules(RulesChecker $rules): RulesChecker
     {
-        $rules->add($rules->existsIn('leave_type_id', 'LeaveType'), ['errorField' => 'leave_type_id']);
+        $rules->add($rules->existsIn('leave_type_id', 'LeaveTypes'), ['errorField' => 'leave_type_id']);
 
         return $rules;
     }

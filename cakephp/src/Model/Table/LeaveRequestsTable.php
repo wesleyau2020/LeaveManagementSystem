@@ -12,7 +12,7 @@ use Cake\Validation\Validator;
  * LeaveRequests Model
  *
  * @property \App\Model\Table\UsersTable&\Cake\ORM\Association\BelongsTo $Users
- * @property \App\Model\Table\LeaveTypeTable&\Cake\ORM\Association\BelongsTo $LeaveType
+ * @property \App\Model\Table\LeaveTypesTable&\Cake\ORM\Association\BelongsTo $LeaveType
  *
  * @method \App\Model\Entity\LeaveRequest newEmptyEntity()
  * @method \App\Model\Entity\LeaveRequest newEntity(array $data, array $options = [])
@@ -48,7 +48,7 @@ class LeaveRequestsTable extends Table
             'foreignKey' => 'user_id',
             'joinType' => 'INNER',
         ]);
-        $this->belongsTo('LeaveType', [
+        $this->belongsTo('LeaveTypes', [
             'foreignKey' => 'leave_type_id',
             'joinType' => 'INNER',
         ]);
@@ -119,7 +119,7 @@ class LeaveRequestsTable extends Table
     public function buildRules(RulesChecker $rules): RulesChecker
     {
         $rules->add($rules->existsIn('user_id', 'Users'), ['errorField' => 'user_id']);
-        $rules->add($rules->existsIn('leave_type_id', 'LeaveType'), ['errorField' => 'leave_type_id']);
+        $rules->add($rules->existsIn('leave_type_id', 'LeaveTypes'), ['errorField' => 'leave_type_id']);
 
         return $rules;
     }
