@@ -103,11 +103,13 @@ class UsersController extends AppController
                 for ($i = 1; $i < 4; $i++) {
                     $leaveDetail = null;
                     if ($i === 1) {
-                        $leaveDetail = $this->createLeaveDetail($result->id, $i, 7, 0, $leaveEntitled, $leaveBalance, 1.5);
+                        $leaveDetail = $this->createLeaveDetail($result->id, $i, 7, 0);
+                        $leaveDetail->entitled = $leaveEntitled;
+                        $leaveDetail->balance = $leaveBalance;
                     } else if ($i === 2) {
-                        $leaveDetail = $this->createLeaveDetail($result->id, $i, 0, 0, 14, 14, 14);
+                        $leaveDetail = $this->createLeaveDetail($result->id, $i, 0, 0);
                     } else if ($i === 3) {
-                        $leaveDetail = $this->createLeaveDetail($result->id, $i, 0, 0, 60, 60, 60);
+                        $leaveDetail = $this->createLeaveDetail($result->id, $i, 0, 0);
                     }
                     $leaveDetailsController->LeaveDetails->save($leaveDetail);
                 }
@@ -278,11 +280,12 @@ class UsersController extends AppController
                     for ($i = 1; $i < 4; $i++) {
                         $leaveDetail = null;
                         if ($i === 1) {
-                            $leaveDetail = $this->createLeaveDetail($userID, $i, 7, min($v, 7), 14, min($v, 7), 1.5);
+                            $leaveDetail = $this->createLeaveDetail($userID, $i, 7, min($v, 7));
+                            $leaveDetail->balance = min($v, 7);
                         } else if ($i === 2) {
-                            $leaveDetail = $this->createLeaveDetail($userID, $i, 0, 0, 14, 14, 14);
+                            $leaveDetail = $this->createLeaveDetail($userID, $i, 0, 0);
                         } else if ($i === 3) {
-                            $leaveDetail = $this->createLeaveDetail($userID, $i, 0, 0, 60, 60, 60);
+                            $leaveDetail = $this->createLeaveDetail($userID, $i, 0, 0);
                         }
                         $leaveDetailsController->LeaveDetails->save($leaveDetail);
                     }
@@ -299,15 +302,13 @@ class UsersController extends AppController
     // e.g. ['ID: 1' => 'AL Balance: 7', 'ID: 2' => 'AL Balance: 5']
     public function getMapUsersPrevYearsALBalance() {
         $leaveDetailsController = new \App\Controller\LeaveDetailsController();
-        $leaveDetailsController->paginate = [
-            'contain' => ['Users'],
-        ];
+        $leaveDetailsController->paginate = [];
         $leaveDetails = $leaveDetailsController->paginate($leaveDetailsController->LeaveDetails);
         $mapUsersPrevYearALBalance = array();
         foreach ($leaveDetails as $leaveDetail) {
-            $prevYear = FrozenTime::now()->year; // for testing, set to current year
+            $prevYear = FrozenTime::now()->year - 1; // for testing, set to current year
             if ($leaveDetail->year == $prevYear
-            && $leaveDetail->leave_type_id === 1 ) {
+            && $leaveDetail->leave_type_id === 1) {
                 $mapUsersPrevYearALBalance[$leaveDetail->user_id] = $leaveDetail->balance;
             }
         }
@@ -315,16 +316,20 @@ class UsersController extends AppController
     }
 
     // Create new leaveDetail
-    public function createLeaveDetail(int $userID, int $leaveTypeID, int $maxCarryOver, float $carriedOver, float $entited, float $balance, float $earned) {
+    public function createLeaveDetail(int $userID, int $leaveTypeID, int $maxCarryOver, float $carriedOver) {
         $leaveDetailsController = new \App\Controller\LeaveDetailsController();
         $leaveDetail = $leaveDetailsController->LeaveDetails->newEmptyEntity();
         $leaveDetail->user_id = $userID;
         $leaveDetail->leave_type_id = $leaveTypeID;
         $leaveDetail->max_carry_over = $maxCarryOver;
         $leaveDetail->carried_over = $carriedOver;
-        $leaveDetail->entitled = $entited;
-        $leaveDetail->balance = $balance;
-        $leaveDetail->earned = $earned;
+
+        $leaveTypeController = new \App\Controller\LeaveTypeController();
+        $leaveType = $leaveTypeController->LeaveType->get($leaveTypeID);
+
+        $leaveDetail->entitled = $leaveType->entitled;
+        $leaveDetail->balance = $leaveType->entitled;
+        $leaveDetail->earned = $leaveType->earned;
         return $leaveDetail;
     }
 }
