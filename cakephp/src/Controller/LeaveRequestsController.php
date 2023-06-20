@@ -18,25 +18,15 @@ class LeaveRequestsController extends AppController
      */
     public function index()
     {
-        $this->Authorization->skipAuthorization();
+        $this->checkAuthorization();
         // fetches a paginated set of leaveRequests from DB
         $this->paginate = [
             'contain' => ['Users', 'LeaveType'],
         ];
         $leaveRequests = $this->paginate($this->LeaveRequests);
 
-        // show only user's own requests
-        $result = $this->Authentication->getResult();
-        $id  = $result->getData()->id??0;
-        $userLeaveRequests = [];
-        foreach ($leaveRequests as $leaveRequest) {
-            if ($leaveRequest->user_id === $id) {
-                array_push($userLeaveRequests, $leaveRequest);
-            }
-        }
-
         // pass to template
-        $this->set(compact('userLeaveRequests')); 
+        $this->set(compact('leaveRequests')); 
     }
 
     /**
@@ -48,7 +38,7 @@ class LeaveRequestsController extends AppController
      */
     public function view($id = null)
     {
-        $this->Authorization->skipAuthorization();
+        $this->checkAuthorization();
         $leaveRequest = $this->LeaveRequests->get($id, [
             'contain' => ['Users', 'LeaveType'],
         ]);
@@ -63,7 +53,7 @@ class LeaveRequestsController extends AppController
      */
     public function add()
     {
-        $this->Authorization->skipAuthorization();
+        $this->checkAuthorization();
         $leaveRequest = $this->LeaveRequests->newEmptyEntity();
         if ($this->request->is('post')) {
             $leaveRequest = $this->LeaveRequests->patchEntity($leaveRequest, $this->request->getData());
@@ -89,7 +79,7 @@ class LeaveRequestsController extends AppController
         $leaveType = $this->LeaveRequests->LeaveType->find('list', ['limit' => 200])->all();
         $this->set(compact('leaveRequest', 'users', 'leaveType'));
 
-        // show only user's own requests
+        // Show user's current requests
         $result = $this->Authentication->getResult();
         $userID  = $result->getData()->id??0;
         $userLeaveRequests = [];
@@ -105,7 +95,6 @@ class LeaveRequestsController extends AppController
             }
         }
 
-        // pass to template
         $this->set(compact('userLeaveRequests')); 
     }
 
@@ -118,10 +107,10 @@ class LeaveRequestsController extends AppController
      */
     public function edit($id = null)
     {
-        $this->Authorization->skipAuthorization();
         $leaveRequest = $this->LeaveRequests->get($id, [
             'contain' => [],
         ]);
+        $this->Authorization->authorize($leaveRequest);
         if ($this->request->is(['patch', 'post', 'put'])) {
             $leaveRequest = $this->LeaveRequests->patchEntity($leaveRequest, $this->request->getData());
             if ($this->LeaveRequests->save($leaveRequest)) {
@@ -145,7 +134,7 @@ class LeaveRequestsController extends AppController
      */
     public function delete($id = null)
     {
-        $this->Authorization->skipAuthorization();
+        $this->checkAuthorization();
         $this->request->allowMethod(['post', 'delete']);
         $leaveRequest = $this->LeaveRequests->get($id);
         if ($this->LeaveRequests->delete($leaveRequest)) {
@@ -155,5 +144,18 @@ class LeaveRequestsController extends AppController
         }
 
         return $this->redirect(['action' => 'index']);
+    }
+
+    private function checkAuthorization() {
+        $result = $this->Authentication->getResult();
+        $userID  = $result->getData()->id;
+        $usersController = new \App\Controller\UsersController();
+        $user = $usersController->Users->get($userID);
+
+        try {
+            $this->Authorization->authorize($user);
+        } catch (\Exception $e) {
+            return $this->redirect(['controller' => 'Users', 'action' => 'view', $userID]);
+        }
     }
 }

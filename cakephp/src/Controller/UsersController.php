@@ -54,7 +54,6 @@ class UsersController extends AppController
      */
     public function view($id = null)
     {
-        $this->checkAdminAuthorization();
         $this->checkResourceAccessAuth($id);
 
         $user = $this->Users->get($id, [
@@ -131,9 +130,7 @@ class UsersController extends AppController
      */
     public function edit($id = null)
     {
-        $this->checkAdminAuthorization();
         $this->checkResourceAccessAuth($id);
-        
         $user = $this->Users->get($id, [
             'contain' => [],
         ]);
@@ -243,7 +240,6 @@ class UsersController extends AppController
 
         // Admin has all permissions
         if ($this->Users->get($userID)->is_admin === true) {
-            // debug($this->Users->get($userID)->is_admin);
             return;
         }
 
@@ -328,10 +324,10 @@ class UsersController extends AppController
 
         $leaveTypeController = new \App\Controller\LeaveTypeController();
         $leaveType = $leaveTypeController->LeaveType->get($leaveTypeID);
-
         $leaveDetail->entitled = $leaveType->entitled;
         $leaveDetail->balance = $leaveType->entitled;
         $leaveDetail->earned = $leaveType->earned;
+        
         return $leaveDetail;
     }
 }

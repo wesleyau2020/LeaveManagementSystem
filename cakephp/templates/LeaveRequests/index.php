@@ -34,7 +34,7 @@ $this->Breadcrumbs->add([
             <!-- select year via dropdown menu -->
             <div style="float:left">
                 <?= 
-                    $this->Form->create($userLeaveRequests, [
+                    $this->Form->create($leaveRequests, [
                         'type' => 'post',
                         'valueSources' => ['query', 'data'],
                         'url' => ['action' => 'index/'],
@@ -74,7 +74,7 @@ $this->Breadcrumbs->add([
                 </tr>
             </thead>
             <tbody>
-                <?php foreach ($userLeaveRequests as $leaveRequest) : ?>
+                <?php foreach ($leaveRequests as $leaveRequest) : ?>
                     <?php if ($leaveRequest->year === $input_year): ?>
                     <tr>
                         <td><?= $this->Number->format($leaveRequest->id) ?></td>
