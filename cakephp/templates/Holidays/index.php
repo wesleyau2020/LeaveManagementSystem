@@ -2,14 +2,14 @@
 
 /**
  * @var \App\View\AppView $this
- * @var \App\Model\Entity\LeaveType[]|\Cake\Collection\CollectionInterface $leaveTypes
+ * @var \App\Model\Entity\Holiday[]|\Cake\Collection\CollectionInterface $holidays
  */
 ?>
 <?php
-$this->assign('title', __('Leave Types'));
+$this->assign('title', __('Holidays'));
 $this->Breadcrumbs->add([
     ['title' => 'Home', 'url' => '/'],
-    ['title' => 'List Leave Types'],
+    ['title' => 'List Holidays'],
 ]);
 ?>
 
@@ -23,7 +23,7 @@ $this->Breadcrumbs->add([
                 'label' => false,
                 'class' => 'form-control-sm',
             ]); ?>
-            <?= $this->Html->link(__('New Leave Type'), ['action' => 'add'], ['class' => 'btn btn-primary btn-sm']) ?>
+            <?= $this->Html->link(__('New Holiday'), ['action' => 'add'], ['class' => 'btn btn-primary btn-sm']) ?>
         </div>
     </div>
     <!-- /.card-header -->
@@ -32,29 +32,23 @@ $this->Breadcrumbs->add([
             <thead>
                 <tr>
                     <th><?= $this->Paginator->sort('id') ?></th>
-                    <th><?= $this->Paginator->sort('name') ?></th>
-                    <th><?= $this->Paginator->sort('type') ?></th>
-                    <th><?= $this->Paginator->sort('leave_type_id') ?></th>
-                    <th><?= $this->Paginator->sort('cost') ?></th>
-                    <th><?= $this->Paginator->sort('entitled') ?></th>
-                    <th><?= $this->Paginator->sort('earned') ?></th>
+                    <th><?= $this->Paginator->sort('date') ?></th>
+                    <th><?= $this->Paginator->sort('is_holiday') ?></th>
+                    <th><?= $this->Paginator->sort('description') ?></th>
                     <th class="actions"><?= __('Actions') ?></th>
                 </tr>
             </thead>
             <tbody>
-                <?php foreach ($leaveTypes as $leaveType) : ?>
+                <?php foreach ($holidays as $holiday) : ?>
                     <tr>
-                        <td><?= $this->Number->format($leaveType->id) ?></td>
-                        <td><?= h($leaveType->name) ?></td>
-                        <td><?= h($leaveType->type) ?></td>
-                        <td><?= $this->Number->format($leaveType->leave_type_id) ?></td>
-                        <td><?= $this->Number->format($leaveType->cost) ?></td>
-                        <td><?= $this->Number->format($leaveType->entitled) ?></td>
-                        <td><?= $this->Number->format($leaveType->earned) ?></td>
+                        <td><?= $this->Number->format($holiday->id) ?></td>
+                        <td><?= h($holiday->date) ?></td>
+                        <td><?= ($holiday->is_holiday) ? __('Yes') : __('No') ?></td>
+                        <td><?= h($holiday->description) ?></td>
                         <td class="actions">
-                            <?= $this->Html->link(__('View'), ['action' => 'view', $leaveType->id], ['class' => 'btn btn-xs btn-outline-primary', 'escape' => false]) ?>
-                            <?= $this->Html->link(__('Edit'), ['action' => 'edit', $leaveType->id], ['class' => 'btn btn-xs btn-outline-primary', 'escape' => false]) ?>
-                            <?= $this->Form->postLink(__('Delete'), ['action' => 'delete', $leaveType->id], ['class' => 'btn btn-xs btn-outline-danger', 'escape' => false, 'confirm' => __('Are you sure you want to delete # {0}?', $leaveType->id)]) ?>
+                            <?= $this->Html->link(__('View'), ['action' => 'view', $holiday->id], ['class' => 'btn btn-xs btn-outline-primary', 'escape' => false]) ?>
+                            <?= $this->Html->link(__('Edit'), ['action' => 'edit', $holiday->id], ['class' => 'btn btn-xs btn-outline-primary', 'escape' => false]) ?>
+                            <?= $this->Form->postLink(__('Delete'), ['action' => 'delete', $holiday->id], ['class' => 'btn btn-xs btn-outline-danger', 'escape' => false, 'confirm' => __('Are you sure you want to delete # {0}?', $holiday->id)]) ?>
                         </td>
                     </tr>
                 <?php endforeach; ?>

@@ -13,8 +13,10 @@ use Cake\ORM\Entity;
  * @property string $type
  * @property int|null $leave_type_id
  * @property float $cost
+ * @property float|null $entitled
+ * @property float|null $earned
  *
- * @property \App\Model\Entity\LeaveType[] $leave_type
+ * @property \App\Model\Entity\LeaveType[] $leave_types
  * @property \App\Model\Entity\LeaveRequest[] $leave_requests
  */
 class LeaveType extends Entity
@@ -33,7 +35,9 @@ class LeaveType extends Entity
         'type' => true,
         'leave_type_id' => true,
         'cost' => true,
-        'leave_type' => true,
+        'entitled' => true,
+        'earned' => true,
+        'leave_types' => true,
         'leave_requests' => true,
     ];
 }

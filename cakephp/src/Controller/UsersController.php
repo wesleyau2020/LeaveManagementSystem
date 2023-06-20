@@ -60,10 +60,10 @@ class UsersController extends AppController
             'contain' => ['LeaveDetails', 'LeaveRequests'],
         ]);
 
-        $leaveTypeController = new \App\Controller\LeaveTypesController();
+        $leaveTypesController = new \App\Controller\LeaveTypesController();
         $leaveTypeNames = array();
         for ($i = 0; $i < 3; $i++) {
-            $LeaveTypeName = $leaveTypeController->LeaveType->get($i + 1)->name;
+            $LeaveTypeName = $leaveTypesController->LeaveTypes->get($i + 1)->name;
             array_push($leaveTypeNames, $LeaveTypeName);
         }
 
@@ -78,8 +78,8 @@ class UsersController extends AppController
      */
     public function add()
     {
-        // $this->Authorization->skipAuthorization(); // uncomment to add Admins
-        $this->checkAdminAuthorization();
+        $this->Authorization->skipAuthorization(); // uncomment to add Admins
+        // $this->checkAdminAuthorization();
         $user = $this->Users->newEmptyEntity();
 
         if ($this->request->is('post')) {
@@ -325,12 +325,12 @@ class UsersController extends AppController
         $leaveDetail->max_carry_over = $maxCarryOver;
         $leaveDetail->carried_over = $carriedOver;
 
-        $leaveTypeController = new \App\Controller\LeaveTypesController();
-        $leaveType = $leaveTypeController->LeaveType->get($leaveTypeID);
-
+        $leaveTypesController = new \App\Controller\LeaveTypesController();
+        $leaveType = $leaveTypesController->LeaveTypes->get($leaveTypeID);
         $leaveDetail->entitled = $leaveType->entitled;
         $leaveDetail->balance = $leaveType->entitled;
         $leaveDetail->earned = $leaveType->earned;
+        
         return $leaveDetail;
     }
 }

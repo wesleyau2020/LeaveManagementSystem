@@ -2,28 +2,24 @@
 
 /**
  * @var \App\View\AppView $this
- * @var \App\Model\Entity\LeaveType $leaveType
+ * @var \App\Model\Entity\Workday $workday
  */
 ?>
 <?php
-$this->assign('title', __('Add Leave Type'));
+$this->assign('title', __('Add Workday'));
 $this->Breadcrumbs->add([
     ['title' => 'Home', 'url' => '/'],
-    ['title' => 'List Leave Types', 'url' => ['action' => 'index']],
+    ['title' => 'List Workdays', 'url' => ['action' => 'index']],
     ['title' => 'Add'],
 ]);
 ?>
 
 <div class="card card-primary card-outline">
-  <?= $this->Form->create($leaveType) ?>
+  <?= $this->Form->create($workday) ?>
   <div class="card-body">
     <?php
-      echo $this->Form->control('name');
-      echo $this->Form->control('type');
-      echo $this->Form->control('leave_type_id');
-      echo $this->Form->control('cost');
-      echo $this->Form->control('entitled');
-      echo $this->Form->control('earned');
+      echo $this->Form->control('day_of_week');
+      echo $this->Form->control('is_workday', ['custom' => true]);
     ?>
   </div>
 

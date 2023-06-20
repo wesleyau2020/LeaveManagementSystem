@@ -22,7 +22,7 @@ class LeaveRequestsController extends AppController
         
         // fetches a paginated set of leaveRequests from DB
         $this->paginate = [
-            'contain' => ['Users', 'LeaveType'],
+            'contain' => ['Users', 'LeaveTypes'],
         ];
         $leaveRequests = $this->paginate($this->LeaveRequests);
 
@@ -41,7 +41,7 @@ class LeaveRequestsController extends AppController
     {
         $this->Authorization->skipAuthorization();
         $leaveRequest = $this->LeaveRequests->get($id, [
-            'contain' => ['Users', 'LeaveType'],
+            'contain' => ['Users', 'LeaveTypes'],
         ]);
 
         $this->set(compact('leaveRequest'));
@@ -77,7 +77,7 @@ class LeaveRequestsController extends AppController
             $this->Flash->error(__('The leave request could not be saved. Please, try again.'));
         }
         $users = $this->LeaveRequests->Users->find('list', ['limit' => 200])->all();
-        $leaveType = $this->LeaveRequests->LeaveType->find('list', ['limit' => 200])->all();
+        $leaveType = $this->LeaveRequests->LeaveTypes->find('list', ['limit' => 200])->all();
         $this->set(compact('leaveRequest', 'users', 'leaveType'));
 
         // show only user's own requests
@@ -86,7 +86,7 @@ class LeaveRequestsController extends AppController
         $userLeaveRequests = [];
 
         $this->paginate = [
-            'contain' => ['Users', 'LeaveType'],
+            'contain' => ['Users', 'LeaveTypes'],
         ];
         $leaveRequests = $this->paginate($this->LeaveRequests);
 
@@ -123,7 +123,7 @@ class LeaveRequestsController extends AppController
             $this->Flash->error(__('The leave request could not be saved. Please, try again.'));
         }
         $users = $this->LeaveRequests->Users->find('list', ['limit' => 200])->all();
-        $leaveType = $this->LeaveRequests->LeaveType->find('list', ['limit' => 200])->all();
+        $leaveType = $this->LeaveRequests->LeaveTypes->find('list', ['limit' => 200])->all();
         $this->set(compact('leaveRequest', 'users', 'leaveType'));
     }
 

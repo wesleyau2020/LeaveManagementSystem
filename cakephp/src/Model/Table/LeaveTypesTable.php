@@ -9,11 +9,11 @@ use Cake\ORM\Table;
 use Cake\Validation\Validator;
 
 /**
- * LeaveType Model
+ * LeaveTypes Model
  *
- * @property \App\Model\Table\LeaveTypesTable&\Cake\ORM\Association\BelongsTo $LeaveType
+ * @property \App\Model\Table\LeaveTypesTable&\Cake\ORM\Association\BelongsTo $LeaveTypes
  * @property \App\Model\Table\LeaveRequestsTable&\Cake\ORM\Association\HasMany $LeaveRequests
- * @property \App\Model\Table\LeaveTypesTable&\Cake\ORM\Association\HasMany $LeaveType
+ * @property \App\Model\Table\LeaveTypesTable&\Cake\ORM\Association\HasMany $LeaveTypes
  *
  * @method \App\Model\Entity\LeaveType newEmptyEntity()
  * @method \App\Model\Entity\LeaveType newEntity(array $data, array $options = [])
@@ -46,6 +46,9 @@ class LeaveTypesTable extends Table
         $this->setPrimaryKey('id');
 
         $this->belongsTo('LeaveTypes', [
+            'foreignKey' => 'leave_type_id',
+        ]);
+        $this->hasMany('LeaveDetails', [
             'foreignKey' => 'leave_type_id',
         ]);
         $this->hasMany('LeaveRequests', [
@@ -84,6 +87,14 @@ class LeaveTypesTable extends Table
             ->numeric('cost')
             ->requirePresence('cost', 'create')
             ->notEmptyString('cost');
+
+        $validator
+            ->numeric('entitled')
+            ->allowEmptyString('entitled');
+
+        $validator
+            ->numeric('earned')
+            ->allowEmptyString('earned');
 
         return $validator;
     }

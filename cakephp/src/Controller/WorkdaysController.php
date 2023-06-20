@@ -4,12 +4,12 @@ declare(strict_types=1);
 namespace App\Controller;
 
 /**
- * LeaveTypes Controller
+ * Workdays Controller
  *
- * @property \App\Model\Table\LeaveTypesTable $LeaveTypes
- * @method \App\Model\Entity\LeaveType[]|\Cake\Datasource\ResultSetInterface paginate($object = null, array $settings = [])
+ * @property \App\Model\Table\WorkdaysTable $Workdays
+ * @method \App\Model\Entity\Workday[]|\Cake\Datasource\ResultSetInterface paginate($object = null, array $settings = [])
  */
-class LeaveTypesController extends AppController
+class WorkdaysController extends AppController
 {
     /**
      * Index method
@@ -19,26 +19,26 @@ class LeaveTypesController extends AppController
     public function index()
     {
         $this->Authorization->skipAuthorization();
-        $leaveTypes = $this->paginate($this->LeaveTypes);
+        $workdays = $this->paginate($this->Workdays);
 
-        $this->set(compact('leaveTypes'));
+        $this->set(compact('workdays'));
     }
 
     /**
      * View method
      *
-     * @param string|null $id Leave Type id.
+     * @param string|null $id Workday id.
      * @return \Cake\Http\Response|null|void Renders view
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
     public function view($id = null)
     {
         $this->Authorization->skipAuthorization();
-        $leaveType = $this->LeaveTypes->get($id, [
-            'contain' => ['LeaveTypes', 'LeaveRequests'],
+        $workday = $this->Workdays->get($id, [
+            'contain' => [],
         ]);
 
-        $this->set(compact('leaveType'));
+        $this->set(compact('workday'));
     }
 
     /**
@@ -49,48 +49,48 @@ class LeaveTypesController extends AppController
     public function add()
     {
         $this->Authorization->skipAuthorization();
-        $leaveType = $this->LeaveTypes->newEmptyEntity();
+        $workday = $this->Workdays->newEmptyEntity();
         if ($this->request->is('post')) {
-            $leaveType = $this->LeaveTypes->patchEntity($leaveType, $this->request->getData());
-            if ($this->LeaveTypes->save($leaveType)) {
-                $this->Flash->success(__('The leave type has been saved.'));
+            $workday = $this->Workdays->patchEntity($workday, $this->request->getData());
+            if ($this->Workdays->save($workday)) {
+                $this->Flash->success(__('The workday has been saved.'));
 
                 return $this->redirect(['action' => 'index']);
             }
-            $this->Flash->error(__('The leave type could not be saved. Please, try again.'));
+            $this->Flash->error(__('The workday could not be saved. Please, try again.'));
         }
-        $this->set(compact('leaveType'));
+        $this->set(compact('workday'));
     }
 
     /**
      * Edit method
      *
-     * @param string|null $id Leave Type id.
+     * @param string|null $id Workday id.
      * @return \Cake\Http\Response|null|void Redirects on successful edit, renders view otherwise.
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
     public function edit($id = null)
     {
         $this->Authorization->skipAuthorization();
-        $leaveType = $this->LeaveTypes->get($id, [
+        $workday = $this->Workdays->get($id, [
             'contain' => [],
         ]);
         if ($this->request->is(['patch', 'post', 'put'])) {
-            $leaveType = $this->LeaveTypes->patchEntity($leaveType, $this->request->getData());
-            if ($this->LeaveTypes->save($leaveType)) {
-                $this->Flash->success(__('The leave type has been saved.'));
+            $workday = $this->Workdays->patchEntity($workday, $this->request->getData());
+            if ($this->Workdays->save($workday)) {
+                $this->Flash->success(__('The workday has been saved.'));
 
                 return $this->redirect(['action' => 'index']);
             }
-            $this->Flash->error(__('The leave type could not be saved. Please, try again.'));
+            $this->Flash->error(__('The workday could not be saved. Please, try again.'));
         }
-        $this->set(compact('leaveType'));
+        $this->set(compact('workday'));
     }
 
     /**
      * Delete method
      *
-     * @param string|null $id Leave Type id.
+     * @param string|null $id Workday id.
      * @return \Cake\Http\Response|null|void Redirects to index.
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
@@ -98,11 +98,11 @@ class LeaveTypesController extends AppController
     {
         $this->Authorization->skipAuthorization();
         $this->request->allowMethod(['post', 'delete']);
-        $leaveType = $this->LeaveTypes->get($id);
-        if ($this->LeaveTypes->delete($leaveType)) {
-            $this->Flash->success(__('The leave type has been deleted.'));
+        $workday = $this->Workdays->get($id);
+        if ($this->Workdays->delete($workday)) {
+            $this->Flash->success(__('The workday has been deleted.'));
         } else {
-            $this->Flash->error(__('The leave type could not be deleted. Please, try again.'));
+            $this->Flash->error(__('The workday could not be deleted. Please, try again.'));
         }
 
         return $this->redirect(['action' => 'index']);

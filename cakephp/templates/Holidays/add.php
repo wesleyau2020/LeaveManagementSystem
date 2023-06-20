@@ -2,28 +2,25 @@
 
 /**
  * @var \App\View\AppView $this
- * @var \App\Model\Entity\LeaveType $leaveType
+ * @var \App\Model\Entity\Holiday $holiday
  */
 ?>
 <?php
-$this->assign('title', __('Add Leave Type'));
+$this->assign('title', __('Add Holiday'));
 $this->Breadcrumbs->add([
     ['title' => 'Home', 'url' => '/'],
-    ['title' => 'List Leave Types', 'url' => ['action' => 'index']],
+    ['title' => 'List Holidays', 'url' => ['action' => 'index']],
     ['title' => 'Add'],
 ]);
 ?>
 
 <div class="card card-primary card-outline">
-  <?= $this->Form->create($leaveType) ?>
+  <?= $this->Form->create($holiday) ?>
   <div class="card-body">
     <?php
-      echo $this->Form->control('name');
-      echo $this->Form->control('type');
-      echo $this->Form->control('leave_type_id');
-      echo $this->Form->control('cost');
-      echo $this->Form->control('entitled');
-      echo $this->Form->control('earned');
+      echo $this->Form->control('date');
+      echo $this->Form->control('is_holiday', ['custom' => true]);
+      echo $this->Form->control('description');
     ?>
   </div>
 
