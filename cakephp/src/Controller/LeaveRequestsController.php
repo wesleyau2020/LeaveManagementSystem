@@ -76,7 +76,7 @@ class LeaveRequestsController extends AppController
             // set num_days
             $start = $leaveRequest->start_of_leave;
             $end = $leaveRequest->end_of_leave;
-            $leaveRequest->num_days = $end->diff($start)->format("%a");
+            $leaveRequest->days = $end->diff($start)->format("%a");
 
             if ($this->LeaveRequests->save($leaveRequest)) {
                 $this->Flash->success(__('The leave request has been saved.'));
@@ -88,6 +88,25 @@ class LeaveRequestsController extends AppController
         $users = $this->LeaveRequests->Users->find('list', ['limit' => 200])->all();
         $leaveType = $this->LeaveRequests->LeaveType->find('list', ['limit' => 200])->all();
         $this->set(compact('leaveRequest', 'users', 'leaveType'));
+
+        // show only user's own requests
+        $result = $this->Authentication->getResult();
+        $userID  = $result->getData()->id??0;
+        $userLeaveRequests = [];
+
+        $this->paginate = [
+            'contain' => ['Users', 'LeaveType'],
+        ];
+        $leaveRequests = $this->paginate($this->LeaveRequests);
+
+        foreach ($leaveRequests as $leaveRequest) {
+            if ($leaveRequest->user_id === $userID) {
+                array_push($userLeaveRequests, $leaveRequest);
+            }
+        }
+
+        // pass to template
+        $this->set(compact('userLeaveRequests')); 
     }
 
     /**

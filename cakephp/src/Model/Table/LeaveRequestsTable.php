@@ -83,7 +83,7 @@ class LeaveRequestsTable extends Table
         $validator
             ->integer('days')
             ->requirePresence('days', 'create')
-            ->notEmptyString('days');
+            ->allowEmptyString('status');
 
         $validator
             ->scalar('year')

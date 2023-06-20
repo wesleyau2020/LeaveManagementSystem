@@ -302,7 +302,9 @@ class UsersController extends AppController
     // e.g. ['ID: 1' => 'AL Balance: 7', 'ID: 2' => 'AL Balance: 5']
     public function getMapUsersPrevYearsALBalance() {
         $leaveDetailsController = new \App\Controller\LeaveDetailsController();
-        $leaveDetailsController->paginate = [];
+        $leaveDetailsController->paginate = [
+            'contain' => ['Users'],
+        ];
         $leaveDetails = $leaveDetailsController->paginate($leaveDetailsController->LeaveDetails);
         $mapUsersPrevYearALBalance = array();
         foreach ($leaveDetails as $leaveDetail) {
