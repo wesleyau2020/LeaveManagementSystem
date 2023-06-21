@@ -33,12 +33,12 @@ $this->Breadcrumbs->add([
                 </tr>
             </thead>
             <tbody>
+                <?= $this->Form->create($workday) ?>
                 <?php foreach ($workdays as $workday) : ?>
                     <tr>
                         <td><?= $this->Number->format($workday->id) ?></td>
                         <td><?= h($workday->day_of_week) ?></td>
                         <td>
-                            <?= $this->Form->create($workday) ?>
                             <?= $this->Form->checkbox('is_workday'); ?>
                         </td>
                     </tr>

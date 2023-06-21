@@ -268,7 +268,6 @@ class UsersController extends AppController
             // get latest $latestLeaveDetail
             $leaveDetailsController = new \App\Controller\LeaveDetailsController();
             $latestLeaveDetail = $leaveDetailsController->LeaveDetails->find()->last();
-            $userID = $this->Authentication->getResult()->getData()->id;
 
             if ($latestLeaveDetail->year == $prevYear) {
                 $mapUsersPrevYearALBalance = $this->getMapUsersPrevYearsALBalance();
@@ -278,12 +277,12 @@ class UsersController extends AppController
                     for ($i = 1; $i < 4; $i++) {
                         $leaveDetail = null;
                         if ($i === 1) {
-                            $leaveDetail = $this->createLeaveDetail($userID, $i, 7, min($v, 7));
+                            $leaveDetail = $this->createLeaveDetail($k, $i, 7, min($v, 7));
                             $leaveDetail->balance = min($v, 7);
                         } else if ($i === 2) {
-                            $leaveDetail = $this->createLeaveDetail($userID, $i, 0, 0);
+                            $leaveDetail = $this->createLeaveDetail($k, $i, 0, 0);
                         } else if ($i === 3) {
-                            $leaveDetail = $this->createLeaveDetail($userID, $i, 0, 0);
+                            $leaveDetail = $this->createLeaveDetail($k, $i, 0, 0);
                         }
                         $leaveDetailsController->LeaveDetails->save($leaveDetail);
                     }
