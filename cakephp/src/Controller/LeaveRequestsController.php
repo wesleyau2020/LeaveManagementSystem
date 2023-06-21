@@ -57,7 +57,8 @@ class LeaveRequestsController extends AppController
         $this->Authorization->skipAuthorization();
         $leaveRequest = $this->LeaveRequests->newEmptyEntity();
         if ($this->request->is('post')) {
-            $leaveRequest = $this->LeaveRequests->patchEntity($leaveRequest, $this->request->getData());
+            $leaveRequest = $this->LeaveRequests->patchEntity($leaveRequest,
+            $this->request->getData());
 
             // set user_id
             $result = $this->Authentication->getResult();

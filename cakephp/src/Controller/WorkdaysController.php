@@ -108,16 +108,11 @@ class WorkdaysController extends AppController
         return $this->redirect(['action' => 'index']);
     }
 
-    public function update($id = null)
+    public function update()
     {
         $this->Authorization->skipAuthorization();
         $workdays = $this->paginate($this->Workdays);
         $this->set(compact('workdays'));
-
-        $workday = $this->Workdays->get($id, [
-            'contain' => [],
-        ]);
-        $this->set(compact('workday'));
 
         if ($this->request->is(['patch', 'post', 'put'])) {
             $workday = $this->Workdays->patchEntity($workday, $this->request->getData());
