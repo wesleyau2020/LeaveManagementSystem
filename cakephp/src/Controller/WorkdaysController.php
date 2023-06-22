@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use Cake\Error\Debugger;
+
 /**
  * Workdays Controller
  *
@@ -80,9 +82,10 @@ class WorkdaysController extends AppController
             if ($this->Workdays->save($workday)) {
                 $this->Flash->success(__('The workday has been saved.'));
 
-                return $this->redirect(['action' => 'index']);
+                // return $this->redirect(['action' => 'index']);
+            } else {
+                $this->Flash->error(__('The workday could not be saved. Please, try again.'));
             }
-            $this->Flash->error(__('The workday could not be saved. Please, try again.'));
         }
         $this->set(compact('workday'));
     }
@@ -115,13 +118,23 @@ class WorkdaysController extends AppController
         $this->set(compact('workdays'));
 
         if ($this->request->is(['patch', 'post', 'put'])) {
-            $workday = $this->Workdays->patchEntity($workday, $this->request->getData());
-            if ($this->Workdays->save($workday)) {
-                $this->Flash->success(__('The workday has been saved.'));
+            $results = $this->request->getData();
+            $workdaysTable = $this->Workdays;
+            $flag = true;
 
-                return $this->redirect(['action' => 'index']);
+            foreach($results as $id => $is_workday) {
+                $workday = $workdaysTable->get($id);
+                $workday->is_workday = $is_workday;
+                if(!($workdaysTable->save($workday))) {
+                    $this->Flash->error(__('The workday(s) could not be saved. Please, try again.'));
+                    $flag = false;
+                    break;
+                }
             }
-            $this->Flash->error(__('The workday could not be saved. Please, try again.'));
+
+            if($flag) {
+                $this->Flash->success(__('The workday(s) have successfully been saved.'));
+            }
         }
     }
 }

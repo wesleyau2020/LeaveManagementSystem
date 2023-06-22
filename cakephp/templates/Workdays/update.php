@@ -23,40 +23,48 @@ $this->Breadcrumbs->add([
         </div>
     </div>
     <!-- /.card-header -->
-    <div class="card-body table-responsive p-0">
-        <table class="table table-hover text-nowrap">
-            <thead>
-                <tr>
-                    <th><?= $this->Paginator->sort('ID') ?></th>
-                    <th><?= $this->Paginator->sort('day_of_week') ?></th>
-                    <th><?= $this->Paginator->sort('is_workday') ?></th>
-                </tr>
-            </thead>
-            <tbody>
-                
-                <?php foreach ($workdays as $workday) : ?>
-                    <tr>
-                        <td><?= $this->Number->format($workday->id) ?></td>
-                        <td><?= h($workday->day_of_week) ?></td>
-                        <td>
-                            <?= $this->Form->create($workday) ?>
-                            <?= $this->Form->checkbox('is_workday'); ?>
-                        </td>
-                    </tr>
-                <?php endforeach; ?>
-            </tbody>
-        </table>
-    </div>
-    <!-- /.card-body -->
 
-    <div class="card-footer d-md-flex paginator">
-        <div class="mr-auto" style="font-size:.8rem">
-            <div class="ml-auto">
-                <?= $this->Form->button(__('Save')) ?>
-                <?= $this->Html->link(__('Cancel'), ['action' => 'index'], ['class' => 'btn btn-default']) ?>
+    <?= $this->Form->create($workdays) ?>
+        <div class="card-body table-responsive p-0">
+            <table class="table table-hover text-nowrap">
+                <thead>
+                    <tr>
+                        <th><?= $this->Paginator->sort('ID') ?></th>
+                        <th><?= $this->Paginator->sort('day_of_week') ?></th>
+                        <th><?= $this->Paginator->sort('is_workday') ?></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    
+                    <?php foreach ($workdays as $workday) : ?>
+                        <tr>
+                            <td>
+                                <?= $this->Number->format($workday->id) ?>
+                            </td>
+                            <td>
+                                <?= h($workday->day_of_week) ?>
+                            </td>
+                            <td>
+                                <?= $this->Form->checkbox($workday->id, ['default' => $workday->is_workday]); ?>
+                            </td>
+                        </tr>
+                    <?php endforeach; ?>
+                </tbody>
+            </table>
+        </div>
+        <!-- /.card-body -->
+
+        <div class="card-footer d-md-flex paginator">
+            <div class="mr-auto" style="font-size:.8rem">
+                <div class="ml-auto">
+                    <?= $this->Form->button(__('Save')) ?>
+                    <?= $this->Html->link(__('Cancel'), ['action' => 'index'], ['class' => 'btn btn-default']) ?>
+                </div>
             </div>
         </div>
-    </div>
+        <!-- /.card-footer -->
     <?= $this->Form->end() ?>
-    <!-- /.card-footer -->
+    
+
+    
 </div>
