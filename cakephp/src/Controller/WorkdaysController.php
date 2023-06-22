@@ -117,21 +117,26 @@ class WorkdaysController extends AppController
         $workdays = $this->paginate($this->Workdays);
         $this->set(compact('workdays'));
 
+        // If the page has a PATCH/POST/PUT request.
         if ($this->request->is(['patch', 'post', 'put'])) {
-            $results = $this->request->getData();
-            $workdaysTable = $this->Workdays;
-            $flag = true;
+            $results = $this->request->getData();   // Get the result of the PATCH/POST/PUT.
+            $workdaysTable = $this->Workdays;       // The Workdays Database Table object.
+            $flag = true;                           // Error flag, no error TRUE.
 
+            // Loops through the results to get ID and IS_WORKDAY.
             foreach($results as $id => $is_workday) {
                 $workday = $workdaysTable->get($id);
                 $workday->is_workday = $is_workday;
+
+                // Saves and checks if ERROR.
                 if(!($workdaysTable->save($workday))) {
                     $this->Flash->error(__('The workday(s) could not be saved. Please, try again.'));
                     $flag = false;
                     break;
                 }
             }
-
+            
+            // Success notification.
             if($flag) {
                 $this->Flash->success(__('The workday(s) have successfully been saved.'));
             }
