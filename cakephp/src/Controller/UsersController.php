@@ -54,7 +54,11 @@ class UsersController extends AppController
      */
     public function view($id = null)
     {
-        $this->checkResourceAccessAuth($id);
+        if ($this->Authentication->getResult()->getData()->id === $id) {
+            $this->Authorization->skipAuthorization();
+        } else {
+            $this->checkAdminAuthorization();
+        }
 
         $user = $this->Users->get($id, [
             'contain' => ['LeaveDetails', 'LeaveRequests'],
@@ -232,29 +236,6 @@ class UsersController extends AppController
             $this->Authorization->authorize($user);
         } catch (\Exception $e) {
             return $this->redirect(['controller' => 'Users', 'action' => 'view', $userID]);
-        }
-    }
-
-    private function checkResourceAccessAuth(String $resourceID) {
-        $result = $this->Authentication->getResult();
-        $userID  = $result->getData()->id;
-
-        // Admin has all permissions
-        if ($this->Users->get($userID)->is_admin === true) {
-            return;
-        }
-
-        // User can edit his own resources
-        if ($resourceID != $userID) {
-            $this->Flash->error("You don't have permission.");
-        
-            throw new \Cake\Http\Exception\RedirectException(
-                \Cake\Routing\Router::url([
-                    'controller' => 'Users',
-                    'action' => 'view',
-                    $userID
-                ])
-            );
         }
     }
 
