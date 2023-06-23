@@ -4,6 +4,8 @@ declare(strict_types=1);
 namespace App\Controller;
 use Cake\Form\Form;
 
+use Cake\Error\Debugger;
+
 /**
  * Workdays Controller
  *
@@ -81,9 +83,10 @@ class WorkdaysController extends AppController
             if ($this->Workdays->save($workday)) {
                 $this->Flash->success(__('The workday has been saved.'));
 
-                return $this->redirect(['action' => 'index']);
+                // return $this->redirect(['action' => 'index']);
+            } else {
+                $this->Flash->error(__('The workday could not be saved. Please, try again.'));
             }
-            $this->Flash->error(__('The workday could not be saved. Please, try again.'));
         }
         $this->set(compact('workday'));
     }
@@ -112,20 +115,35 @@ class WorkdaysController extends AppController
     public function update()
     {
         $this->Authorization->skipAuthorization();
-        // $workdays = $this->paginate($this->Workdays);
-        // $this->set(compact('workdays'));
+        $workdays = $this->paginate($this->Workdays);
+        $this->set(compact('workdays'));
+      
+        // If the page has a PATCH/POST/PUT request.
+        if ($this->request->is(['patch', 'post', 'put'])) {
+            $results = $this->request->getData();   // Get the result of the PATCH/POST/PUT.
 
-        $workdays = $this->Workdays->find('all');
+            // $this->set(compact('results')); //Debug
 
-        $form = new Form();
+            $workdaysTable = $this->Workdays;       // The Workdays Database Table object.
+            $flag = true;                           // Error flag, no error TRUE.
 
-        foreach ($workdays as $workday) {
-            $form->add('id', ['type' => 'text', 'value' => $workday->id]);
-            $form->add('is_workday', ['type' => 'checkbox', 'value' => $workday->is_workday]);
+            // Loops through the results to get ID and IS_WORKDAY.
+            foreach($results as $id => $is_workday) {
+                $workday = $workdaysTable->get($id);
+                $workday->is_workday = $is_workday;
+
+                // Saves and checks if ERROR.
+                if(!($workdaysTable->save($workday))) {
+                    $this->Flash->error(__('The workday(s) could not be saved. Please, try again.'));
+                    $flag = false;
+                    break;
+                }
+            }
+            
+            // Success notification.
+            if($flag) {
+                $this->Flash->success(__('The workday(s) have successfully been saved.'));
+            }
         }
-
-        $form->add('submit', ['type' => 'submit', 'value' => 'Change']);
-
-        return $this->render('update', ['form' => $form]);
     }
 }
