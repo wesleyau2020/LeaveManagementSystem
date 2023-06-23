@@ -62,49 +62,33 @@ class LeaveDetailsTable extends Table
             ->notEmptyString('user_id');
 
         $validator
+            ->integer('leave_type_id')
+            ->requirePresence('leave_type_id', 'create')
+            ->notEmptyString('leave_type_id');
+
+        $validator
             ->scalar('year')
-            ->requirePresence('year', 'create')
             ->notEmptyString('year');
 
         $validator
-            ->integer('carried_over')
-            ->requirePresence('carried_over', 'create')
+            ->numeric('carried_over')
             ->notEmptyString('carried_over');
 
         $validator
-            ->integer('max_carry_over')
-            ->requirePresence('max_carry_over', 'create')
+            ->numeric('max_carry_over')
             ->notEmptyString('max_carry_over');
 
         $validator
-            ->integer('num_AL_given')
-            ->requirePresence('num_AL_given', 'create')
-            ->notEmptyString('num_AL_given');
+            ->numeric('entitled')
+            ->notEmptyString('entitled');
 
         $validator
-            ->integer('num_AL_left')
-            ->requirePresence('num_AL_left', 'create')
-            ->notEmptyString('num_AL_left');
+            ->numeric('balance')
+            ->notEmptyString('balance');
 
         $validator
-            ->integer('num_ML_given')
-            ->requirePresence('num_ML_given', 'create')
-            ->notEmptyString('num_ML_given');
-
-        $validator
-            ->integer('num_ML_left')
-            ->requirePresence('num_ML_left', 'create')
-            ->notEmptyString('num_ML_left');
-
-        $validator
-            ->integer('num_HL_given')
-            ->requirePresence('num_HL_given', 'create')
-            ->notEmptyString('num_HL_given');
-
-        $validator
-            ->integer('num_HL_left')
-            ->requirePresence('num_HL_left', 'create')
-            ->notEmptyString('num_HL_left');
+            ->numeric('earned')
+            ->notEmptyString('earned');
 
         return $validator;
     }

@@ -2,6 +2,7 @@
 declare(strict_types=1);
 
 namespace App\Controller;
+use Cake\I18n\FrozenTime;
 
 /**
  * LeaveDetails Controller
@@ -18,6 +19,7 @@ class LeaveDetailsController extends AppController
      */
     public function index()
     {
+        $this->Authorization->skipAuthorization();
         $this->paginate = [
             'contain' => ['Users'],
         ];
@@ -35,6 +37,7 @@ class LeaveDetailsController extends AppController
      */
     public function view($id = null)
     {
+        $this->Authorization->skipAuthorization();
         $leaveDetail = $this->LeaveDetails->get($id, [
             'contain' => ['Users'],
         ]);
@@ -49,6 +52,7 @@ class LeaveDetailsController extends AppController
      */
     public function add()
     {
+        $this->Authorization->skipAuthorization();
         $leaveDetail = $this->LeaveDetails->newEmptyEntity();
         if ($this->request->is('post')) {
             $leaveDetail = $this->LeaveDetails->patchEntity($leaveDetail, $this->request->getData());
@@ -72,6 +76,7 @@ class LeaveDetailsController extends AppController
      */
     public function edit($id = null)
     {
+        $this->Authorization->skipAuthorization();
         $leaveDetail = $this->LeaveDetails->get($id, [
             'contain' => [],
         ]);
@@ -97,6 +102,7 @@ class LeaveDetailsController extends AppController
      */
     public function delete($id = null)
     {
+        $this->Authorization->skipAuthorization();
         $this->request->allowMethod(['post', 'delete']);
         $leaveDetail = $this->LeaveDetails->get($id);
         if ($this->LeaveDetails->delete($leaveDetail)) {
@@ -105,6 +111,32 @@ class LeaveDetailsController extends AppController
             $this->Flash->error(__('The leave detail could not be deleted. Please, try again.'));
         }
 
+        return $this->redirect(['action' => 'index']);
+    }
+
+    // Update leave balance every month (in current year)
+    public function update() {
+        $this->Authorization->skipAuthorization();
+        $currYear = FrozenTime::now()->year;
+
+        $this->paginate = [
+            'contain' => ['Users'],
+        ];
+        $leaveDetails = $this->paginate($this->LeaveDetails);
+        $usersController = new \App\Controller\UsersController();
+
+        foreach ($leaveDetails as $leaveDetail) {
+            if ($leaveDetail->year == $currYear && $leaveDetail->leave_type_id === 1) {
+                // Update $leaveBalance
+                $user = $usersController->Users->get($leaveDetail->user_id);
+                $monthsWorked = FrozenTime::now()->month - $user->start_date->month + 1;
+                $leaveBalance = min($monthsWorked * 1.5 + $leaveDetail->carried_over, $leaveDetail->entitled); 
+                $leaveBalance = ceil($leaveBalance * 2) / 2; // round up to the nearest 0.5
+                $leaveDetail->balance = $leaveBalance;
+                $this->LeaveDetails->save($leaveDetail);
+            }
+        }
+        $this->Flash->success(__('All leave balances have been updated for current month.'));
         return $this->redirect(['action' => 'index']);
     }
 }

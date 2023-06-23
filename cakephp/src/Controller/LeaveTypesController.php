@@ -4,12 +4,12 @@ declare(strict_types=1);
 namespace App\Controller;
 
 /**
- * LeaveType Controller
+ * LeaveTypes Controller
  *
- * @property \App\Model\Table\LeaveTypeTable $LeaveType
+ * @property \App\Model\Table\LeaveTypesTable $LeaveTypes
  * @method \App\Model\Entity\LeaveType[]|\Cake\Datasource\ResultSetInterface paginate($object = null, array $settings = [])
  */
-class LeaveTypeController extends AppController
+class LeaveTypesController extends AppController
 {
     /**
      * Index method
@@ -18,9 +18,10 @@ class LeaveTypeController extends AppController
      */
     public function index()
     {
-        $leaveType = $this->paginate($this->LeaveType);
+        $this->Authorization->skipAuthorization();
+        $leaveTypes = $this->paginate($this->LeaveTypes);
 
-        $this->set(compact('leaveType'));
+        $this->set(compact('leaveTypes'));
     }
 
     /**
@@ -32,8 +33,9 @@ class LeaveTypeController extends AppController
      */
     public function view($id = null)
     {
-        $leaveType = $this->LeaveType->get($id, [
-            'contain' => ['LeaveType', 'LeaveRequests'],
+        $this->Authorization->skipAuthorization();
+        $leaveType = $this->LeaveTypes->get($id, [
+            'contain' => ['LeaveTypes', 'LeaveRequests'],
         ]);
 
         $this->set(compact('leaveType'));
@@ -46,10 +48,11 @@ class LeaveTypeController extends AppController
      */
     public function add()
     {
-        $leaveType = $this->LeaveType->newEmptyEntity();
+        $this->Authorization->skipAuthorization();
+        $leaveType = $this->LeaveTypes->newEmptyEntity();
         if ($this->request->is('post')) {
-            $leaveType = $this->LeaveType->patchEntity($leaveType, $this->request->getData());
-            if ($this->LeaveType->save($leaveType)) {
+            $leaveType = $this->LeaveTypes->patchEntity($leaveType, $this->request->getData());
+            if ($this->LeaveTypes->save($leaveType)) {
                 $this->Flash->success(__('The leave type has been saved.'));
 
                 return $this->redirect(['action' => 'index']);
@@ -68,12 +71,13 @@ class LeaveTypeController extends AppController
      */
     public function edit($id = null)
     {
-        $leaveType = $this->LeaveType->get($id, [
+        $this->Authorization->skipAuthorization();
+        $leaveType = $this->LeaveTypes->get($id, [
             'contain' => [],
         ]);
         if ($this->request->is(['patch', 'post', 'put'])) {
-            $leaveType = $this->LeaveType->patchEntity($leaveType, $this->request->getData());
-            if ($this->LeaveType->save($leaveType)) {
+            $leaveType = $this->LeaveTypes->patchEntity($leaveType, $this->request->getData());
+            if ($this->LeaveTypes->save($leaveType)) {
                 $this->Flash->success(__('The leave type has been saved.'));
 
                 return $this->redirect(['action' => 'index']);
@@ -92,9 +96,10 @@ class LeaveTypeController extends AppController
      */
     public function delete($id = null)
     {
+        $this->Authorization->skipAuthorization();
         $this->request->allowMethod(['post', 'delete']);
-        $leaveType = $this->LeaveType->get($id);
-        if ($this->LeaveType->delete($leaveType)) {
+        $leaveType = $this->LeaveTypes->get($id);
+        if ($this->LeaveTypes->delete($leaveType)) {
             $this->Flash->success(__('The leave type has been deleted.'));
         } else {
             $this->Flash->error(__('The leave type could not be deleted. Please, try again.'));

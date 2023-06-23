@@ -34,7 +34,7 @@ $this->Breadcrumbs->add([
             <!-- select year via dropdown menu -->
             <div style="float:left">
                 <?= 
-                    $this->Form->create($userLeaveRequests, [
+                    $this->Form->create($leaveRequests, [
                         'type' => 'post',
                         'valueSources' => ['query', 'data'],
                         'url' => ['action' => 'index/'],
@@ -66,7 +66,7 @@ $this->Breadcrumbs->add([
                     <th><?= $this->Paginator->sort('description') ?></th>
                     <th><?= $this->Paginator->sort('status') ?></th>
                     <th><?= $this->Paginator->sort('leave_type') ?></th>
-                    <th><?= $this->Paginator->sort('num_days') ?></th>
+                    <th><?= $this->Paginator->sort('days') ?></th>
                     <th><?= $this->Paginator->sort('start_of_leave') ?></th>
                     <th><?= $this->Paginator->sort('end_of_leave') ?></th>
                     <th><?= $this->Paginator->sort('remark') ?></th>
@@ -74,14 +74,14 @@ $this->Breadcrumbs->add([
                 </tr>
             </thead>
             <tbody>
-                <?php foreach ($userLeaveRequests as $leaveRequest) : ?>
+                <?php foreach ($leaveRequests as $leaveRequest) : ?>
                     <?php if ($leaveRequest->year === $input_year): ?>
                     <tr>
                         <td><?= $this->Number->format($leaveRequest->id) ?></td>
                         <td><?= h($leaveRequest->description) ?></td>
                         <td><?= h($leaveRequest->status) ?></td>
                         <td><?= h($leaveRequest->leave_type->name) ?></td>
-                        <td><?= $this->Number->format($leaveRequest->num_days) ?></td>
+                        <td><?= $this->Number->format($leaveRequest->days) ?></td>
                         <td><?= h($leaveRequest->start_of_leave) ?></td>
                         <td><?= h($leaveRequest->end_of_leave) ?></td>
                         <td><?= h($leaveRequest->remark) ?></td>

@@ -21,15 +21,13 @@ class LeaveDetailsFixture extends TestFixture
             [
                 'id' => 1,
                 'user_id' => 1,
+                'leave_type_id' => 1,
                 'year' => 'Lorem ipsum dolor sit amet',
                 'carried_over' => 1,
                 'max_carry_over' => 1,
-                'num_AL_given' => 1,
-                'num_AL_left' => 1,
-                'num_ML_given' => 1,
-                'num_ML_left' => 1,
-                'num_HL_given' => 1,
-                'num_HL_left' => 1,
+                'entitled' => 1,
+                'balance' => 1,
+                'earned' => 1,
             ],
         ];
         parent::init();

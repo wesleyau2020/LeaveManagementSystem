@@ -2,14 +2,14 @@
 
 /**
  * @var \App\View\AppView $this
- * @var \Cake\Datasource\EntityInterface[]|\Cake\Collection\CollectionInterface $leaveType
+ * @var \App\Model\Entity\LeaveType[]|\Cake\Collection\CollectionInterface $leaveTypes
  */
 ?>
 <?php
-$this->assign('title', __('Leave Type'));
+$this->assign('title', __('Leave Types'));
 $this->Breadcrumbs->add([
     ['title' => 'Home', 'url' => '/'],
-    ['title' => 'List Leave Type'],
+    ['title' => 'List Leave Types'],
 ]);
 ?>
 
@@ -36,17 +36,21 @@ $this->Breadcrumbs->add([
                     <th><?= $this->Paginator->sort('type') ?></th>
                     <th><?= $this->Paginator->sort('leave_type_id') ?></th>
                     <th><?= $this->Paginator->sort('cost') ?></th>
+                    <th><?= $this->Paginator->sort('entitled') ?></th>
+                    <th><?= $this->Paginator->sort('earned') ?></th>
                     <th class="actions"><?= __('Actions') ?></th>
                 </tr>
             </thead>
             <tbody>
-                <?php foreach ($leaveType as $leaveType) : ?>
+                <?php foreach ($leaveTypes as $leaveType) : ?>
                     <tr>
                         <td><?= $this->Number->format($leaveType->id) ?></td>
                         <td><?= h($leaveType->name) ?></td>
                         <td><?= h($leaveType->type) ?></td>
                         <td><?= $this->Number->format($leaveType->leave_type_id) ?></td>
                         <td><?= $this->Number->format($leaveType->cost) ?></td>
+                        <td><?= $this->Number->format($leaveType->entitled) ?></td>
+                        <td><?= $this->Number->format($leaveType->earned) ?></td>
                         <td class="actions">
                             <?= $this->Html->link(__('View'), ['action' => 'view', $leaveType->id], ['class' => 'btn btn-xs btn-outline-primary', 'escape' => false]) ?>
                             <?= $this->Html->link(__('Edit'), ['action' => 'edit', $leaveType->id], ['class' => 'btn btn-xs btn-outline-primary', 'escape' => false]) ?>

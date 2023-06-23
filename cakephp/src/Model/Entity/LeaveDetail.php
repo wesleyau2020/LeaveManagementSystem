@@ -10,15 +10,13 @@ use Cake\ORM\Entity;
  *
  * @property int $id
  * @property int $user_id
+ * @property int $leave_type_id
  * @property string $year
- * @property int $carried_over
- * @property int $max_carry_over
- * @property int $num_AL_given
- * @property int $num_AL_left
- * @property int $num_ML_given
- * @property int $num_ML_left
- * @property int $num_HL_given
- * @property int $num_HL_left
+ * @property float $carried_over
+ * @property float $max_carry_over
+ * @property float $entitled
+ * @property float $balance
+ * @property float $earned
  *
  * @property \App\Model\Entity\User $user
  */
@@ -35,15 +33,13 @@ class LeaveDetail extends Entity
      */
     protected $_accessible = [
         'user_id' => true,
+        'leave_type_id' => true,
         'year' => true,
         'carried_over' => true,
         'max_carry_over' => true,
-        'num_AL_given' => true,
-        'num_AL_left' => true,
-        'num_ML_given' => true,
-        'num_ML_left' => true,
-        'num_HL_given' => true,
-        'num_HL_left' => true,
+        'entitled' => true,
+        'balance' => true,
+        'earned' => true,
         'user' => true,
     ];
 }

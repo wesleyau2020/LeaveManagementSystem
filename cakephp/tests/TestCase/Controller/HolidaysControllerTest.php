@@ -3,16 +3,16 @@ declare(strict_types=1);
 
 namespace App\Test\TestCase\Controller;
 
-use App\Controller\LeaveDetailsController;
+use App\Controller\HolidaysController;
 use Cake\TestSuite\IntegrationTestTrait;
 use Cake\TestSuite\TestCase;
 
 /**
- * App\Controller\LeaveDetailsController Test Case
+ * App\Controller\HolidaysController Test Case
  *
- * @uses \App\Controller\LeaveDetailsController
+ * @uses \App\Controller\HolidaysController
  */
-class LeaveDetailsControllerTest extends TestCase
+class HolidaysControllerTest extends TestCase
 {
     use IntegrationTestTrait;
 
@@ -22,15 +22,14 @@ class LeaveDetailsControllerTest extends TestCase
      * @var array<string>
      */
     protected $fixtures = [
-        'app.LeaveDetails',
-        'app.Users',
+        'app.Holidays',
     ];
 
     /**
      * Test index method
      *
      * @return void
-     * @uses \App\Controller\LeaveDetailsController::index()
+     * @uses \App\Controller\HolidaysController::index()
      */
     public function testIndex(): void
     {
@@ -41,7 +40,7 @@ class LeaveDetailsControllerTest extends TestCase
      * Test view method
      *
      * @return void
-     * @uses \App\Controller\LeaveDetailsController::view()
+     * @uses \App\Controller\HolidaysController::view()
      */
     public function testView(): void
     {
@@ -52,7 +51,7 @@ class LeaveDetailsControllerTest extends TestCase
      * Test add method
      *
      * @return void
-     * @uses \App\Controller\LeaveDetailsController::add()
+     * @uses \App\Controller\HolidaysController::add()
      */
     public function testAdd(): void
     {
@@ -63,7 +62,7 @@ class LeaveDetailsControllerTest extends TestCase
      * Test edit method
      *
      * @return void
-     * @uses \App\Controller\LeaveDetailsController::edit()
+     * @uses \App\Controller\HolidaysController::edit()
      */
     public function testEdit(): void
     {
@@ -74,20 +73,9 @@ class LeaveDetailsControllerTest extends TestCase
      * Test delete method
      *
      * @return void
-     * @uses \App\Controller\LeaveDetailsController::delete()
+     * @uses \App\Controller\HolidaysController::delete()
      */
     public function testDelete(): void
-    {
-        $this->markTestIncomplete('Not implemented yet.');
-    }
-
-    /**
-     * Test update method
-     *
-     * @return void
-     * @uses \App\Controller\LeaveDetailsController::update()
-     */
-    public function testUpdate(): void
     {
         $this->markTestIncomplete('Not implemented yet.');
     }

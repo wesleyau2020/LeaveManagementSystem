@@ -12,9 +12,8 @@ use Authentication\PasswordHasher\DefaultPasswordHasher;
  * @property int $id
  * @property string $username
  * @property string $password
- * @property int $num_annual_leave
- * @property int $num_medical_leave
- * @property int $num_hospital_leave
+ * @property \Cake\I18n\FrozenDate $start_date
+ * @property \Cake\I18n\FrozenDate|null $end_date
  * @property bool $is_admin
  * @property int|null $admin_level
  *
@@ -35,9 +34,8 @@ class User extends Entity
     protected $_accessible = [
         'username' => true,
         'password' => true,
-        'num_annual_leave' => true,
-        'num_medical_leave' => true,
-        'num_hospital_leave' => true,
+        'start_date' => true,
+        'end_date' => true,
         'is_admin' => true,
         'admin_level' => true,
         'leave_details' => true,

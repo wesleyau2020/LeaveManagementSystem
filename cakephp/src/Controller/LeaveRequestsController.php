@@ -18,24 +18,16 @@ class LeaveRequestsController extends AppController
      */
     public function index()
     {
+        $this->Authorization->skipAuthorization();
+        
         // fetches a paginated set of leaveRequests from DB
         $this->paginate = [
-            'contain' => ['Users', 'LeaveType'],
+            'contain' => ['Users', 'LeaveTypes'],
         ];
         $leaveRequests = $this->paginate($this->LeaveRequests);
 
-        // show only user's own requests
-        $result = $this->Authentication->getResult();
-        $id  = $result->getData()->id??0;
-        $userLeaveRequests = [];
-        foreach ($leaveRequests as $leaveRequest) {
-            if ($leaveRequest->user_id === $id) {
-                array_push($userLeaveRequests, $leaveRequest);
-            }
-        }
-
         // pass to template
-        $this->set(compact('userLeaveRequests')); 
+        $this->set(compact('leaveRequests')); 
     }
 
     /**
@@ -47,8 +39,9 @@ class LeaveRequestsController extends AppController
      */
     public function view($id = null)
     {
+        $this->Authorization->skipAuthorization();
         $leaveRequest = $this->LeaveRequests->get($id, [
-            'contain' => ['Users', 'LeaveType'],
+            'contain' => ['Users', 'LeaveTypes'],
         ]);
 
         $this->set(compact('leaveRequest'));
@@ -61,9 +54,11 @@ class LeaveRequestsController extends AppController
      */
     public function add()
     {
+        $this->Authorization->skipAuthorization();
         $leaveRequest = $this->LeaveRequests->newEmptyEntity();
         if ($this->request->is('post')) {
-            $leaveRequest = $this->LeaveRequests->patchEntity($leaveRequest, $this->request->getData());
+            $leaveRequest = $this->LeaveRequests->patchEntity($leaveRequest,
+            $this->request->getData());
 
             // set user_id
             $result = $this->Authentication->getResult();
@@ -73,7 +68,7 @@ class LeaveRequestsController extends AppController
             // set num_days
             $start = $leaveRequest->start_of_leave;
             $end = $leaveRequest->end_of_leave;
-            $leaveRequest->num_days = $end->diff($start)->format("%a");
+            $leaveRequest->days = $end->diff($start)->format("%a");
 
             if ($this->LeaveRequests->save($leaveRequest)) {
                 $this->Flash->success(__('The leave request has been saved.'));
@@ -83,8 +78,27 @@ class LeaveRequestsController extends AppController
             $this->Flash->error(__('The leave request could not be saved. Please, try again.'));
         }
         $users = $this->LeaveRequests->Users->find('list', ['limit' => 200])->all();
-        $leaveType = $this->LeaveRequests->LeaveType->find('list', ['limit' => 200])->all();
+        $leaveType = $this->LeaveRequests->LeaveTypes->find('list', ['limit' => 200])->all();
         $this->set(compact('leaveRequest', 'users', 'leaveType'));
+
+        // show only user's own requests
+        $result = $this->Authentication->getResult();
+        $userID  = $result->getData()->id??0;
+        $userLeaveRequests = [];
+
+        $this->paginate = [
+            'contain' => ['Users', 'LeaveTypes'],
+        ];
+        $leaveRequests = $this->paginate($this->LeaveRequests);
+
+        foreach ($leaveRequests as $leaveRequest) {
+            if ($leaveRequest->user_id === $userID) {
+                array_push($userLeaveRequests, $leaveRequest);
+            }
+        }
+
+        // pass to template
+        $this->set(compact('userLeaveRequests')); 
     }
 
     /**
@@ -96,6 +110,7 @@ class LeaveRequestsController extends AppController
      */
     public function edit($id = null)
     {
+        $this->Authorization->skipAuthorization();
         $leaveRequest = $this->LeaveRequests->get($id, [
             'contain' => [],
         ]);
@@ -109,7 +124,7 @@ class LeaveRequestsController extends AppController
             $this->Flash->error(__('The leave request could not be saved. Please, try again.'));
         }
         $users = $this->LeaveRequests->Users->find('list', ['limit' => 200])->all();
-        $leaveType = $this->LeaveRequests->LeaveType->find('list', ['limit' => 200])->all();
+        $leaveType = $this->LeaveRequests->LeaveTypes->find('list', ['limit' => 200])->all();
         $this->set(compact('leaveRequest', 'users', 'leaveType'));
     }
 
@@ -122,6 +137,7 @@ class LeaveRequestsController extends AppController
      */
     public function delete($id = null)
     {
+        $this->Authorization->skipAuthorization();
         $this->request->allowMethod(['post', 'delete']);
         $leaveRequest = $this->LeaveRequests->get($id);
         if ($this->LeaveRequests->delete($leaveRequest)) {

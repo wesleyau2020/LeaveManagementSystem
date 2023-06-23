@@ -9,11 +9,11 @@ use Cake\ORM\Table;
 use Cake\Validation\Validator;
 
 /**
- * LeaveType Model
+ * LeaveTypes Model
  *
- * @property \App\Model\Table\LeaveTypeTable&\Cake\ORM\Association\BelongsTo $LeaveType
+ * @property \App\Model\Table\LeaveTypesTable&\Cake\ORM\Association\BelongsTo $LeaveTypes
  * @property \App\Model\Table\LeaveRequestsTable&\Cake\ORM\Association\HasMany $LeaveRequests
- * @property \App\Model\Table\LeaveTypeTable&\Cake\ORM\Association\HasMany $LeaveType
+ * @property \App\Model\Table\LeaveTypesTable&\Cake\ORM\Association\HasMany $LeaveTypes
  *
  * @method \App\Model\Entity\LeaveType newEmptyEntity()
  * @method \App\Model\Entity\LeaveType newEntity(array $data, array $options = [])
@@ -29,7 +29,7 @@ use Cake\Validation\Validator;
  * @method \App\Model\Entity\LeaveType[]|\Cake\Datasource\ResultSetInterface|false deleteMany(iterable $entities, $options = [])
  * @method \App\Model\Entity\LeaveType[]|\Cake\Datasource\ResultSetInterface deleteManyOrFail(iterable $entities, $options = [])
  */
-class LeaveTypeTable extends Table
+class LeaveTypesTable extends Table
 {
     /**
      * Initialize method
@@ -41,17 +41,20 @@ class LeaveTypeTable extends Table
     {
         parent::initialize($config);
 
-        $this->setTable('leave_type');
+        $this->setTable('leave_types');
         $this->setDisplayField('name');
         $this->setPrimaryKey('id');
 
-        $this->belongsTo('LeaveType', [
+        $this->belongsTo('LeaveTypes', [
+            'foreignKey' => 'leave_type_id',
+        ]);
+        $this->hasMany('LeaveDetails', [
             'foreignKey' => 'leave_type_id',
         ]);
         $this->hasMany('LeaveRequests', [
             'foreignKey' => 'leave_type_id',
         ]);
-        $this->hasMany('LeaveType', [
+        $this->hasMany('LeaveTypes', [
             'foreignKey' => 'leave_type_id',
         ]);
     }
@@ -85,6 +88,14 @@ class LeaveTypeTable extends Table
             ->requirePresence('cost', 'create')
             ->notEmptyString('cost');
 
+        $validator
+            ->numeric('entitled')
+            ->allowEmptyString('entitled');
+
+        $validator
+            ->numeric('earned')
+            ->allowEmptyString('earned');
+
         return $validator;
     }
 
@@ -97,7 +108,7 @@ class LeaveTypeTable extends Table
      */
     public function buildRules(RulesChecker $rules): RulesChecker
     {
-        $rules->add($rules->existsIn('leave_type_id', 'LeaveType'), ['errorField' => 'leave_type_id']);
+        $rules->add($rules->existsIn('leave_type_id', 'LeaveTypes'), ['errorField' => 'leave_type_id']);
 
         return $rules;
     }

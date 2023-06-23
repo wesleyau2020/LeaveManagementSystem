@@ -3,7 +3,11 @@
 /**
  * @var \App\View\AppView $this
  * @var \App\Model\Entity\User[]|\Cake\Collection\CollectionInterface $users
+ * 
  */
+
+/** @var string inputYear */
+$inputYear = $_POST["inputYear"]??date('Y');
 ?>
 <?php
 $this->assign('title', __('Users'));
@@ -18,6 +22,31 @@ $this->Breadcrumbs->add([
         <h2 class="card-title">
             <!-- -->
         </h2>
+        <div>
+            <!-- select year via dropdown menu -->
+            <div style="float: left">
+                <?= 
+                    $this->Form->create(null, [
+                        'type' => 'post',
+                        'valueSources' => ['query', 'data'],
+                        'url' => ['action' => 'index/'],
+                        'style' => "margin-right: 5px"
+                    ])
+                ?>
+                <?=
+                    $this->Form->year('inputYear', [
+                        'min' => 2000,
+                        'max' => date('Y'),
+                        'default' => $inputYear,
+
+                    ])
+                ?>
+            </div>
+            <?php
+                echo $this->Form->button('Submit');
+                echo $this->Form->end();
+            ?>
+        </div>
         <div class="card-toolbox">
             <?= $this->Paginator->limitControl([], null, [
                 'label' => false,
@@ -27,35 +56,30 @@ $this->Breadcrumbs->add([
         </div>
     </div>
     <!-- /.card-header -->
+
     <div class="card-body table-responsive p-0">
         <table class="table table-hover text-nowrap">
             <thead>
                 <tr>
-                    <th><?= $this->Paginator->sort('id') ?></th>
-                    <th><?= $this->Paginator->sort('username') ?></th>
-                    <th><?= $this->Paginator->sort('num_annual_leave') ?></th>
-                    <th><?= $this->Paginator->sort('num_medical_leave') ?></th>
-                    <th><?= $this->Paginator->sort('num_hospital_leave') ?></th>
-                    <th><?= $this->Paginator->sort('is_admin') ?></th>
-                    <th><?= $this->Paginator->sort('admin_level') ?></th>
-                    <th class="actions"><?= __('Actions') ?></th>
+                    <th><?= $this->Paginator->sort('ID') ?></th>
+                    <th><?= $this->Paginator->sort('Name') ?></th>
+                    <th><?= $this->Paginator->sort('Carried Over') ?></th>
+                    <th><?= $this->Paginator->sort('Entitled') ?></th>
+                    <th><?= $this->Paginator->sort('Balance') ?></th>
                 </tr>
             </thead>
             <tbody>
                 <?php foreach ($users as $user) : ?>
+                    <?php 
+                        $k = $user->id.", ".$inputYear;
+                        $userALDetail = $annualLeaveDetails[$k];
+                    ?>
                     <tr>
                         <td><?= $this->Number->format($user->id) ?></td>
                         <td><?= h($user->username) ?></td>
-                        <td><?= $this->Number->format($user->num_annual_leave) ?></td>
-                        <td><?= $this->Number->format($user->num_medical_leave) ?></td>
-                        <td><?= $this->Number->format($user->num_hospital_leave) ?></td>
-                        <td><?= ($user->is_admin) ? __('Yes') : __('No') ?></td>
-                        <td><?= $this->Number->format($user->admin_level) ?></td>
-                        <td class="actions">
-                            <?= $this->Html->link(__('View'), ['action' => 'view', $user->id], ['class' => 'btn btn-xs btn-outline-primary', 'escape' => false]) ?>
-                            <?= $this->Html->link(__('Edit'), ['action' => 'edit', $user->id], ['class' => 'btn btn-xs btn-outline-primary', 'escape' => false]) ?>
-                            <?= $this->Form->postLink(__('Delete'), ['action' => 'delete', $user->id], ['class' => 'btn btn-xs btn-outline-danger', 'escape' => false, 'confirm' => __('Are you sure you want to delete # {0}?', $user->id)]) ?>
-                        </td>
+                        <td><?= h($userALDetail->carried_over) ?></td>
+                        <td><?= h($userALDetail->entitled) ?></td>
+                        <td><?= h($userALDetail->balance) ?></td>
                     </tr>
                 <?php endforeach; ?>
             </tbody>

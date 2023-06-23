@@ -2,28 +2,25 @@
 
 /**
  * @var \App\View\AppView $this
- * @var \App\Model\Entity\User $user
+ * @var \App\Model\Entity\Holiday $holiday
  */
 ?>
 <?php
-$this->assign('title', __('Add User'));
+$this->assign('title', __('Add Holiday'));
 $this->Breadcrumbs->add([
     ['title' => 'Home', 'url' => '/'],
-    ['title' => 'List Users', 'url' => ['action' => 'index']],
+    ['title' => 'List Holidays', 'url' => ['action' => 'index']],
     ['title' => 'Add'],
 ]);
 ?>
 
 <div class="card card-primary card-outline">
-  <?= $this->Form->create($user) ?>
+  <?= $this->Form->create($holiday) ?>
   <div class="card-body">
     <?php
-      echo $this->Form->control('username');
-      echo $this->Form->control('password');
-      echo $this->Form->control('start_date');
-      echo $this->Form->control('end_date', ['empty' => true]);
-      echo $this->Form->control('is_admin', ['custom' => true]);
-      echo $this->Form->control('admin_level');
+      echo $this->Form->control('date');
+      echo $this->Form->control('is_holiday', ['custom' => true]);
+      echo $this->Form->control('description');
     ?>
   </div>
 
