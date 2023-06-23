@@ -2,6 +2,7 @@
 declare(strict_types=1);
 
 namespace App\Controller;
+use Cake\Form\Form;
 
 /**
  * Workdays Controller
@@ -111,17 +112,20 @@ class WorkdaysController extends AppController
     public function update()
     {
         $this->Authorization->skipAuthorization();
-        $workdays = $this->paginate($this->Workdays);
-        $this->set(compact('workdays'));
+        // $workdays = $this->paginate($this->Workdays);
+        // $this->set(compact('workdays'));
 
-        if ($this->request->is(['patch', 'post', 'put'])) {
-            $workday = $this->Workdays->patchEntity($workday, $this->request->getData());
-            if ($this->Workdays->save($workday)) {
-                $this->Flash->success(__('The workday has been saved.'));
+        $workdays = $this->Workdays->find('all');
 
-                return $this->redirect(['action' => 'index']);
-            }
-            $this->Flash->error(__('The workday could not be saved. Please, try again.'));
+        $form = new Form();
+
+        foreach ($workdays as $workday) {
+            $form->add('id', ['type' => 'text', 'value' => $workday->id]);
+            $form->add('is_workday', ['type' => 'checkbox', 'value' => $workday->is_workday]);
         }
+
+        $form->add('submit', ['type' => 'submit', 'value' => 'Change']);
+
+        return $this->render('update', ['form' => $form]);
     }
 }

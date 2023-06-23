@@ -241,11 +241,10 @@ class UsersController extends AppController
 
         // Admin has all permissions
         if ($this->Users->get($userID)->is_admin === true) {
-            // debug($this->Users->get($userID)->is_admin);
             return;
         }
 
-        // User can only edit his own resources
+        // User can edit his own resources
         if ($resourceID != $userID) {
             $this->Flash->error("You don't have permission.");
         
