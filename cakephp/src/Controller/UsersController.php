@@ -134,7 +134,11 @@ class UsersController extends AppController
      */
     public function edit($id = null)
     {
-        $this->checkResourceAccessAuth($id);
+        if ($this->Authentication->getResult()->getData()->id === $id) {
+            $this->Authorization->skipAuthorization();
+        } else {
+            $this->checkAdminAuthorization();
+        }
         
         $user = $this->Users->get($id, [
             'contain' => [],
