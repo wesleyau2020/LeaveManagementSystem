@@ -133,7 +133,6 @@ class LeaveDetailsController extends AppController
                 $leaveBalance = min($monthsWorked * 1.5 + $leaveDetail->carried_over, $leaveDetail->entitled); 
                 $leaveBalance = ceil($leaveBalance * 2) / 2; // round up to the nearest 0.5
                 $leaveDetail->balance = $leaveBalance;
-                // debug($leaveDetail);
                 $this->LeaveDetails->save($leaveDetail);
             }
         }

@@ -64,7 +64,4 @@ $this->Breadcrumbs->add([
         </div>
         <!-- /.card-footer -->
     <?= $this->Form->end() ?>
-    
-
-    
 </div>
