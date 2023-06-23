@@ -120,6 +120,9 @@ class WorkdaysController extends AppController
         // If the page has a PATCH/POST/PUT request.
         if ($this->request->is(['patch', 'post', 'put'])) {
             $results = $this->request->getData();   // Get the result of the PATCH/POST/PUT.
+
+            // $this->set(compact('results')); //Debug
+
             $workdaysTable = $this->Workdays;       // The Workdays Database Table object.
             $flag = true;                           // Error flag, no error TRUE.
 
