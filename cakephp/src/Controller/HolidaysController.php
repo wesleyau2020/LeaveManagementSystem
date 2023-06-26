@@ -18,7 +18,6 @@ class HolidaysController extends AppController
      */
     public function index()
     {
-        $this->Authorization->skipAuthorization();
         $holidays = $this->paginate($this->Holidays);
 
         $this->set(compact('holidays'));
@@ -33,7 +32,6 @@ class HolidaysController extends AppController
      */
     public function view($id = null)
     {
-        $this->Authorization->skipAuthorization();
         $holiday = $this->Holidays->get($id, [
             'contain' => [],
         ]);
@@ -48,7 +46,6 @@ class HolidaysController extends AppController
      */
     public function add()
     {
-        $this->Authorization->skipAuthorization();
         $holiday = $this->Holidays->newEmptyEntity();
         if ($this->request->is('post')) {
             $holiday = $this->Holidays->patchEntity($holiday, $this->request->getData());
@@ -71,7 +68,6 @@ class HolidaysController extends AppController
      */
     public function edit($id = null)
     {
-        $this->Authorization->skipAuthorization();
         $holiday = $this->Holidays->get($id, [
             'contain' => [],
         ]);
@@ -96,7 +92,6 @@ class HolidaysController extends AppController
      */
     public function delete($id = null)
     {
-        $this->Authorization->skipAuthorization();
         $this->request->allowMethod(['post', 'delete']);
         $holiday = $this->Holidays->get($id);
         if ($this->Holidays->delete($holiday)) {
@@ -106,10 +101,5 @@ class HolidaysController extends AppController
         }
 
         return $this->redirect(['action' => 'index']);
-    }
-
-    public function createCalendar() {
-        $this->Authorization->skipAuthorization();
-        return;
     }
 }
