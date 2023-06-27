@@ -82,8 +82,8 @@ class UsersController extends AppController
      */
     public function add()
     {
-        $this->Authorization->skipAuthorization(); // uncomment to add Admins
-        // $this->checkAdminAuthorization();
+        // $this->Authorization->skipAuthorization(); // uncomment to add Admins
+        $this->checkAdminAuthorization();
         $user = $this->Users->newEmptyEntity();
 
         if ($this->request->is('post')) {
