@@ -82,8 +82,8 @@ class UsersController extends AppController
      */
     public function add()
     {
-        $this->Authorization->skipAuthorization(); // uncomment to add Admins
-        // $this->checkAdminAuthorization();
+        // $this->Authorization->skipAuthorization(); // uncomment to add Admins
+        $this->checkAdminAuthorization();
         $user = $this->Users->newEmptyEntity();
 
         if ($this->request->is('post')) {
@@ -123,6 +123,11 @@ class UsersController extends AppController
             $this->Flash->error(__('The user could not be saved. Please, try again.'));
         }
         $this->set(compact('user'));
+
+        $this->checkAdminAuthorization();
+        $users = $this->paginate($this->Users);
+        $this->set(compact('users'));
+
     }
 
     /**
