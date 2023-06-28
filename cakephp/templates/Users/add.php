@@ -70,5 +70,9 @@ $this->Breadcrumbs->add([
           </tbody>
       </table>
   </div>
+  <div class="card-footer d-flex">
+    <div class="ml-auto">
+      <!-- Replace with button to toggle active/inactive -->
+    </div>
+  </div>
 </div>
-  <!-- /.card-body -->

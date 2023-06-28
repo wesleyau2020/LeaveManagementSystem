@@ -88,7 +88,7 @@ class UsersController extends AppController
 
         if ($this->request->is('post')) {
             $user = $this->Users->patchEntity($user, $this->request->getData());
-            $user->is_active = true;
+            $user->is_active = TRUE;
             $result = $this->Users->save($user);
 
             if ($result) {
@@ -128,6 +128,12 @@ class UsersController extends AppController
 
         $users = $this->paginate($this->Users);
         $this->set(compact('users'));
+
+        // Toggle between active and inactive users
+        $activeUsers = $this->Users>find('all', ['is_active' => 1])->toArray();
+        $inactiveUsers = $this->Users>find('all', ['is_active' => 0])->toArray();
+        $this->set(compact('activeUsers'));
+        $this->set(compact('inactiveUsers'));
 
     }
 
