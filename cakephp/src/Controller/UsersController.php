@@ -130,9 +130,10 @@ class UsersController extends AppController
         $this->set(compact('users'));
 
         // Toggle between active and inactive users
-        $activeUsers = $this->Users>find('all', ['is_active' => 1])->toArray();
-        $inactiveUsers = $this->Users>find('all', ['is_active' => 0])->toArray();
-        $this->set(compact('activeUsers'));
+        $activeUsers = $this->Users->find('all', ['is_active' => TRUE])->toArray();
+        $activeUsers2 = $this->Users->find()->where(['is_active' => TRUE])->toArray();
+        $inactiveUsers = $this->Users->find('all', ['is_active' => FALSE])->toArray();
+        $this->set(compact('activeUsers2'));
         $this->set(compact('inactiveUsers'));
 
     }
@@ -230,6 +231,7 @@ class UsersController extends AppController
         if ($this->request->is('post') && !$result->isValid()) {
             $this->Flash->error(__('Invalid username or password'));
         }
+        $this->Flash->error(__('An error has occurred'));
     }
 
     public function logout()
