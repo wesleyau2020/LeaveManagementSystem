@@ -16,6 +16,7 @@ use Authentication\PasswordHasher\DefaultPasswordHasher;
  * @property \Cake\I18n\FrozenDate|null $end_date
  * @property bool $is_admin
  * @property int|null $admin_level
+ * @property bool $is_active
  *
  * @property \App\Model\Entity\LeaveDetail[] $leave_details
  * @property \App\Model\Entity\LeaveRequest[] $leave_requests
@@ -38,6 +39,7 @@ class User extends Entity
         'end_date' => true,
         'is_admin' => true,
         'admin_level' => true,
+        'is_active' => true,
         'leave_details' => true,
         'leave_requests' => true,
     ];

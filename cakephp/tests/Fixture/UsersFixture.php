@@ -22,10 +22,11 @@ class UsersFixture extends TestFixture
                 'id' => 1,
                 'username' => 'Lorem ipsum dolor sit amet',
                 'password' => 'Lorem ipsum dolor sit amet',
-                'start_date' => '2023-06-12',
-                'end_date' => '2023-06-12',
+                'start_date' => '2023-06-28',
+                'end_date' => '2023-06-28',
                 'is_admin' => 1,
                 'admin_level' => 1,
+                'is_active' => 1,
             ],
         ];
         parent::init();

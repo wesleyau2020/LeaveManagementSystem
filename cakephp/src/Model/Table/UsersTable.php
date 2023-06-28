@@ -90,6 +90,11 @@ class UsersTable extends Table
             ->integer('admin_level')
             ->allowEmptyString('admin_level');
 
+        $validator
+            ->boolean('is_active')
+            ->requirePresence('is_active', 'create')
+            ->notEmptyString('is_active');
+
         return $validator;
     }
 

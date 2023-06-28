@@ -88,6 +88,7 @@ class UsersController extends AppController
 
         if ($this->request->is('post')) {
             $user = $this->Users->patchEntity($user, $this->request->getData());
+            $user->is_active = true;
             $result = $this->Users->save($user);
 
             if ($result) {
@@ -120,11 +121,11 @@ class UsersController extends AppController
                 $this->Flash->success(__('The user has been saved.'));
                 return $this->redirect(['action' => 'index']);
             }
+            // debug($user);
             $this->Flash->error(__('The user could not be saved. Please, try again.'));
         }
         $this->set(compact('user'));
 
-        $this->checkAdminAuthorization();
         $users = $this->paginate($this->Users);
         $this->set(compact('users'));
 
@@ -236,18 +237,6 @@ class UsersController extends AppController
         }
     }
 
-    private function checkAdminAuthorization() {
-        $result = $this->Authentication->getResult();
-        $userID  = $result->getData()->id;
-        $user = $this->Users->get($userID);
-
-        try {
-            $this->Authorization->authorize($user);
-        } catch (\Exception $e) {
-            return $this->redirect(['controller' => 'Users', 'action' => 'view', $userID]);
-        }
-    }
-
     // At the start of a new year, create new leave details
     public function update() {
         $this->Authorization->skipAuthorization();
@@ -284,6 +273,32 @@ class UsersController extends AppController
         return $this->redirect(['controller' => 'Users', 'action' => 'view', $userID]);
     }
 
+    public function deactivate($id = null)
+    {
+        $this->checkAdminAuthorization();
+        $user = $this->Users->get($id);
+        $user->is_active = FALSE;
+        if ($this->Users->save($user)) {
+            $this->Flash->success(__('The user has been deactivated.'));
+        } else {
+            $this->Flash->error(__('The user could not be deactivated. Please, try again.'));
+        }
+
+        return $this->redirect(['action' => 'index']);
+    }
+
+    private function checkAdminAuthorization() {
+        $result = $this->Authentication->getResult();
+        $userID  = $result->getData()->id;
+        $user = $this->Users->get($userID);
+
+        try {
+            $this->Authorization->authorize($user);
+        } catch (\Exception $e) {
+            return $this->redirect(['controller' => 'Users', 'action' => 'view', $userID]);
+        }
+    }
+
     // Map user's ID to their previous year AL balance
     // e.g. ['ID: 1' => 'AL Balance: 7', 'ID: 2' => 'AL Balance: 5']
     public function getMapUsersPrevYearsALBalance() {
@@ -303,7 +318,6 @@ class UsersController extends AppController
         return $mapUsersPrevYearALBalance;
     }
 
-    // Create new leaveDetail
     public function createLeaveDetail(int $userID, int $leaveTypeID, int $maxCarryOver, float $carriedOver) {
         $leaveDetailsController = new \App\Controller\LeaveDetailsController();
         $leaveDetail = $leaveDetailsController->LeaveDetails->newEmptyEntity();
