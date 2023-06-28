@@ -82,6 +82,8 @@ class LeaveRequestsController extends AppController
         $this->set(compact('leaveRequest', 'users', 'leaveType'));
 
         // show only user's own requests
+        // TODO: Refactor to use query instead
+        // i.e. $leaveRequests->find()->where(['user_id' => $userID])->toArray();
         $result = $this->Authentication->getResult();
         $userID  = $result->getData()->id??0;
         $userLeaveRequests = [];

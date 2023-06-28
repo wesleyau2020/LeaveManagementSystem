@@ -309,6 +309,9 @@ class UsersController extends AppController
 
     // Map user's ID to their previous year AL balance
     // e.g. ['ID: 1' => 'AL Balance: 7', 'ID: 2' => 'AL Balance: 5']
+    // TODO: Refactor to use query function instead
+    // i.e $leaveDetailsController->LeaveDetails->find()
+    // ->where(['year' => $prevYear], ['leave_type_id' => 1])->toArray();
     public function getMapUsersPrevYearsALBalance() {
         $leaveDetailsController = new \App\Controller\LeaveDetailsController();
         $leaveDetailsController->paginate = [
