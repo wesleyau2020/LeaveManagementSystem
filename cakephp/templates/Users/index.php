@@ -70,17 +70,18 @@ $this->Breadcrumbs->add([
             </thead>
             <tbody>
                 <?php foreach ($users as $user) : ?>
-                    <?php 
-                        $k = $user->id.", ".$inputYear;
-                        $userALDetail = $annualLeaveDetails[$k];
-                    ?>
-                    <tr>
-                        <td><?= $this->Number->format($user->id) ?></td>
-                        <td><?= h($user->username) ?></td>
-                        <td><?= h($userALDetail->carried_over) ?></td>
-                        <td><?= h($userALDetail->entitled) ?></td>
-                        <td><?= h($userALDetail->balance) ?></td>
-                    </tr>
+                    <?php debug($user); ?>
+                    <!-- <?php debug($user->leave_details); ?> -->
+                    <?php $userLeaveDetail = $user->leave_details; ?>
+                    <?php if ($userLeaveDetail->year === $inputYear) : ?>
+                        <tr>
+                            <td><?= $this->Number->format($user->id) ?></td>
+                            <td><?= h($user->username) ?></td>
+                            <td><?= h($userLeaveDetail->carried_over) ?></td>
+                            <td><?= h($userLeaveDetail->entitled) ?></td>
+                            <td><?= h($userLeaveDetail->balance) ?></td>
+                        </tr>
+                    <?php endif; ?>
                 <?php endforeach; ?>
             </tbody>
         </table>
@@ -89,14 +90,14 @@ $this->Breadcrumbs->add([
 
     <div class="card-footer d-md-flex paginator">
         <div class="mr-auto" style="font-size:.8rem">
-            <?= $this->Paginator->counter(__('Page {{page}} of {{pages}}, showing {{current}} record(s) out of {{count}} total')) ?>
+            <!-- <?= $this->Paginator->counter(__('Page {{page}} of {{pages}}, showing {{current}} record(s) out of {{count}} total')) ?> -->
         </div>
         <ul class="pagination pagination-sm">
-            <?= $this->Paginator->first('<i class="fas fa-angle-double-left"></i>', ['escape' => false]) ?>
+            <!-- <?= $this->Paginator->first('<i class="fas fa-angle-double-left"></i>', ['escape' => false]) ?>
             <?= $this->Paginator->prev('<i class="fas fa-angle-left"></i>', ['escape' => false]) ?>
             <?= $this->Paginator->numbers() ?>
             <?= $this->Paginator->next('<i class="fas fa-angle-right"></i>', ['escape' => false]) ?>
-            <?= $this->Paginator->last('<i class="fas fa-angle-double-right"></i>', ['escape' => false]) ?>
+            <?= $this->Paginator->last('<i class="fas fa-angle-double-right"></i>', ['escape' => false]) ?> -->
         </ul>
     </div>
     <!-- /.card-footer -->
