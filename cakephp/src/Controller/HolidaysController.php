@@ -110,6 +110,7 @@ class HolidaysController extends AppController
 
     public function display() {
         $this->Authorization->skipAuthorization();
-        return;
+        $holidays = $this->paginate($this->Holidays);
+        $this->set(compact('holidays'));
     }
 }
