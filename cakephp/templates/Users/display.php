@@ -31,36 +31,31 @@ $this->Breadcrumbs->add([
           </thead>
           <tbody>
               <?php foreach ($users as $user) : ?>
-                <?php if ($user->is_active === $toggleActive) : ?>
-                  <tr>
-                      <td><?= $this->Number->format($user->id) ?></td>
-                      <td><?= h($user->username) ?></td>
-                      <td><?= h($user->start_date) ?></td>
-                      <td><?= h($user->end_date) ?></td>
-                      <td><?= ($user->is_admin) ? __('Yes') : __('No') ?></td>
-                      <td><?= $this->Number->format($user->admin_level) ?></td>
-                      <td class="actions">
-                          <?= $this->Html->link(__('View'), ['action' => 'view', $user->id], ['class' => 'btn btn-xs btn-outline-primary', 'escape' => false]) ?>
-                          <?= $this->Html->link(__('Edit'), ['action' => 'edit', $user->id], ['class' => 'btn btn-xs btn-outline-primary', 'escape' => false]) ?>
-                          <?= $this->Form->postLink(__('Delete'), ['action' => 'delete', $user->id], ['class' => 'btn btn-xs btn-outline-danger', 'escape' => false, 'confirm' => __('Are you sure you want to delete # {0}?', $user->id)]) ?>
-                      </td>
-                  </tr>
-                <?php endif; ?>
+                <tr>
+                    <td><?= $this->Number->format($user->id) ?></td>
+                    <td><?= h($user->username) ?></td>
+                    <td><?= h($user->start_date) ?></td>
+                    <td><?= h($user->end_date) ?></td>
+                    <td><?= ($user->is_admin) ? __('Yes') : __('No') ?></td>
+                    <td><?= $this->Number->format($user->admin_level) ?></td>
+                    <td class="actions">
+                        <?= $this->Html->link(__('View'), ['action' => 'view', $user->id], ['class' => 'btn btn-xs btn-outline-primary', 'escape' => false]) ?>
+                        <?= $this->Html->link(__('Edit'), ['action' => 'edit', $user->id], ['class' => 'btn btn-xs btn-outline-primary', 'escape' => false]) ?>
+                        <?= $this->Form->postLink(__('Delete'), ['action' => 'delete', $user->id], ['class' => 'btn btn-xs btn-outline-danger', 'escape' => false, 'confirm' => __('Are you sure you want to delete # {0}?', $user->id)]) ?>
+                    </td>
+                </tr>
               <?php endforeach; ?>
           </tbody>
       </table>
   </div>
   <div class="card-footer d-flex">
     <div class="ml-auto">
-      <!-- Replace with button to toggle active/inactive -->
       <div>
+        <!-- Toggle button to switch between active/inactive users -->
         <?= $this->Form->create(null, ['url' => ['controller' => 'users', 'action' => '/display']]); ?>
-
         <?= $this->Form->checkbox('is_active'); ?>
-        <?= $this->Form->label('is_active', 'Toggle Active'); ?>
-
+        <?= $this->Form->label('is_active', 'Display Active Users'); ?>
         <?= $this->Form->button(__('Submit')); ?>
-
         <?= $this->Form->end(); ?>
       </div>
     </div>

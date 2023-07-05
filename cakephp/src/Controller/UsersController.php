@@ -138,17 +138,17 @@ class UsersController extends AppController
         $activeUsers = $this->Users->find()->where(['is_active' => TRUE])->toArray();
         $inactiveUsers = $this->Users->find()->where(['is_active' => FALSE])->toArray();
         
-
         $data = $this->request->getData();
         $isActive = isset($data['is_active']) && $data['is_active'];
+        
         if ($isActive === TRUE) {
             $users = $activeUsers;
+            $this->Flash->success('Displaying active users.');
         } else {
             $users = $inactiveUsers;
+            $this->Flash->error('Displaying inactive users.');
         }
 
-        // Redirect or render a success message
-        $this->Flash->success('Displaying active users.');
         $this->set(compact('users'));
     }
 
