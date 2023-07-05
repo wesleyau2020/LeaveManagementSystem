@@ -82,10 +82,22 @@ class LeaveRequestsController extends AppController
         $this->set(compact('leaveRequest', 'users', 'leaveType'));
 
         // show only user's own requests
-        // TODO: Need to test this
+        // TODO: Refactor to use query instead
+        // i.e. $leaveRequests->find()->where(['user_id' => $userID])->toArray();
         $result = $this->Authentication->getResult();
         $userID  = $result->getData()->id??0;
-        $userLeaveRequests = $this->LeaveRequests->find('all')->where(['user_id' => $userID])->toArray();
+        $userLeaveRequests = [];
+
+        $this->paginate = [
+            'contain' => ['Users', 'LeaveTypes'],
+        ];
+        $leaveRequests = $this->paginate($this->LeaveRequests);
+
+        foreach ($leaveRequests as $leaveRequest) {
+            if ($leaveRequest->user_id === $userID) {
+                array_push($userLeaveRequests, $leaveRequest);
+            }
+        }
 
         // pass to template
         $this->set(compact('userLeaveRequests')); 
