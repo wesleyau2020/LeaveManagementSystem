@@ -111,16 +111,7 @@ $this->Breadcrumbs->add([
     <!-- /.card-body -->
 
     <div class="card-footer d-md-flex paginator">
-        <div class="mr-auto" style="font-size:.8rem">
-            <?= $this->Paginator->counter(__('Page {{page}} of {{pages}}, showing {{current}} record(s) out of {{count}} total')) ?>
-        </div>
-        <ul class="pagination pagination-sm">
-            <?= $this->Paginator->first('<i class="fas fa-angle-double-left"></i>', ['escape' => false]) ?>
-            <?= $this->Paginator->prev('<i class="fas fa-angle-left"></i>', ['escape' => false]) ?>
-            <?= $this->Paginator->numbers() ?>
-            <?= $this->Paginator->next('<i class="fas fa-angle-right"></i>', ['escape' => false]) ?>
-            <?= $this->Paginator->last('<i class="fas fa-angle-double-right"></i>', ['escape' => false]) ?>
-        </ul>
+
     </div>
     <!-- /.card-footer -->
   </div>

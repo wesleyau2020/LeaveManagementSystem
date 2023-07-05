@@ -85,7 +85,7 @@ class LeaveRequestsController extends AppController
         // TODO: Need to test this
         $result = $this->Authentication->getResult();
         $userID  = $result->getData()->id??0;
-        $userLeaveRequests = $leaveRequests->find()->where(['user_id' => $userID])->toArray();
+        $userLeaveRequests = $this->LeaveRequests->find('all')->where(['user_id' => $userID])->toArray();
 
         // pass to template
         $this->set(compact('userLeaveRequests')); 

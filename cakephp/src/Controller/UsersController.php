@@ -20,11 +20,11 @@ class UsersController extends AppController
     public function index()
     {
         $this->checkAdminAuthorization();
-        $users = $this->Users->find()->contain(['LeaveDetails'])->toArray();
+        $users = $this->Users->find('all')->contain(['LeaveDetails'])->toArray();
 
         $this->set(compact('users'));
     }
-
+    
     /**
      * View method
      *
