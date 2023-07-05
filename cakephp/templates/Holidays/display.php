@@ -1,5 +1,14 @@
 <?php use benhall14\phpCalendar\Calendar as Calendar; ?>
 
+<?php
+$this->assign('title', __('Holidays'));
+$this->Breadcrumbs->add([
+    ['title' => 'Home', 'url' => '/'],
+    ['title' => 'List Holidays', 'url' => ['action' => 'index']],
+    ['title' => 'Display'],
+]);
+?>
+
 <div class="card card-primary card-outline">
   <div class="card-body">
     <?php
