@@ -128,14 +128,28 @@ class UsersController extends AppController
 
         $users = $this->paginate($this->Users);
         $this->set(compact('users'));
+    }
+
+    public function display() {
+        // $this->checkAdminAuthorization();
+        $this->Authorization->skipAuthorization();
 
         // Toggle between active and inactive users
-        $activeUsers = $this->Users->find('all', ['is_active' => TRUE])->toArray();
-        $activeUsers2 = $this->Users->find()->where(['is_active' => TRUE])->toArray();
-        $inactiveUsers = $this->Users->find('all', ['is_active' => FALSE])->toArray();
-        $this->set(compact('activeUsers2'));
-        $this->set(compact('inactiveUsers'));
+        $activeUsers = $this->Users->find()->where(['is_active' => TRUE])->toArray();
+        $inactiveUsers = $this->Users->find()->where(['is_active' => FALSE])->toArray();
+        
 
+        $data = $this->request->getData();
+        $isActive = isset($data['is_active']) && $data['is_active'];
+        if ($isActive === TRUE) {
+            $users = $activeUsers;
+        } else {
+            $users = $inactiveUsers;
+        }
+
+        // Redirect or render a success message
+        $this->Flash->success('Displaying active users.');
+        $this->set(compact('users'));
     }
 
     /**
