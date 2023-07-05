@@ -143,10 +143,10 @@ class UsersController extends AppController
         
         if ($isActive === TRUE) {
             $users = $activeUsers;
-            $this->Flash->success('Displaying active users.');
+            $this->Flash->success('Displaying ACTIVE users.');
         } else {
             $users = $inactiveUsers;
-            $this->Flash->error('Displaying inactive users.');
+            $this->Flash->error('Displaying INACTIVE users.');
         }
 
         $this->set(compact('users'));
