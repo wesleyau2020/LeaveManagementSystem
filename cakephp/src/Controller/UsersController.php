@@ -121,13 +121,9 @@ class UsersController extends AppController
                 $this->Flash->success(__('The user has been saved.'));
                 return $this->redirect(['action' => 'index']);
             }
-            // debug($user);
             $this->Flash->error(__('The user could not be saved. Please, try again.'));
         }
         $this->set(compact('user'));
-
-        $users = $this->paginate($this->Users);
-        $this->set(compact('users'));
     }
 
     public function display() {
