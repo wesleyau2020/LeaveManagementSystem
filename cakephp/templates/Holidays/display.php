@@ -8,21 +8,14 @@ $calendar->stylesheet();
 
 foreach ($holidays as $holiday) {
     $startDate = $holiday->start_date->format('Y-m-d');
-    $endDate = $holiday->end_Date->format('Y-m-d');
+    $endDate = $holiday->end_date->format('Y-m-d');
     $calendar->addEvent(
-        $startDate,
-        $endDate,
-        $holiday->description,
-        true,
+        $startDate,             # start date in either Y-m-d or Y-m-d H:i if you want to add a time.
+        $endDate,               # end date in either Y-m-d or Y-m-d H:i if you want to add a time.
+        $holiday->description,  # event name text
+        true,                   # should the date be masked - boolean default true
     );
 }
-
-$calendar->addEvent(
-    '2023-07-05',   # start date in either Y-m-d or Y-m-d H:i if you want to add a time.
-    '2023-07-05',   # end date in either Y-m-d or Y-m-d H:i if you want to add a time.
-    'My Birthday',  # event name text
-    true,           # should the date be masked - boolean default true
-);
 
 $calendar->display();
 ?>

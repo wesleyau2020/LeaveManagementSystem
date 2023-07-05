@@ -1,36 +1,30 @@
 <?php
-
 /**
  * @var \App\View\AppView $this
  * @var \App\Model\Entity\Holiday $holiday
  */
 ?>
-<?php
-$this->assign('title', __('Add Holiday'));
-$this->Breadcrumbs->add([
-    ['title' => 'Home', 'url' => '/'],
-    ['title' => 'List Holidays', 'url' => ['action' => 'index']],
-    ['title' => 'Add'],
-]);
-?>
-
-<div class="card card-primary card-outline">
-  <?= $this->Form->create($holiday) ?>
-  <div class="card-body">
-    <?php
-      echo $this->Form->control('date');
-      echo $this->Form->control('is_holiday', ['custom' => true]);
-      echo $this->Form->control('description');
-    ?>
-  </div>
-
-  <div class="card-footer d-flex">
-    <div class="ml-auto">
-      <?= $this->Form->button(__('Save')) ?>
-      <?= $this->Html->link(__('Cancel'), ['action' => 'index'], ['class' => 'btn btn-default']) ?>
+<div class="row">
+    <aside class="column">
+        <div class="side-nav">
+            <h4 class="heading"><?= __('Actions') ?></h4>
+            <?= $this->Html->link(__('List Holidays'), ['action' => 'index'], ['class' => 'side-nav-item']) ?>
+        </div>
+    </aside>
+    <div class="column-responsive column-80">
+        <div class="holidays form content">
+            <?= $this->Form->create($holiday) ?>
+            <fieldset>
+                <legend><?= __('Add Holiday') ?></legend>
+                <?php
+                    echo $this->Form->control('start_date');
+                    echo $this->Form->control('end_date', ['empty' => true]);
+                    echo $this->Form->control('is_holiday');
+                    echo $this->Form->control('description');
+                ?>
+            </fieldset>
+            <?= $this->Form->button(__('Submit')) ?>
+            <?= $this->Form->end() ?>
+        </div>
     </div>
-  </div>
-
-  <?= $this->Form->end() ?>
 </div>
-

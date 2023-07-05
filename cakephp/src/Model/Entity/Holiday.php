@@ -9,7 +9,8 @@ use Cake\ORM\Entity;
  * Holiday Entity
  *
  * @property int $id
- * @property \Cake\I18n\FrozenDate $date
+ * @property \Cake\I18n\FrozenDate $start_date
+ * @property \Cake\I18n\FrozenDate|null $end_date
  * @property bool $is_holiday
  * @property string $description
  */
@@ -25,7 +26,8 @@ class Holiday extends Entity
      * @var array<string, bool>
      */
     protected $_accessible = [
-        'date' => true,
+        'start_date' => true,
+        'end_date' => true,
         'is_holiday' => true,
         'description' => true,
     ];

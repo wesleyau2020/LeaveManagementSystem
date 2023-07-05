@@ -51,9 +51,13 @@ class HolidaysTable extends Table
     public function validationDefault(Validator $validator): Validator
     {
         $validator
-            ->date('date')
-            ->requirePresence('date', 'create')
-            ->notEmptyDate('date');
+            ->date('start_date')
+            ->requirePresence('start_date', 'create')
+            ->notEmptyDate('start_date');
+
+        $validator
+            ->date('end_date')
+            ->allowEmptyDate('end_date');
 
         $validator
             ->boolean('is_holiday')
