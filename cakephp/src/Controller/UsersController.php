@@ -21,24 +21,10 @@ class UsersController extends AppController
     {
         $this->checkAdminAuthorization();
         $users = $this->paginate($this->Users);
-
-        // Pass annualLeaveDetails to templates/Users/index.php
-        $leaveDetailsController = new \App\Controller\LeaveDetailsController();
-        $leaveDetailsController->paginate = [
-            'contain' => ['Users'],
-        ];
-        $leaveDetails = $leaveDetailsController->paginate($leaveDetailsController->LeaveDetails);
-
-        $annualLeaveDetails = array();
-        foreach ($leaveDetails as $leaveDetail) {
-            if ($leaveDetail->leave_type_id == 1) {
-                $k = $leaveDetail->user_id.", ".$leaveDetail->year;
-                $annualLeaveDetails[$k] = $leaveDetail;
-            }
-        }
+        $userWithLeaveDetails = $this->Users->find()->contain(['LeaveDetails'])->toArray();
 
         $this->set(compact('users'));
-        $this->set(compact('annualLeaveDetails'));
+        $this->set(compact('userWithLeaveDetails'));
     }
 
     /**

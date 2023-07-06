@@ -77,20 +77,20 @@ $this->Breadcrumbs->add([
         <?php foreach ($user->leave_details as $leaveDetails) : ?>
           <?php if ($leaveDetails->year === $inputYear) : ?>
             <?php $leaveTypeName = $leaveTypeNames[$leaveDetails->leave_type_id - 1]; ?>
-          <tr>
-              <td><?= h($leaveDetails->id) ?></td>
-              <td><?= h($leaveTypeName) ?></td>
-              <td><?= h($leaveDetails->carried_over) ?></td>
-              <td><?= h($leaveDetails->max_carry_over) ?></td>
-              <td><?= h($leaveDetails->entitled) ?></td>
-              <td><?= h($leaveDetails->balance) ?></td>
-              <td><?= h($leaveDetails->earned) ?></td>
-              <td class="actions">
-                <?= $this->Html->link(__('View'), ['controller' => 'LeaveDetails', 'action' => 'view', $leaveDetails->id], ['class'=>'btn btn-xs btn-outline-primary']) ?>
-                <?= $this->Html->link(__('Edit'), ['controller' => 'LeaveDetails', 'action' => 'edit', $leaveDetails->id], ['class'=>'btn btn-xs btn-outline-primary']) ?>
-                <?= $this->Form->postLink(__('Delete'), ['controller' => 'LeaveDetails', 'action' => 'delete', $leaveDetails->id], ['class'=>'btn btn-xs btn-outline-danger', 'confirm' => __('Are you sure you want to delete # {0}?', $leaveDetails->id)]) ?>
-              </td>
-          </tr>
+            <tr>
+                <td><?= h($leaveDetails->id) ?></td>
+                <td><?= h($leaveTypeName) ?></td>
+                <td><?= h($leaveDetails->carried_over) ?></td>
+                <td><?= h($leaveDetails->max_carry_over) ?></td>
+                <td><?= h($leaveDetails->entitled) ?></td>
+                <td><?= h($leaveDetails->balance) ?></td>
+                <td><?= h($leaveDetails->earned) ?></td>
+                <td class="actions">
+                  <?= $this->Html->link(__('View'), ['controller' => 'LeaveDetails', 'action' => 'view', $leaveDetails->id], ['class'=>'btn btn-xs btn-outline-primary']) ?>
+                  <?= $this->Html->link(__('Edit'), ['controller' => 'LeaveDetails', 'action' => 'edit', $leaveDetails->id], ['class'=>'btn btn-xs btn-outline-primary']) ?>
+                  <?= $this->Form->postLink(__('Delete'), ['controller' => 'LeaveDetails', 'action' => 'delete', $leaveDetails->id], ['class'=>'btn btn-xs btn-outline-danger', 'confirm' => __('Are you sure you want to delete # {0}?', $leaveDetails->id)]) ?>
+                </td>
+            </tr>
           <?php endif; ?>
         <?php endforeach; ?>
       <?php } ?>

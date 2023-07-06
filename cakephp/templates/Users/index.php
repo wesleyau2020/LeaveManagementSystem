@@ -69,18 +69,18 @@ $this->Breadcrumbs->add([
                 </tr>
             </thead>
             <tbody>
-                <?php foreach ($users as $user) : ?>
-                    <?php 
-                        $k = $user->id.", ".$inputYear;
-                        $userALDetail = $annualLeaveDetails[$k];
-                    ?>
-                    <tr>
-                        <td><?= $this->Number->format($user->id) ?></td>
-                        <td><?= h($user->username) ?></td>
-                        <td><?= h($userALDetail->carried_over) ?></td>
-                        <td><?= h($userALDetail->entitled) ?></td>
-                        <td><?= h($userALDetail->balance) ?></td>
-                    </tr>
+                <?php foreach ($userWithLeaveDetails as $user) : ?>
+                    <?php foreach ($user->leave_details as $leaveDetail) : ?>
+                        <?php if ($leaveDetail->year === $inputYear && $leaveDetail->leave_type_id === 1) : ?>
+                            <tr>
+                                <td><?= $this->Number->format($user->id) ?></td>
+                                <td><?= h($user->username) ?></td>
+                                <td><?= h($leaveDetail->carried_over) ?></td>
+                                <td><?= h($leaveDetail->entitled) ?></td>
+                                <td><?= h($leaveDetail->balance) ?></td>
+                            </tr>
+                        <?php endif; ?>
+                    <?php endforeach; ?>
                 <?php endforeach; ?>
             </tbody>
         </table>
