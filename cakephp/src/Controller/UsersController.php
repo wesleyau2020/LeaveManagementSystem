@@ -236,6 +236,7 @@ class UsersController extends AppController
 
                 foreach ($mapUsersPrevYearALBalance as $k => $v) {  
                     // auto-create new leaveDetail for each user
+                    // TODO: need to add a check for deactived users
                     for ($i = 1; $i < 4; $i++) {
                         $leaveDetail = null;
                         if ($i === 1) {
