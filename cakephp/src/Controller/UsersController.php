@@ -36,7 +36,8 @@ class UsersController extends AppController
      */
     public function view($id = null)
     {
-        if ($this->Authentication->getResult()->getData()->id === $id) {
+        if ($this->Authentication->getResult()->getData()->id == $id) {
+            // skip authorization if user is viewing his own page
             $this->Authorization->skipAuthorization();
         } else {
             $this->checkAdminAuthorization();
@@ -303,6 +304,8 @@ class UsersController extends AppController
         try {
             $this->Authorization->authorize($user);
         } catch (\Exception $e) {
+            $this->Flash->error(__('You are not authorised to view this user.'));
+            // redirect user back to his own view page
             return $this->redirect(['controller' => 'Users', 'action' => 'view', $userID]);
         }
     }

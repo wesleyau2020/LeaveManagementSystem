@@ -46,7 +46,7 @@ class UserPolicy
      */
     public function canEdit(IdentityInterface $user, User $resource)
     {
-        return $this->isOwner($user, $resource);
+        return $this->isAdmin($user, $resource);
     }
 
     /**
@@ -70,20 +70,12 @@ class UserPolicy
      */
     public function canView(IdentityInterface $user, User $resource)
     {
-        return $this->isOwner($user, $resource);
+        return $this->isAdmin($user, $resource);
     }
 
     protected function isAdmin(IdentityInterface $user, User $resource)
     {
-        return $user->is_admin === true;
+        return $user->is_admin === TRUE;
     }
 
-    protected function isOwner(IdentityInterface $user, User $resource)
-    // Checks if user is owner of the resource
-    // User can view his own details
-    // User can edit his own username and password
-    {
-        // In this case, the resource is the user himself
-        return $resource->id === $user->getIdentifier();
-    }
 }
