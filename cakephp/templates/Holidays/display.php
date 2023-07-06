@@ -32,7 +32,7 @@ $this->Breadcrumbs->add([
 
   <div class="card-footer d-flex">
     <div class="ml-auto">
-      <?= $this->Html->link(__('Add Holiday'), ['controller' => 'Holidays', 'action' => 'add'], ['class' => 'btn btn-default']);?>
+      <?= $this->Html->link(__('Add Holiday'), ['controller' => 'Holidays', 'action' => 'add'], ['class' => 'btn btn-primary btn-m']);?>
     </div>
   </div>
 </div>
