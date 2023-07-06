@@ -10,7 +10,7 @@ $toggleActive = $_POST["toggleApproved"]??true;
 $this->assign('title', __('Rejected requests'));
 $this->Breadcrumbs->add([
     ['title' => 'Home', 'url' => '/'],
-    ['title' => 'List LeaveRequests', 'url' => ['action' => 'index']],
+    ['title' => 'List Leave Requests', 'url' => ['action' => 'index']],
     ['title' => 'Display Rejected Requests'],
 ]);
 ?>
@@ -20,13 +20,13 @@ $this->Breadcrumbs->add([
       <table class="table table-hover text-nowrap">
           <thead>
                 <tr>
-                    <th><?= $this->Paginator->sort('id') ?></th>
+                    <th><?= $this->Paginator->sort('ID') ?></th>
                     <th><?= $this->Paginator->sort('description') ?></th>
                     <th><?= $this->Paginator->sort('status') ?></th>
-                    <th><?= $this->Paginator->sort('leave_type') ?></th>
+                    <th><?= $this->Paginator->sort('type') ?></th>
                     <th><?= $this->Paginator->sort('days') ?></th>
-                    <th><?= $this->Paginator->sort('start_of_leave') ?></th>
-                    <th><?= $this->Paginator->sort('end_of_leave') ?></th>
+                    <th><?= $this->Paginator->sort('leave_start') ?></th>
+                    <th><?= $this->Paginator->sort('leave_end') ?></th>
                     <th><?= $this->Paginator->sort('remark') ?></th>
                 </tr>
           </thead>

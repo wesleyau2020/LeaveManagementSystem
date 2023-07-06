@@ -55,14 +55,15 @@ $this->Breadcrumbs->add([
             <thead>
                 <tr>
                     <th><?= $this->Paginator->sort('id') ?></th>
+                    <th><?= $this->Paginator->sort('name') ?></th>
                     <th><?= $this->Paginator->sort('description') ?></th>
-                    <th><?= $this->Paginator->sort('status') ?></th>
-                    <th><?= $this->Paginator->sort('leave_type') ?></th>
                     <th><?= $this->Paginator->sort('days') ?></th>
-                    <th><?= $this->Paginator->sort('start_of_leave') ?></th>
-                    <th><?= $this->Paginator->sort('end_of_leave') ?></th>
+                    <th><?= $this->Paginator->sort('type') ?></th>
+                    <th><?= $this->Paginator->sort('leave_start') ?></th>
+                    <th><?= $this->Paginator->sort('leave_end') ?></th>
+                    <th><?= $this->Paginator->sort('status') ?></th>
                     <th><?= $this->Paginator->sort('remark') ?></th>
-                    <th class="actions"><?= __('Actions') ?></th>
+                    <th class="actions"><?= __('Approve') ?></th>
                 </tr>
             </thead>
             <tbody>
@@ -70,17 +71,17 @@ $this->Breadcrumbs->add([
                     <?php if ($leaveRequest->year === $input_year): ?>
                     <tr>
                         <td><?= $this->Number->format($leaveRequest->id) ?></td>
+                        <td><?= h($leaveRequest->user->username) ?></td>
                         <td><?= h($leaveRequest->description) ?></td>
-                        <td><?= h($leaveRequest->status) ?></td>
-                        <td><?= h($leaveRequest->leave_type->name) ?></td>
                         <td><?= $this->Number->format($leaveRequest->days) ?></td>
+                        <td><?= h($leaveRequest->leave_type->name) ?></td>
                         <td><?= h($leaveRequest->start_of_leave) ?></td>
                         <td><?= h($leaveRequest->end_of_leave) ?></td>
+                        <td><?= h($leaveRequest->status) ?></td>
                         <td><?= h($leaveRequest->remark) ?></td>
                         <td class="actions">
-                            <?= $this->Html->link(__('View'), ['action' => 'view', $leaveRequest->id], ['class' => 'btn btn-xs btn-outline-primary', 'escape' => false]) ?>
-                            <?= $this->Html->link(__('Edit'), ['action' => 'edit', $leaveRequest->id], ['class' => 'btn btn-xs btn-outline-primary', 'escape' => false]) ?>
-                            <?= $this->Form->postLink(__('Delete'), ['action' => 'delete', $leaveRequest->id], ['class' => 'btn btn-xs btn-outline-danger', 'escape' => false, 'confirm' => __('Are you sure you want to delete # {0}?', $leaveRequest->id)]) ?>
+                            <?= $this->Html->link(__('Approve'), ['action' => 'approve', $leaveRequest->id], ['class' => 'btn btn-xs btn-outline-primary', 'escape' => false]) ?>
+                            <?= $this->Html->link(__('Reject'), ['action' => 'reject', $leaveRequest->id], ['class' => 'btn btn-xs btn-outline-primary', 'escape' => false]) ?>
                         </td>
                     </tr>
                     <?php endif; ?>

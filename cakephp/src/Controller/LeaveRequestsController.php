@@ -155,7 +155,7 @@ class LeaveRequestsController extends AppController
         // $this->checkAdminAuthorization();
         $this->Authorization->skipAuthorization();
 
-        $approvedLeaveRequests = $this->LeaveRequests->find()->where(['status' => "Approved"])->contain(['LeaveTypes'])->toArray();
+        $approvedLeaveRequests = $this->LeaveRequests->find()->where(['status' => "Approved"])->contain(['Users','LeaveTypes'])->toArray();
 
         $this->set(compact('approvedLeaveRequests'));
     }
@@ -164,8 +164,34 @@ class LeaveRequestsController extends AppController
         // $this->checkAdminAuthorization();
         $this->Authorization->skipAuthorization();
 
-        $rejectedLeaveRequests = $this->LeaveRequests->find()->where(['status' => "Rejected"])->contain(['LeaveTypes'])->toArray();
+        $rejectedLeaveRequests = $this->LeaveRequests->find()->where(['status' => "Rejected"])->contain(['Users', 'LeaveTypes'])->toArray();
 
         $this->set(compact('rejectedLeaveRequests'));
+    }
+
+    public function approve($id = null) {
+        $this->Authorization->skipAuthorization();
+        $leaveRequest = $this->LeaveRequests->get($id);
+        $leaveRequest->status = "Approved";
+        if ($this->LeaveRequests->save($leaveRequest)) {
+            $this->Flash->success(__('The leaveRequest has been approved.'));
+        } else {
+            $this->Flash->error(__('The leaveRequest could not be approved. Please, try again.'));
+        }
+
+        return $this->redirect(['action' => 'index']);
+    }
+
+    public function reject($id = null) {
+        $this->Authorization->skipAuthorization();
+        $leaveRequest = $this->LeaveRequests->get($id);
+        $leaveRequest->status = "Rejected";
+        if ($this->LeaveRequests->save($leaveRequest)) {
+            $this->Flash->success(__('The leaveRequest has been rejected.'));
+        } else {
+            $this->Flash->error(__('The leaveRequest could not be rejected. Please, try again.'));
+        }
+
+        return $this->redirect(['action' => 'index']);
     }
 }
