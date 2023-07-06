@@ -52,10 +52,11 @@ class HolidaysController extends AppController
         $holiday = $this->Holidays->newEmptyEntity();
         if ($this->request->is('post')) {
             $holiday = $this->Holidays->patchEntity($holiday, $this->request->getData());
+            $holiday->is_holiday = TRUE;
             if ($this->Holidays->save($holiday)) {
                 $this->Flash->success(__('The holiday has been saved.'));
 
-                return $this->redirect(['action' => 'index']);
+                return $this->redirect(['action' => 'display']);
             }
             $this->Flash->error(__('The holiday could not be saved. Please, try again.'));
         }
@@ -106,5 +107,11 @@ class HolidaysController extends AppController
         }
 
         return $this->redirect(['action' => 'index']);
+    }
+
+    public function display() {
+        $this->Authorization->skipAuthorization();
+        $holidays = $this->paginate($this->Holidays);
+        $this->set(compact('holidays'));
     }
 }

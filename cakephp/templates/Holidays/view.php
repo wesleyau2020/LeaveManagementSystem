@@ -30,8 +30,12 @@ $this->Breadcrumbs->add([
             <td><?= $this->Number->format($holiday->id) ?></td>
         </tr>
         <tr>
-            <th><?= __('Date') ?></th>
-            <td><?= h($holiday->date) ?></td>
+            <th><?= __('Start Date') ?></th>
+            <td><?= h($holiday->start_date) ?></td>
+        </tr>
+        <tr>
+            <th><?= __('End Date') ?></th>
+            <td><?= h($holiday->end_date) ?></td>
         </tr>
         <tr>
             <th><?= __('Is Holiday') ?></th>

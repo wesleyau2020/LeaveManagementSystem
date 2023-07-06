@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "f0503a4b5d71e2fb156ee590ceac888f",
+    "content-hash": "e27f8367ba128539bf4c5d33be7f31c9",
     "packages": [
         {
             "name": "arodu/cakelte",
@@ -49,6 +49,55 @@
                 }
             ],
             "time": "2023-05-18T12:02:17+00:00"
+        },
+        {
+            "name": "benhall14/php-calendar",
+            "version": "1.4.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/benhall14/php-calendar.git",
+                "reference": "46a034a557d4c68b72fa377be8b1732bde7ed254"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/benhall14/php-calendar/zipball/46a034a557d4c68b72fa377be8b1732bde7ed254",
+                "reference": "46a034a557d4c68b72fa377be8b1732bde7ed254",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "benhall14\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Benjamin Hall",
+                    "email": "ben@conobe.co.uk",
+                    "homepage": "https://github.com/benhall14",
+                    "role": "Developer"
+                }
+            ],
+            "description": "A simple PHP class to generate calendars.",
+            "homepage": "https://github.com/benhall14/php-calendar",
+            "keywords": [
+                "calendar",
+                "calendars",
+                "date",
+                "time"
+            ],
+            "support": {
+                "issues": "https://github.com/benhall14/php-calendar/issues",
+                "source": "https://github.com/benhall14/php-calendar/tree/1.4.1"
+            },
+            "time": "2023-04-03T16:13:50+00:00"
         },
         {
             "name": "cakephp/authentication",

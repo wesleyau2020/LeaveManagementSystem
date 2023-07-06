@@ -18,8 +18,9 @@ $this->Breadcrumbs->add([
   <?= $this->Form->create($holiday) ?>
   <div class="card-body">
     <?php
-      echo $this->Form->control('date');
-      echo $this->Form->control('is_holiday', ['custom' => true]);
+      echo $this->Form->control('start_date');
+      echo $this->Form->control('end_date', ['empty' => true]);
+      // echo $this->Form->control('is_holiday', ['custom' => true]);
       echo $this->Form->control('description');
     ?>
   </div>

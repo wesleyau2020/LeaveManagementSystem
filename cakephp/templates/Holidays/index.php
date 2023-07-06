@@ -32,7 +32,8 @@ $this->Breadcrumbs->add([
             <thead>
                 <tr>
                     <th><?= $this->Paginator->sort('id') ?></th>
-                    <th><?= $this->Paginator->sort('date') ?></th>
+                    <th><?= $this->Paginator->sort('start_date') ?></th>
+                    <th><?= $this->Paginator->sort('end_date') ?></th>
                     <th><?= $this->Paginator->sort('is_holiday') ?></th>
                     <th><?= $this->Paginator->sort('description') ?></th>
                     <th class="actions"><?= __('Actions') ?></th>
@@ -42,7 +43,8 @@ $this->Breadcrumbs->add([
                 <?php foreach ($holidays as $holiday) : ?>
                     <tr>
                         <td><?= $this->Number->format($holiday->id) ?></td>
-                        <td><?= h($holiday->date) ?></td>
+                        <td><?= h($holiday->start_date) ?></td>
+                        <td><?= h($holiday->end_date) ?></td>
                         <td><?= ($holiday->is_holiday) ? __('Yes') : __('No') ?></td>
                         <td><?= h($holiday->description) ?></td>
                         <td class="actions">

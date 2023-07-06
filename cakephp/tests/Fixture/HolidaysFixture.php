@@ -20,7 +20,8 @@ class HolidaysFixture extends TestFixture
         $this->records = [
             [
                 'id' => 1,
-                'date' => '2023-06-20',
+                'start_date' => '2023-07-05',
+                'end_date' => '2023-07-05',
                 'is_holiday' => 1,
                 'description' => 'Lorem ipsum dolor sit amet',
             ],
