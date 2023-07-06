@@ -228,6 +228,8 @@ class UsersController extends AppController
             $leaveDetailsController = new \App\Controller\LeaveDetailsController();
             $latestLeaveDetail = $leaveDetailsController->LeaveDetails->find()->last();
 
+            // only update if $latestLeaveDetail belongs to previous year
+            // i.e. we are in a new year
             if ($latestLeaveDetail->year == $prevYear) {
                 $mapUsersPrevYearALBalance = $this->getMapUsersPrevYearsALBalance();
                 $updated = TRUE;
