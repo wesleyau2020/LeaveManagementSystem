@@ -81,7 +81,7 @@ $this->Breadcrumbs->add([
                         <td><?= h($leaveRequest->remark) ?></td>
                         <td class="actions">
                             <?= $this->Html->link(__('Approve'), ['action' => 'approve', $leaveRequest->id], ['class' => 'btn btn-xs btn-outline-primary', 'escape' => false]) ?>
-                            <?= $this->Html->link(__('Reject'), ['action' => 'reject', $leaveRequest->id], ['class' => 'btn btn-xs btn-outline-primary', 'escape' => false]) ?>
+                            <?= $this->Html->link(__('Reject'), ['action' => 'reject', $leaveRequest->id], ['class' => 'btn btn-xs btn-outline-danger', 'escape' => false]) ?>
                         </td>
                     </tr>
                     <?php endif; ?>
