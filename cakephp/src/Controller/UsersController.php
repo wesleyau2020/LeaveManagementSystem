@@ -126,24 +126,24 @@ class UsersController extends AppController
         $this->set(compact('user'));
     }
 
-    public function display() {
+    public function displayActiveUsers() {
         // $this->checkAdminAuthorization();
         $this->Authorization->skipAuthorization();
 
         // Toggle between active and inactive users
         $activeUsers = $this->Users->find()->where(['is_active' => TRUE])->toArray();
+        $users = $activeUsers ;
+
+        $this->set(compact('users'));
+    }
+
+    public function displayInactiveUsers() {
+        // $this->checkAdminAuthorization();
+        $this->Authorization->skipAuthorization();
+
+        // Toggle between active and inactive users
         $inactiveUsers = $this->Users->find()->where(['is_active' => FALSE])->toArray();
-        
-        $data = $this->request->getData();
-        $isActive = isset($data['is_active']) && $data['is_active'];
-        
-        if ($isActive === TRUE) {
-            $users = $activeUsers;
-            $this->Flash->success('Displaying ACTIVE users.');
-        } else {
-            $users = $inactiveUsers;
-            $this->Flash->error('Displaying INACTIVE users.');
-        }
+        $users = $inactiveUsers;
 
         $this->set(compact('users'));
     }

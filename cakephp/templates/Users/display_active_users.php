@@ -7,11 +7,11 @@
 $toggleActive = $_POST["toggleActive"]??true;
 ?>
 <?php
-$this->assign('title', __('Active/Inactive Users'));
+$this->assign('title', __('Active Users'));
 $this->Breadcrumbs->add([
     ['title' => 'Home', 'url' => '/'],
     ['title' => 'List Users', 'url' => ['action' => 'index']],
-    ['title' => 'Add'],
+    ['title' => 'Display Active Users'],
 ]);
 ?>
 
@@ -52,10 +52,8 @@ $this->Breadcrumbs->add([
     <div class="ml-auto">
       <div>
         <!-- Toggle button to switch between active/inactive users -->
-        <?= $this->Form->create(null, ['url' => ['controller' => 'users', 'action' => '/display']]); ?>
-        <?= $this->Form->checkbox('is_active'); ?>
-        <?= $this->Form->label('is_active', 'Display Active Users'); ?>
-        <?= $this->Form->button(__('Submit')); ?>
+        <?= $this->Form->create(null, ['url' => ['controller' => 'users', 'action' => '/displayInactiveUsers']]); ?>
+        <?= $this->Html->link(__('Display Inactive Users'), ['action' => 'displayInactiveUsers'], ['class' => 'btn btn-primary btn-sm']) ?>
         <?= $this->Form->end(); ?>
       </div>
     </div>
