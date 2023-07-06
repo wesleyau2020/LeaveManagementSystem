@@ -12,7 +12,6 @@ use Cake\Validation\Validator;
  * LeaveTypes Model
  *
  * @property \App\Model\Table\LeaveTypesTable&\Cake\ORM\Association\BelongsTo $LeaveTypes
- * @property \App\Model\Table\LeaveDetailsTable&\Cake\ORM\Association\HasMany $LeaveDetails
  * @property \App\Model\Table\LeaveRequestsTable&\Cake\ORM\Association\HasMany $LeaveRequests
  * @property \App\Model\Table\LeaveTypesTable&\Cake\ORM\Association\HasMany $LeaveTypes
  *

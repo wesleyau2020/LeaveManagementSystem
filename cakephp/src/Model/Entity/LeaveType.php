@@ -17,7 +17,6 @@ use Cake\ORM\Entity;
  * @property float|null $earned
  *
  * @property \App\Model\Entity\LeaveType[] $leave_types
- * @property \App\Model\Entity\LeaveDetail[] $leave_details
  * @property \App\Model\Entity\LeaveRequest[] $leave_requests
  */
 class LeaveType extends Entity
@@ -39,7 +38,6 @@ class LeaveType extends Entity
         'entitled' => true,
         'earned' => true,
         'leave_types' => true,
-        'leave_details' => true,
         'leave_requests' => true,
     ];
 }

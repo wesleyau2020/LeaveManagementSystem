@@ -35,7 +35,7 @@ class LeaveTypesController extends AppController
     {
         $this->Authorization->skipAuthorization();
         $leaveType = $this->LeaveTypes->get($id, [
-            'contain' => ['LeaveTypes', 'LeaveDetails', 'LeaveRequests'],
+            'contain' => ['LeaveTypes', 'LeaveRequests'],
         ]);
 
         $this->set(compact('leaveType'));
