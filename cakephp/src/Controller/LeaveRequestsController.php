@@ -70,6 +70,9 @@ class LeaveRequestsController extends AppController
             $end = $leaveRequest->end_of_leave;
             $leaveRequest->days = $end->diff($start)->format("%a");
 
+            // set status
+            $leaveRequest->status = "Awaiting Level 1";
+
             if ($this->LeaveRequests->save($leaveRequest)) {
                 $this->Flash->success(__('The leave request has been saved.'));
 
@@ -172,7 +175,20 @@ class LeaveRequestsController extends AppController
     public function approve($id = null) {
         $this->Authorization->skipAuthorization();
         $leaveRequest = $this->LeaveRequests->get($id);
-        $leaveRequest->status = "Approved";
+
+        $userID = $this->Authentication->getResult()->getData()->id??0;
+        $usersController = new \App\Controller\UsersController();
+        $user = $usersController->Users->get($userID);
+
+        if ($user->admin_level === 1) {
+            $leaveRequest->status = "Awaiting Level 2";
+        } else if ($user->admin_level === 2) {
+            $leaveRequest->status = "Approved";
+        } else {
+            $this->Flash->error(__('You are not authorised to approve this leave request.'));
+            return $this->redirect(['action' => 'index']);
+        }
+
         if ($this->LeaveRequests->save($leaveRequest)) {
             $this->Flash->success(__('The leaveRequest has been approved.'));
         } else {
@@ -185,7 +201,18 @@ class LeaveRequestsController extends AppController
     public function reject($id = null) {
         $this->Authorization->skipAuthorization();
         $leaveRequest = $this->LeaveRequests->get($id);
-        $leaveRequest->status = "Rejected";
+
+        $userID = $this->Authentication->getResult()->getData()->id??0;
+        $usersController = new \App\Controller\UsersController();
+        $user = $usersController->Users->get($userID);
+
+        if ($user->admin_level === 1) {
+            $leaveRequest->status = "Rejected";
+        } else {
+            $this->Flash->error(__('You are not authorised to reject this leave request.'));
+            return $this->redirect(['action' => 'index']);
+        }
+
         if ($this->LeaveRequests->save($leaveRequest)) {
             $this->Flash->success(__('The leaveRequest has been rejected.'));
         } else {
