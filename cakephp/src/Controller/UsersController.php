@@ -151,6 +151,7 @@ class UsersController extends AppController
         $this->checkAdminAuthorization();
         $this->request->allowMethod(['post', 'delete']);
         $user = $this->Users->get($id);
+        
         if ($this->Users->delete($user)) {
             $this->Flash->success(__('The user has been deleted.'));
         } else {
@@ -177,6 +178,7 @@ class UsersController extends AppController
         // regardless of POST or GET, redirect if user is logged in
         $id = $result->getData()->id??0;
         $is_admin = $result->getData()->is_admin??false;
+
         if ($result && $result->isValid()) {
             if ($is_admin == true) {
                 // redirect to /Users/index after login success
@@ -184,9 +186,7 @@ class UsersController extends AppController
                     'controller' => 'Users',
                     'action' => 'index'
                 ]);
-            } 
-            
-            else {
+            } else {
                 // redirect to /Users/view/{$id} after login success
                 $redirect = $this->request->getQuery('redirect', [
                     'controller' => 'Users',
@@ -194,13 +194,14 @@ class UsersController extends AppController
                     $id
                 ]);
             }
-
             return $this->redirect($redirect);
         }
+
         // display error if user submitted and authentication failed
         if ($this->request->is('post') && !$result->isValid()) {
             $this->Flash->error(__('Invalid username or password'));
         }
+
         $this->Flash->error(__('An error has occurred'));
     }
 
@@ -208,6 +209,7 @@ class UsersController extends AppController
     {
         $this->Authorization->skipAuthorization();
         $result = $this->Authentication->getResult();
+
         // regardless of POST or GET, redirect if user is logged in
         if ($result && $result->isValid()) {
             $this->Authentication->logout();
@@ -256,6 +258,7 @@ class UsersController extends AppController
         $this->checkAdminAuthorization();
         $user = $this->Users->get($id);
         $user->is_active = FALSE;
+
         if ($this->Users->save($user)) {
             $this->Flash->success(__('The user has been deactivated.'));
         } else {
@@ -307,6 +310,7 @@ class UsersController extends AppController
         ];
         $leaveDetails = $leaveDetailsController->paginate($leaveDetailsController->LeaveDetails);
         $mapUsersPrevYearALBalance = array();
+
         foreach ($leaveDetails as $leaveDetail) {
             $prevYear = FrozenTime::now()->year - 1; // for testing, set to current year
             if ($leaveDetail->year == $prevYear
@@ -314,6 +318,7 @@ class UsersController extends AppController
                 $mapUsersPrevYearALBalance[$leaveDetail->user_id] = $leaveDetail->balance;
             }
         }
+
         return $mapUsersPrevYearALBalance;
     }
 
