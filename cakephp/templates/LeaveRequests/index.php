@@ -27,12 +27,8 @@ $this->Breadcrumbs->add([
             <!-- -->
         </h2>
         <div class="card-toolbox">
-            <div style="margin-right:645px">
-                <?= $this->Html->link(__('New Leave Request'), ['action' => 'add'], ['class' => 'btn btn-primary btn-m']) ?>
-            </div>
-
             <!-- select year via dropdown menu -->
-            <div style="float:left">
+            <div style="float:left; margin-bottom:-20px;">
                 <?= 
                     $this->Form->create($leaveRequests, [
                         'type' => 'post',
