@@ -4,43 +4,34 @@
  * @var \App\Model\Entity\LeaveType $leaveType
  */
 ?>
-<?php
-$this->assign('title', __('Edit Leave Type'));
-$this->Breadcrumbs->add([
-    ['title' => 'Home', 'url' => '/'],
-    ['title' => 'List Leave Types', 'url' => ['action' => 'index']],
-    ['title' => 'View', 'url' => ['action' => 'view', $leaveType->id]],
-    ['title' => 'Edit'],
-]);
-?>
-
-<div class="card card-primary card-outline">
-  <?= $this->Form->create($leaveType) ?>
-  <div class="card-body">
-    <?php
-      echo $this->Form->control('name');
-      echo $this->Form->control('type');
-      echo $this->Form->control('leave_type_id');
-      echo $this->Form->control('cost');
-      echo $this->Form->control('entitled');
-      echo $this->Form->control('earned');
-    ?>
-  </div>
-
-  <div class="card-footer d-flex">
-    <div class="">
-      <?= $this->Form->postLink(
-          __('Delete'),
-          ['action' => 'delete', $leaveType->id],
-          ['confirm' => __('Are you sure you want to delete # {0}?', $leaveType->id), 'class' => 'btn btn-danger']
-      ) ?>
+<div class="row">
+    <aside class="column">
+        <div class="side-nav">
+            <h4 class="heading"><?= __('Actions') ?></h4>
+            <?= $this->Form->postLink(
+                __('Delete'),
+                ['action' => 'delete', $leaveType->id],
+                ['confirm' => __('Are you sure you want to delete # {0}?', $leaveType->id), 'class' => 'side-nav-item']
+            ) ?>
+            <?= $this->Html->link(__('List Leave Types'), ['action' => 'index'], ['class' => 'side-nav-item']) ?>
+        </div>
+    </aside>
+    <div class="column-responsive column-80">
+        <div class="leaveTypes form content">
+            <?= $this->Form->create($leaveType) ?>
+            <fieldset>
+                <legend><?= __('Edit Leave Type') ?></legend>
+                <?php
+                    echo $this->Form->control('name');
+                    echo $this->Form->control('type');
+                    echo $this->Form->control('leave_type_id');
+                    echo $this->Form->control('cost');
+                    echo $this->Form->control('entitled');
+                    echo $this->Form->control('earned');
+                ?>
+            </fieldset>
+            <?= $this->Form->button(__('Submit')) ?>
+            <?= $this->Form->end() ?>
+        </div>
     </div>
-    <div class="ml-auto">
-      <?= $this->Form->button(__('Save')) ?>
-      <?= $this->Html->link(__('Cancel'), ['action' => 'index'], ['class' => 'btn btn-default']) ?>
-    </div>
-  </div>
-
-  <?= $this->Form->end() ?>
 </div>
-
