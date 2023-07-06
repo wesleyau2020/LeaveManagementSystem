@@ -150,4 +150,22 @@ class LeaveRequestsController extends AppController
 
         return $this->redirect(['action' => 'index']);
     }
+
+    public function displayApprovedRequests() {
+        // $this->checkAdminAuthorization();
+        $this->Authorization->skipAuthorization();
+
+        $approvedRequests = $this->LeaveRequests->find()->where(['status' => "approved"])->toArray();
+
+        $this->set(compact('approvedLeaveRequests'));
+    }
+
+    public function displayRejectedRequests() {
+        // $this->checkAdminAuthorization();
+        $this->Authorization->skipAuthorization();
+
+        $rejectedRequests = $this->LeaveRequests->find()->where(['status' => "rejected"])->toArray();
+
+        $this->set(compact('rejectedLeaveRequests'));
+    }
 }

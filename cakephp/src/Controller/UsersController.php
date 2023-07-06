@@ -37,10 +37,6 @@ class UsersController extends AppController
             }
         }
 
-        // foreach($userLeaveDetails as $k => $v) {  
-        // debug("Key: ".$k." Value: ".$v."");
-        // }  
-
         $this->set(compact('users'));
         $this->set(compact('annualLeaveDetails'));
     }
@@ -124,28 +120,6 @@ class UsersController extends AppController
             $this->Flash->error(__('The user could not be saved. Please, try again.'));
         }
         $this->set(compact('user'));
-    }
-
-    public function displayActiveUsers() {
-        // $this->checkAdminAuthorization();
-        $this->Authorization->skipAuthorization();
-
-        // Toggle between active and inactive users
-        $activeUsers = $this->Users->find()->where(['is_active' => TRUE])->toArray();
-        $users = $activeUsers ;
-
-        $this->set(compact('users'));
-    }
-
-    public function displayInactiveUsers() {
-        // $this->checkAdminAuthorization();
-        $this->Authorization->skipAuthorization();
-
-        // Toggle between active and inactive users
-        $inactiveUsers = $this->Users->find()->where(['is_active' => FALSE])->toArray();
-        $users = $inactiveUsers;
-
-        $this->set(compact('users'));
     }
 
     /**
@@ -305,6 +279,24 @@ class UsersController extends AppController
         return $this->redirect(['action' => 'index']);
     }
 
+    public function displayActiveUsers() {
+        // $this->checkAdminAuthorization();
+        $this->Authorization->skipAuthorization();
+
+        $activeUsers = $this->Users->find()->where(['is_active' => TRUE])->toArray();
+
+        $this->set(compact('activeUsers'));
+    }
+
+    public function displayInactiveUsers() {
+        // $this->checkAdminAuthorization();
+        $this->Authorization->skipAuthorization();
+
+        $inactiveUsers = $this->Users->find()->where(['is_active' => FALSE])->toArray();
+
+        $this->set(compact('inactiveUsers'));
+    }
+
     private function checkAdminAuthorization() {
         $result = $this->Authentication->getResult();
         $userID  = $result->getData()->id;
@@ -319,7 +311,7 @@ class UsersController extends AppController
 
     // Map user's ID to their previous year AL balance
     // e.g. ['ID: 1' => 'AL Balance: 7', 'ID: 2' => 'AL Balance: 5']
-    // TODO: Refactor to use query function instead
+    // TODO: Refactor to use query instead
     // i.e $leaveDetailsController->LeaveDetails->find()
     // ->where(['year' => $prevYear], ['leave_type_id' => 1])->toArray();
     public function getMapUsersPrevYearsALBalance() {

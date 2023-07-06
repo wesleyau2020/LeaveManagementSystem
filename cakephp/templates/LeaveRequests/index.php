@@ -17,10 +17,6 @@ $this->Breadcrumbs->add([
 ]);
 ?>
 
-<div>
-
-</div>
-
 <div class="card card-primary card-outline">
     <div class="card-header d-sm-flex">
         <h2 class="card-title">
@@ -28,7 +24,7 @@ $this->Breadcrumbs->add([
         </h2>
         <div class="card-toolbox">
             <!-- select year via dropdown menu -->
-            <div style="float:left; margin-bottom:-20px;">
+            <div style="float:left;">
                 <?= 
                     $this->Form->create($leaveRequests, [
                         'type' => 'post',

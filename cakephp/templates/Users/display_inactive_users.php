@@ -30,7 +30,7 @@ $this->Breadcrumbs->add([
               </tr>
           </thead>
           <tbody>
-              <?php foreach ($users as $user) : ?>
+              <?php foreach ($inactiveUsers as $user) : ?>
                 <tr>
                     <td><?= $this->Number->format($user->id) ?></td>
                     <td><?= h($user->username) ?></td>
