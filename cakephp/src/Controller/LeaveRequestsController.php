@@ -172,6 +172,16 @@ class LeaveRequestsController extends AppController
         $this->set(compact('rejectedLeaveRequests'));
     }
 
+    public function displayPendingRequests() {
+        // $this->checkAdminAuthorization();
+        $this->Authorization->skipAuthorization();
+
+        $pendingLeaveRequests = $this->LeaveRequests->find()->where(['status' => "Awaiting Level 2"])->contain(['Users', 'LeaveTypes'])->toArray();
+        $pendingLeaveRequests = array_merge($pendingLeaveRequests, $this->LeaveRequests->find()->where(['status' => "Awaiting Level 1"])->contain(['Users', 'LeaveTypes'])->toArray());
+
+        $this->set(compact('pendingLeaveRequests'));
+    }
+
     public function approve($id = null) {
         $this->Authorization->skipAuthorization();
         $leaveRequest = $this->LeaveRequests->get($id);
@@ -180,19 +190,19 @@ class LeaveRequestsController extends AppController
         $usersController = new \App\Controller\UsersController();
         $user = $usersController->Users->get($userID);
 
-        if ($user->admin_level === 1) {
+        if ($user->admin_level === 1 && $leaveRequest->status == "Awaiting Level 1") {
             $leaveRequest->status = "Awaiting Level 2";
-        } else if ($user->admin_level === 2) {
+        } else if ($user->admin_level === 2 && $leaveRequest->status == "Awaiting Level 2") {
             $leaveRequest->status = "Approved";
         } else {
-            $this->Flash->error(__('You are not authorised to approve this leave request.'));
+            $this->Flash->error(__('The leave request could needs to be approved by a same-level admin'));
             return $this->redirect(['action' => 'index']);
         }
 
         if ($this->LeaveRequests->save($leaveRequest)) {
-            $this->Flash->success(__('The leaveRequest has been approved.'));
+            $this->Flash->success(__('The leave request has been approved.'));
         } else {
-            $this->Flash->error(__('The leaveRequest could not be approved. Please, try again.'));
+            $this->Flash->error(__('The leave request could not be approved. Please, try again.'));
         }
 
         return $this->redirect(['action' => 'index']);
@@ -206,17 +216,17 @@ class LeaveRequestsController extends AppController
         $usersController = new \App\Controller\UsersController();
         $user = $usersController->Users->get($userID);
 
-        if ($user->admin_level === 1) {
+        if ($user->admin_level === 2 && $leaveRequest->status != "Approved") {
             $leaveRequest->status = "Rejected";
         } else {
-            $this->Flash->error(__('You are not authorised to reject this leave request.'));
+            $this->Flash->error(__('The leave request could not be rejected. Please, try again.'));
             return $this->redirect(['action' => 'index']);
         }
 
         if ($this->LeaveRequests->save($leaveRequest)) {
-            $this->Flash->success(__('The leaveRequest has been rejected.'));
+            $this->Flash->success(__('The leave request has been rejected.'));
         } else {
-            $this->Flash->error(__('The leaveRequest could not be rejected. Please, try again.'));
+            $this->Flash->error(__('The leave request could not be rejected. Please, try again.'));
         }
 
         return $this->redirect(['action' => 'index']);

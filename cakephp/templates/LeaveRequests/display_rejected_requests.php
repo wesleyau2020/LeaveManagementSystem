@@ -21,26 +21,28 @@ $this->Breadcrumbs->add([
           <thead>
                 <tr>
                     <th><?= $this->Paginator->sort('ID') ?></th>
+                    <th><?= $this->Paginator->sort('name') ?></th>
                     <th><?= $this->Paginator->sort('description') ?></th>
-                    <th><?= $this->Paginator->sort('status') ?></th>
-                    <th><?= $this->Paginator->sort('type') ?></th>
                     <th><?= $this->Paginator->sort('days') ?></th>
+                    <th><?= $this->Paginator->sort('type') ?></th>
                     <th><?= $this->Paginator->sort('leave_start') ?></th>
                     <th><?= $this->Paginator->sort('leave_end') ?></th>
+                    <th><?= $this->Paginator->sort('status') ?></th>
                     <th><?= $this->Paginator->sort('remark') ?></th>
                 </tr>
           </thead>
           <tbody>
             <?php foreach ($rejectedLeaveRequests as $leaveRequest) : ?>
                 <tr>
-                    <td><?= $this->Number->format($leaveRequest->id) ?></td>
-                    <td><?= h($leaveRequest->description) ?></td>
-                    <td><?= h($leaveRequest->status) ?></td>
-                    <td><?= h($leaveRequest->leave_type->name) ?></td>
-                    <td><?= $this->Number->format($leaveRequest->days) ?></td>
-                    <td><?= h($leaveRequest->start_of_leave) ?></td>
-                    <td><?= h($leaveRequest->end_of_leave) ?></td>
-                    <td><?= h($leaveRequest->remark) ?></td>
+                  <td><?= $this->Number->format($leaveRequest->id) ?></td>
+                  <td><?= h($leaveRequest->user->username) ?></td>
+                  <td><?= h($leaveRequest->description) ?></td>
+                  <td><?= $this->Number->format($leaveRequest->days) ?></td>
+                  <td><?= h($leaveRequest->leave_type->name) ?></td>
+                  <td><?= h($leaveRequest->start_of_leave) ?></td>
+                  <td><?= h($leaveRequest->end_of_leave) ?></td>
+                  <td><?= h($leaveRequest->status) ?></td>
+                  <td><?= h($leaveRequest->remark) ?></td>
                 </tr>
             <?php endforeach; ?>
           </tbody>
