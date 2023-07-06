@@ -220,15 +220,17 @@ class UsersController extends AppController
     // At the start of a new year, create new leave details
     public function update() {
         $this->Authorization->skipAuthorization();
+        $updated = FALSE;
+
         if (FrozenTime::now()->month === 1) { // for testing, set to current month
             $prevYear = FrozenTime::now()->year - 1; // for testing, set to current year 
-
             // get latest $latestLeaveDetail
             $leaveDetailsController = new \App\Controller\LeaveDetailsController();
             $latestLeaveDetail = $leaveDetailsController->LeaveDetails->find()->last();
 
             if ($latestLeaveDetail->year == $prevYear) {
                 $mapUsersPrevYearALBalance = $this->getMapUsersPrevYearsALBalance();
+                $updated = TRUE;
 
                 foreach ($mapUsersPrevYearALBalance as $k => $v) {  
                     // auto-create new leaveDetail for each user
@@ -249,7 +251,11 @@ class UsersController extends AppController
         }
 
         $userID = $this->Authentication->getResult()->getData()->id;
-        $this->Flash->success(__('New leave balances have been created for current year.'));
+        if ($updated) {
+            $this->Flash->success(__('New leave balances have been created for current year.'));
+        } else {
+            $this->Flash->error(__('No new leave balances to be created for current year.'));
+        }
         return $this->redirect(['controller' => 'Users', 'action' => 'view', $userID]);
     }
 
@@ -300,23 +306,14 @@ class UsersController extends AppController
 
     // Map user's ID to their previous year AL balance
     // e.g. ['ID: 1' => 'AL Balance: 7', 'ID: 2' => 'AL Balance: 5']
-    // TODO: Refactor to use query instead
-    // i.e $leaveDetailsController->LeaveDetails->find()
-    // ->where(['year' => $prevYear], ['leave_type_id' => 1])->toArray();
     public function getMapUsersPrevYearsALBalance() {
         $leaveDetailsController = new \App\Controller\LeaveDetailsController();
-        $leaveDetailsController->paginate = [
-            'contain' => ['Users'],
-        ];
-        $leaveDetails = $leaveDetailsController->paginate($leaveDetailsController->LeaveDetails);
+        $prevYear = FrozenTime::now()->year - 1; // for testing, set to current year
+        $leaveDetails = $leaveDetailsController->LeaveDetails->find()->where(['year' => $prevYear], ['leave_type_id' => 1])->toArray();
         $mapUsersPrevYearALBalance = array();
 
         foreach ($leaveDetails as $leaveDetail) {
-            $prevYear = FrozenTime::now()->year - 1; // for testing, set to current year
-            if ($leaveDetail->year == $prevYear
-            && $leaveDetail->leave_type_id === 1) {
-                $mapUsersPrevYearALBalance[$leaveDetail->user_id] = $leaveDetail->balance;
-            }
+            $mapUsersPrevYearALBalance[$leaveDetail->user_id] = $leaveDetail->balance;
         }
 
         return $mapUsersPrevYearALBalance;
