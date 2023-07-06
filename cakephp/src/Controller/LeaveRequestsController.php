@@ -155,7 +155,7 @@ class LeaveRequestsController extends AppController
         // $this->checkAdminAuthorization();
         $this->Authorization->skipAuthorization();
 
-        $approvedRequests = $this->LeaveRequests->find()->where(['status' => "approved"])->toArray();
+        $approvedLeaveRequests = $this->LeaveRequests->find()->where(['status' => "Approved"])->contain(['LeaveTypes'])->toArray();
 
         $this->set(compact('approvedLeaveRequests'));
     }
@@ -164,7 +164,7 @@ class LeaveRequestsController extends AppController
         // $this->checkAdminAuthorization();
         $this->Authorization->skipAuthorization();
 
-        $rejectedRequests = $this->LeaveRequests->find()->where(['status' => "rejected"])->toArray();
+        $rejectedLeaveRequests = $this->LeaveRequests->find()->where(['status' => "Rejected"])->contain(['LeaveTypes'])->toArray();
 
         $this->set(compact('rejectedLeaveRequests'));
     }

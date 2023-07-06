@@ -31,7 +31,7 @@ $this->Breadcrumbs->add([
                 </tr>
           </thead>
           <tbody>
-          <?php foreach ($rejectedLeaveRequests as $leaveRequest) : ?>
+            <?php foreach ($rejectedLeaveRequests as $leaveRequest) : ?>
                 <tr>
                     <td><?= $this->Number->format($leaveRequest->id) ?></td>
                     <td><?= h($leaveRequest->description) ?></td>
@@ -42,7 +42,7 @@ $this->Breadcrumbs->add([
                     <td><?= h($leaveRequest->end_of_leave) ?></td>
                     <td><?= h($leaveRequest->remark) ?></td>
                 </tr>
-                <?php endforeach; ?>
+            <?php endforeach; ?>
           </tbody>
       </table>
   </div>
