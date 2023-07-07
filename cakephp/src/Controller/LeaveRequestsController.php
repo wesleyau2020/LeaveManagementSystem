@@ -189,12 +189,14 @@ class LeaveRequestsController extends AppController
                 $query->where(['year' => $search['year']]);
             }
         }
-    
+
         $leaveRequests = $this->paginate($query);
         $leaveRequestsContains = array();
-        foreach ($leaveRequests as $LeaveRequest) {
-            $leaveRequestID = $LeaveRequest->id;
-            $tmpLeaveRequest = $this->LeaveRequests->find()->contain(['Users','LeaveTypes'])->toArray();
+        foreach ($leaveRequests as $leaveRequest) {
+            $leaveRequestID = $leaveRequest->id;
+            $tmpLeaveRequest = $this->LeaveRequests->get($leaveRequestID, [
+                'contain' => ['Users', 'LeaveTypes'],
+            ]);
             array_push($leaveRequestsContains, $tmpLeaveRequest);
         }
         
