@@ -19,7 +19,7 @@ class LeaveDetailsController extends AppController
      */
     public function index()
     {
-        $this->Authorization->skipAuthorization();
+        $this->checkAdminAuthorization();
         $this->paginate = [
             'contain' => ['Users'],
         ];
@@ -37,10 +37,17 @@ class LeaveDetailsController extends AppController
      */
     public function view($id = null)
     {
-        $this->Authorization->skipAuthorization();
         $leaveDetail = $this->LeaveDetails->get($id, [
             'contain' => ['Users'],
         ]);
+
+        $leaveDetailUserID = $leaveDetail->user_id;
+        if ($this->Authentication->getResult()->getData()->id == $leaveDetailUserID) {
+            // skip authorization if user is viewing his own leave requests
+            $this->Authorization->skipAuthorization();
+        } else {
+            $this->checkAdminAuthorization();
+        }
 
         $this->set(compact('leaveDetail'));
     }
@@ -52,7 +59,7 @@ class LeaveDetailsController extends AppController
      */
     public function add()
     {
-        $this->Authorization->skipAuthorization();
+        $this->checkAdminAuthorization();
         $leaveDetail = $this->LeaveDetails->newEmptyEntity();
 
         if ($this->request->is('post')) {
@@ -78,7 +85,7 @@ class LeaveDetailsController extends AppController
      */
     public function edit($id = null)
     {
-        $this->Authorization->skipAuthorization();
+        $this->checkAdminAuthorization();
         $leaveDetail = $this->LeaveDetails->get($id, [
             'contain' => [],
         ]);
@@ -106,7 +113,7 @@ class LeaveDetailsController extends AppController
      */
     public function delete($id = null)
     {
-        $this->Authorization->skipAuthorization();
+        $this->checkAdminAuthorization();
         $this->request->allowMethod(['post', 'delete']);
         $leaveDetail = $this->LeaveDetails->get($id);
 
@@ -121,7 +128,8 @@ class LeaveDetailsController extends AppController
 
     // Update leave balance every month (in current year)
     public function update() {
-        $this->Authorization->skipAuthorization();
+        $this->checkAdminAuthorization();
+
         $currYear = FrozenTime::now()->year;
         $leaveDetails = $this->LeaveDetails->find()->where(['year' => $currYear], ['leave_type_id' => 1])->toArray();
         $usersController = new \App\Controller\UsersController();
@@ -138,5 +146,18 @@ class LeaveDetailsController extends AppController
 
         $this->Flash->success(__('All leave balances have been updated for current month.'));
         return $this->redirect(['action' => 'index']);
+    }
+
+    public function checkAdminAuthorization() {
+        $userID = $this->Authentication->getResult()->getData()->id??0;
+        $usersController = new \App\Controller\UsersController();
+        $user = $usersController->Users->get($userID);
+
+        try {
+            $this->Authorization->authorize($user);
+        } catch (\Exception $e) {
+            $this->Flash->error(__('You are not authorised to view this page.'));
+            return $this->redirect(['controller' => 'LeaveRequests', 'action' => 'displayApprovedRequests', $userID]);
+        }
     }
 }
