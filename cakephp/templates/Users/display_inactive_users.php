@@ -20,7 +20,7 @@ $this->Breadcrumbs->add([
       <table class="table table-hover text-nowrap">
           <thead>
               <tr>
-                  <th><?= $this->Paginator->sort('id') ?></th>
+                  <th><?= $this->Paginator->sort('ID') ?></th>
                   <th><?= $this->Paginator->sort('username') ?></th>
                   <th><?= $this->Paginator->sort('start_date') ?></th>
                   <th><?= $this->Paginator->sort('end_date') ?></th>
@@ -56,6 +56,9 @@ $this->Breadcrumbs->add([
         <?= $this->Html->link(__('Display Active Users'), ['action' => 'displayActiveUsers'], ['class' => 'btn btn-primary btn-sm']) ?>
         <?= $this->Form->end(); ?>
       </div>
+    </div>
+    <div class="" style="float: right; margin-left: 10px">
+      <?= $this->Html->link(__('Cancel'), ['action' => 'add'], ['class' => 'btn btn-default btn-sm']) ?>
     </div>
   </div>
 </div>
