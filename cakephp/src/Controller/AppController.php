@@ -52,18 +52,5 @@ class AppController extends Controller
          */
         //$this->loadComponent('FormProtection');
     }
-
-    // public function checkAdminAuthorization() {
-    //     $result = $this->Authentication->getResult();
-    //     $userID  = $result->getData()->id;
-    //     $user = $this->Users->get($userID);
-
-    //     try {
-    //         $this->Authorization->authorize($user);
-    //     } catch (\Exception $e) {
-    //         $this->Flash->error(__('You are not authorised to view this user.'));
-    //         // redirect user back to his own view page
-    //         return $this->redirect(['controller' => 'Users', 'action' => 'view', $userID]);
-    //     }
-    // }
+    
 }

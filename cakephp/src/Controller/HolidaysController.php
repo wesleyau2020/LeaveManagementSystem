@@ -18,7 +18,7 @@ class HolidaysController extends AppController
      */
     public function index()
     {
-        $this->Authorization->skipAuthorization();
+        $this->checkAdminAuthorization();
         $holidays = $this->paginate($this->Holidays);
 
         $this->set(compact('holidays'));
@@ -33,7 +33,7 @@ class HolidaysController extends AppController
      */
     public function view($id = null)
     {
-        $this->Authorization->skipAuthorization();
+        $this->checkAdminAuthorization();
         $holiday = $this->Holidays->get($id, [
             'contain' => [],
         ]);
@@ -48,7 +48,7 @@ class HolidaysController extends AppController
      */
     public function add()
     {
-        $this->Authorization->skipAuthorization();
+        $this->checkAdminAuthorization();
         $holiday = $this->Holidays->newEmptyEntity();
         if ($this->request->is('post')) {
             $holiday = $this->Holidays->patchEntity($holiday, $this->request->getData());
@@ -72,7 +72,7 @@ class HolidaysController extends AppController
      */
     public function edit($id = null)
     {
-        $this->Authorization->skipAuthorization();
+        $this->checkAdminAuthorization();
         $holiday = $this->Holidays->get($id, [
             'contain' => [],
         ]);
@@ -97,7 +97,7 @@ class HolidaysController extends AppController
      */
     public function delete($id = null)
     {
-        $this->Authorization->skipAuthorization();
+        $this->checkAdminAuthorization();
         $this->request->allowMethod(['post', 'delete']);
         $holiday = $this->Holidays->get($id);
         if ($this->Holidays->delete($holiday)) {
@@ -113,5 +113,18 @@ class HolidaysController extends AppController
         $this->Authorization->skipAuthorization();
         $holidays = $this->paginate($this->Holidays);
         $this->set(compact('holidays'));
+    }
+
+    public function checkAdminAuthorization() {
+        $userID = $this->Authentication->getResult()->getData()->id??0;
+        $usersController = new \App\Controller\UsersController();
+        $user = $usersController->Users->get($userID);
+
+        try {
+            $this->Authorization->authorize($user);
+        } catch (\Exception $e) {
+            $this->Flash->error(__('You are not authorised to view this page.'));
+            return $this->redirect(['controller' => 'Holidays', 'action' => 'display']);
+        }
     }
 }

@@ -21,7 +21,7 @@ class WorkdaysController extends AppController
      */
     public function index()
     {
-        $this->Authorization->skipAuthorization();
+        $this->checkAdminAuthorization();
         $workdays = $this->paginate($this->Workdays);
 
         $this->set(compact('workdays'));
@@ -36,7 +36,7 @@ class WorkdaysController extends AppController
      */
     public function view($id = null)
     {
-        $this->Authorization->skipAuthorization();
+        $this->checkAdminAuthorization();
         $workday = $this->Workdays->get($id, [
             'contain' => [],
         ]);
@@ -51,7 +51,7 @@ class WorkdaysController extends AppController
      */
     public function add()
     {
-        $this->Authorization->skipAuthorization();
+        $this->checkAdminAuthorization();
         $workday = $this->Workdays->newEmptyEntity();
         if ($this->request->is('post')) {
             $workday = $this->Workdays->patchEntity($workday, $this->request->getData());
@@ -74,7 +74,7 @@ class WorkdaysController extends AppController
      */
     public function edit($id = null)
     {
-        $this->Authorization->skipAuthorization();
+        $this->checkAdminAuthorization();
         $workday = $this->Workdays->get($id, [
             'contain' => [],
         ]);
@@ -100,7 +100,7 @@ class WorkdaysController extends AppController
      */
     public function delete($id = null)
     {
-        $this->Authorization->skipAuthorization();
+        $this->checkAdminAuthorization();
         $this->request->allowMethod(['post', 'delete']);
         $workday = $this->Workdays->get($id);
         if ($this->Workdays->delete($workday)) {
@@ -112,11 +112,11 @@ class WorkdaysController extends AppController
         return $this->redirect(['action' => 'index']);
     }
 
-    // Function to set days as workday or not
+    // Function to update workday->is_workday as TRUE or FALSE
     // e.g Monday -> is_workday = TRUE, Saturday -> is_workday = FALSE 
     public function update()
     {
-        $this->Authorization->skipAuthorization();
+        $this->checkAdminAuthorization();
         $workdays = $this->paginate($this->Workdays);
         $this->set(compact('workdays'));
       
@@ -124,7 +124,7 @@ class WorkdaysController extends AppController
         if ($this->request->is(['patch', 'post', 'put'])) {
             $results = $this->request->getData();   // Get the result of the PATCH/POST/PUT.
 
-            // $this->set(compact('results')); //Debug
+            // $this->set(compact('results')); // Debug
 
             $workdaysTable = $this->Workdays;       // The Workdays Database Table object.
             $flag = true;                           // Error flag, no error TRUE.
@@ -146,6 +146,19 @@ class WorkdaysController extends AppController
             if($flag) {
                 $this->Flash->success(__('The workday(s) have successfully been saved.'));
             }
+        }
+    }
+
+    public function checkAdminAuthorization() {
+        $userID = $this->Authentication->getResult()->getData()->id??0;
+        $usersController = new \App\Controller\UsersController();
+        $user = $usersController->Users->get($userID);
+
+        try {
+            $this->Authorization->authorize($user);
+        } catch (\Exception $e) {
+            $this->Flash->error(__('You are not authorised to view this page.'));
+            return $this->redirect(['controller' => 'Workdays', 'action' => 'index']);
         }
     }
 }

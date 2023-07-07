@@ -243,7 +243,6 @@ class LeaveRequestsController extends AppController
             $this->Authorization->authorize($user);
         } catch (\Exception $e) {
             $this->Flash->error(__('You are not authorised to view this page.'));
-            // redirect user back to his own view page
             return $this->redirect(['controller' => 'LeaveRequests', 'action' => 'displayApprovedRequests', $userID]);
         }
     }

@@ -58,4 +58,9 @@ class LeaveDetailsPolicy
     {
         return $this->isAdmin($user, $resource);
     }
+
+    protected function isAdmin(IdentityInterface $user, User $resource)
+    {
+        return $user->is_admin === TRUE;
+    }
 }

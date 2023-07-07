@@ -18,7 +18,7 @@ class LeaveTypesController extends AppController
      */
     public function index()
     {
-        $this->Authorization->skipAuthorization();
+        $this->checkAdminAuthorization();
         $leaveTypes = $this->paginate($this->LeaveTypes);
 
         $this->set(compact('leaveTypes'));
@@ -33,7 +33,7 @@ class LeaveTypesController extends AppController
      */
     public function view($id = null)
     {
-        $this->Authorization->skipAuthorization();
+        $this->checkAdminAuthorization();
         $leaveType = $this->LeaveTypes->get($id, [
             'contain' => ['LeaveTypes', 'LeaveDetails', 'LeaveRequests'],
         ]);
@@ -48,7 +48,7 @@ class LeaveTypesController extends AppController
      */
     public function add()
     {
-        $this->Authorization->skipAuthorization();
+        $this->checkAdminAuthorization();
         $leaveType = $this->LeaveTypes->newEmptyEntity();
         if ($this->request->is('post')) {
             $leaveType = $this->LeaveTypes->patchEntity($leaveType, $this->request->getData());
@@ -71,7 +71,7 @@ class LeaveTypesController extends AppController
      */
     public function edit($id = null)
     {
-        $this->Authorization->skipAuthorization();
+        $this->checkAdminAuthorization();
         $leaveType = $this->LeaveTypes->get($id, [
             'contain' => [],
         ]);
@@ -96,7 +96,7 @@ class LeaveTypesController extends AppController
      */
     public function delete($id = null)
     {
-        $this->Authorization->skipAuthorization();
+        $this->checkAdminAuthorization();
         $this->request->allowMethod(['post', 'delete']);
         $leaveType = $this->LeaveTypes->get($id);
         if ($this->LeaveTypes->delete($leaveType)) {
@@ -106,5 +106,18 @@ class LeaveTypesController extends AppController
         }
 
         return $this->redirect(['action' => 'index']);
+    }
+
+    public function checkAdminAuthorization() {
+        $userID = $this->Authentication->getResult()->getData()->id??0;
+        $usersController = new \App\Controller\UsersController();
+        $user = $usersController->Users->get($userID);
+
+        try {
+            $this->Authorization->authorize($user);
+        } catch (\Exception $e) {
+            $this->Flash->error(__('You are not authorised to view this page.'));
+            return $this->redirect(['controller' => 'Users', 'action' => 'index', $userID]);
+        }
     }
 }
