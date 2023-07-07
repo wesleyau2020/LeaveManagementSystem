@@ -10,7 +10,7 @@ $inputYear = $_POST["inputYear"]??date('Y');
 ?>
 
 <?php
-$this->assign('title', __('User Details'));
+$this->assign('title', __('Welcome '.$user->username.'!'));
 $this->Breadcrumbs->add([
     ['title' => 'Home', 'url' => '/'],
     ['title' => 'List Users', 'url' => ['action' => 'index']],
@@ -20,11 +20,12 @@ $this->Breadcrumbs->add([
 
 <div class="view card card-primary card-outline">
   <div class="card-header d-sm-flex">
+    <h3 class="card-title"><?= __('User Details')?></h3>
   </div>
   <div class="card-body table-responsive p-0">
     <table class="table table-hover text-nowrap">
         <tr>
-            <th><?= __('Id') ?></th>
+            <th><?= __('ID') ?></th>
             <td><?= $this->Number->format($user->id) ?></td>
         </tr>
         <tr>
@@ -47,12 +48,11 @@ $this->Breadcrumbs->add([
 </div>
 
 
-<div class="related related-leaveDetails view card">
+<div class="view card card-primary card-outline">
   <div class="card-header d-sm-flex">
-    <h3 class="card-title"><?= __('Related Leave Details') ?></h3>
-    <div class="card-toolbox">
-      <!-- <?= $this->Html->link(__('New'), ['controller' => 'LeaveDetails' , 'action' => 'add'], ['class' => 'btn btn-primary btn-sm']) ?>
-      <?= $this->Html->link(__('List '), ['controller' => 'LeaveDetails' , 'action' => 'index'], ['class' => 'btn btn-primary btn-sm']) ?> -->
+    <h3 class="card-title"><?= __('Leave Details (').$inputYear .')'?></h3>
+    <div class="card-toolbox">  
+      <!--  -->
     </div>
   </div>
   <div class="card-body table-responsive p-0">
@@ -73,7 +73,7 @@ $this->Breadcrumbs->add([
               Leave Details record not found!
             </td>
         </tr>
-      <?php }else{ ?>
+      <?php } else { ?>
         <?php foreach ($user->leave_details as $leaveDetails) : ?>
           <?php if ($leaveDetails->year === $inputYear) : ?>
             <?php $leaveTypeName = $leaveTypeNames[$leaveDetails->leave_type_id - 1]; ?>
@@ -96,6 +96,7 @@ $this->Breadcrumbs->add([
       <?php } ?>
     </table>
   </div>
+
   <div class="card-footer d-flex">
     <div class="">
     </div>
@@ -115,7 +116,6 @@ $this->Breadcrumbs->add([
                 'min' => 2000,
                 'max' => date('Y'),
                 'default' => $inputYear,
-
             ])
         ?>
         </div>

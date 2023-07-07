@@ -5,8 +5,8 @@
  * @var \App\Model\Entity\LeaveRequest $leaveRequest
  */
 
-/** @var string input_year */
-$input_year = $_POST["input_year"]??date('Y');
+/** @var string inputYear */
+$inputYear = $_POST["inputYear"]??date('Y');
 ?>
 <?php
 $this->assign('title', __('Add Leave Request'));
@@ -41,31 +41,9 @@ $this->Breadcrumbs->add([
 
 <div class="card card-primary card-outline">
     <div class="card-header d-sm-flex">
-        <h2 class="card-title" style="margin-top:10px"><?= __('Submitted Leave Requests') ?></h2>
-        <div class="card-toolbox">
-            <!-- select year via dropdown menu -->
-            <div style="float:left">
-                <?= 
-                    $this->Form->create($userLeaveRequests, [
-                        'type' => 'post',
-                        'valueSources' => ['query', 'data'],
-                        'url' => ['action' => 'index/'],
-                    ])
-                ?>
-                <?=
-                    $this->Form->year('input_year', [
-                        'min' => 2000,
-                        'max' => date('Y'),
-                        'default' => $input_year
-                    ])
-                ?>
-            </div>
-            <div style="float:right">
-                <?php
-                    echo $this->Form->button('Submit');
-                    echo $this->Form->end();
-                ?>
-            </div>
+        <h3 class="card-title"><?= __('Leave Details (').$inputYear .')'?></h3>
+        <div class="card-toolbox">  
+            <!--  -->
         </div>
     </div>
     <!-- /.card-header -->
@@ -87,7 +65,7 @@ $this->Breadcrumbs->add([
             </thead>
             <tbody>
                 <?php foreach ($userLeaveRequests as $leaveRequest) : ?>
-                    <?php if ($leaveRequest->year === $input_year): ?>
+                    <?php if ($leaveRequest->year === $inputYear): ?>
                     <tr>
                         <td><?= $this->Number->format($leaveRequest->id) ?></td>
                         <td><?= h($leaveRequest->description) ?></td>
@@ -110,9 +88,34 @@ $this->Breadcrumbs->add([
     </div>
     <!-- /.card-body -->
 
-    <div class="card-footer d-md-flex paginator">
-
+    <div class="card-footer d-flex">
+        <div class="">
+        </div>
+        <div class="ml-auto">
+            <!-- select year via dropdown menu -->
+            <div style="float:left">
+            <?= 
+                $this->Form->create($userLeaveRequests, [
+                    'type' => 'post',
+                    'valueSources' => ['query', 'data'],
+                    'url' => ['action' => 'index/'],
+                ])
+            ?>
+            <?=
+                $this->Form->year('inputYear', [
+                    'min' => 2000,
+                    'max' => date('Y'),
+                    'default' => $inputYear
+                ])
+            ?>
+            </div>
+            <div style="float:right">
+                <?php
+                    echo $this->Form->button('Submit');
+                    echo $this->Form->end();
+                ?>
+            </div>
+        </div>
     </div>
     <!-- /.card-footer -->
-  </div>
 </div>
