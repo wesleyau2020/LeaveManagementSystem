@@ -165,23 +165,33 @@ class LeaveRequestsController extends AppController
     // Takes in certain parameters and display leave requests
     public function search() {
         $this->Authorization->skipAuthorization();
-        // $leaveRequest = $this->LeaveRequests->newEmptyEntity();
-        // $this->set(compact('leaveRequest'));
+        $leaveRequest = $this->LeaveRequests->newEmptyEntity();
+        $this->set(compact('leaveRequest'));
         
         $query = $this->LeaveRequests->find();
 
         if ($this->request->is('get')) {
             $search = $this->request->getQueryParams();
-            debug("hello");
-            debug($search);
-    
-            if (!empty($search['id'])) {
-                $query->where(['id' => $search['id']]);
+            if (!empty($search['userID'])) {
+                // $query->where(['<entity attribute>' => $search['<input variable>]]);
+                $query->where(['user_id' => $search['userID']]);
+            }
+            if (!empty($search['leaveTypeID'])) {
+                $query->where(['leave_type_id' => $search['leaveTypeID']]);
+            }
+            if (!empty($search['start_date'])) {
+                $query->where(['start_of_leave' => $search['start_date']]);
+            }
+            if (!empty($search['end_date'])) {
+                $query->where(['end_of_leave' => $search['end_date']]);
+            }
+            if (!empty($search['year'])) {
+                $query->where(['year' => $search['year']]);
             }
         }
     
         $leaveRequests = $this->paginate($query);
-        // debug($leaveRequests);
+        debug($leaveRequests);
         $this->set(compact('leaveRequests'));
     }
 
