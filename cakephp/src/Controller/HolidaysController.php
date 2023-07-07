@@ -115,6 +115,14 @@ class HolidaysController extends AppController
         $this->set(compact('holidays'));
     }
 
+    public function deleteIndex()
+    {
+        $this->Authorization->skipAuthorization();
+        $holidays = $this->paginate($this->Holidays);
+
+        $this->set(compact('holidays'));
+    }
+
     public function checkAdminAuthorization() {
         $userID = $this->Authentication->getResult()->getData()->id??0;
         $usersController = new \App\Controller\UsersController();

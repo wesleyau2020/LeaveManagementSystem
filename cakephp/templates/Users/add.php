@@ -30,8 +30,8 @@ $this->Breadcrumbs->add([
 
   <div class="card-footer d-flex">    
     <div class="" style="float: left">
-      <?= $this->Html->link(__('Display Active Users'), ['action' => 'displayActiveUsers'], ['class' => 'btn btn-primary btn-sm'], ['style' => 'float:left']) ?>
-      <?= $this->Html->link(__('Display Inactive Users'), ['action' => 'displayInactiveUsers'], ['class' => 'btn btn-sm btn-danger'], ['style' => 'float:left']) ?>
+      <?= $this->Html->link(__('Display Active Users'), ['action' => 'displayActiveUsers'], ['class' => 'btn btn-primary btn-sm'], ['style' => 'float: left']) ?>
+      <?= $this->Html->link(__('Display Inactive Users'), ['action' => 'displayInactiveUsers'], ['class' => 'btn btn-sm btn-danger'], ['style' => 'float: left']) ?>
     </div>
     <div class="ml-auto">
       <?= $this->Form->button(__('Save')) ?>

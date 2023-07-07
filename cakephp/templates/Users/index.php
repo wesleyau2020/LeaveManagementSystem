@@ -55,32 +55,31 @@ $this->Breadcrumbs->add([
     <!-- /.card-body -->
 
     <div class="card-footer d-flex">
-    <div class="">
-    </div>
-    <div class="ml-auto">
-        <!-- select year via dropdown menu -->
-        <div style="float: left">
-        <?= 
-            $this->Form->create($user, [
-                'type' => 'post',
-                'valueSources' => ['query', 'data'],
-                'url' => ['action' => 'view/'.($user->id)],
-                'style' => "margin-right: 5px"
-            ])
-        ?>
-        <?=
-            $this->Form->year('inputYear', [
-                'min' => 2000,
-                'max' => date('Y'),
-                'default' => $inputYear,
-            ])
+        <div class=""></div>
+        <div class="ml-auto">
+            <!-- select year via dropdown menu -->
+            <div style="float: left">
+                <?= 
+                    $this->Form->create($user, [
+                        'type' => 'post',
+                        'valueSources' => ['query', 'data'],
+                        'url' => ['action' => 'view/'.($user->id)],
+                        'style' => "margin-right: 5px"
+                    ])
+                ?>
+                <?=
+                    $this->Form->year('inputYear', [
+                        'min' => 2000,
+                        'max' => date('Y'),
+                        'default' => $inputYear,
+                    ])
+                ?>
+            </div>
+        <?php
+            echo $this->Form->button('Submit');
+            echo $this->Form->end();
         ?>
         </div>
-      <?php
-          echo $this->Form->button('Submit');
-          echo $this->Form->end();
-      ?>
-    </div>
-  </div>
     <!-- /.card-footer -->
+    </div>
 </div>
