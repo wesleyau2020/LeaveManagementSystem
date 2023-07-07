@@ -162,6 +162,29 @@ class LeaveRequestsController extends AppController
         return $this->redirect(['action' => 'add']);
     }
 
+    // Takes in certain parameters and display leave requests
+    public function search() {
+        $this->Authorization->skipAuthorization();
+        // $leaveRequest = $this->LeaveRequests->newEmptyEntity();
+        // $this->set(compact('leaveRequest'));
+        
+        $query = $this->LeaveRequests->find();
+
+        if ($this->request->is('get')) {
+            $search = $this->request->getQueryParams();
+            debug("hello");
+            debug($search);
+    
+            if (!empty($search['id'])) {
+                $query->where(['id' => $search['id']]);
+            }
+        }
+    
+        $leaveRequests = $this->paginate($query);
+        // debug($leaveRequests);
+        $this->set(compact('leaveRequests'));
+    }
+
     public function displayApprovedRequests() {
         $this->Authorization->skipAuthorization();
         $userID = $this->Authentication->getResult()->getData()->id??0;
