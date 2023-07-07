@@ -78,7 +78,7 @@ class LeaveRequestsController extends AppController
             $leaveRequest->days = $end->diff($start)->format("%a");
 
             // set status
-            $leaveRequest->status = "Awaiting Level 1";
+            $leaveRequest->status = "Awaiting Level 2";
 
             // save new leave request
             if ($this->LeaveRequests->save($leaveRequest)) {
@@ -209,10 +209,17 @@ class LeaveRequestsController extends AppController
 
     public function displayApprovedRequests() {
         $this->Authorization->skipAuthorization();
+
+        $leaveRequest = $this->LeaveRequests->newEmptyEntity();
+        $this->set(compact('leaveRequest'));
+
         $userID = $this->Authentication->getResult()->getData()->id??0;
 
-        $approvedLeaveRequests = $this->LeaveRequests->find()->where(['user_id' => $userID], ['status' => "Approved"])->contain(['Users','LeaveTypes'])->toArray();
-        $pendingLeaveRequests = $this->LeaveRequests->find()->where(['user_id' => $userID], ['status' => "Awaiting Level 2"])->contain(['Users', 'LeaveTypes'])->toArray();
+        $approvedLeaveRequests = $this->LeaveRequests->find()->where(['user_id' => $userID, 'status' => "Approved"])->contain(['Users','LeaveTypes'])->toArray();
+
+        $tmp1 = $this->LeaveRequests->find()->where(['user_id' => $userID, 'status' => "Awaiting Level 1"])->contain(['Users', 'LeaveTypes'])->toArray();
+        $tmp2 = $this->LeaveRequests->find()->where(['user_id' => $userID, 'status' => "Awaiting Level 2"])->contain(['Users', 'LeaveTypes'])->toArray();
+        $pendingLeaveRequests = array_merge($tmp1, $tmp2);
 
         $this->set(compact('approvedLeaveRequests'));
         $this->set(compact('pendingLeaveRequests'));
@@ -220,10 +227,17 @@ class LeaveRequestsController extends AppController
 
     public function displayRejectedRequests() {
         $this->Authorization->skipAuthorization();
+        
+        $leaveRequest = $this->LeaveRequests->newEmptyEntity();
+        $this->set(compact('leaveRequest'));
+
         $userID = $this->Authentication->getResult()->getData()->id??0;
 
-        $rejectedLeaveRequests = $this->LeaveRequests->find()->where(['user_id' => $userID], ['status' => "Rejected"])->contain(['Users', 'LeaveTypes'])->toArray();
-        $pendingLeaveRequests = $this->LeaveRequests->find()->where(['user_id' => $userID], ['status' => "Awaiting Level 2"])->contain(['Users', 'LeaveTypes'])->toArray();
+        $rejectedLeaveRequests = $this->LeaveRequests->find()->where(['user_id' => $userID, 'status' => "Rejected"])->contain(['Users', 'LeaveTypes'])->toArray();
+
+        $tmp1 = $this->LeaveRequests->find()->where(['user_id' => $userID, 'status' => "Awaiting Level 1"])->contain(['Users', 'LeaveTypes'])->toArray();
+        $tmp2 = $this->LeaveRequests->find()->where(['user_id' => $userID, 'status' => "Awaiting Level 2"])->contain(['Users', 'LeaveTypes'])->toArray();
+        $pendingLeaveRequests = array_merge($tmp1, $tmp2);
 
         $this->set(compact('rejectedLeaveRequests'));
         $this->set(compact('pendingLeaveRequests'));
@@ -237,12 +251,12 @@ class LeaveRequestsController extends AppController
         $usersController = new \App\Controller\UsersController();
         $user = $usersController->Users->get($userID);
 
-        if ($user->admin_level === 1 && $leaveRequest->status == "Awaiting Level 1") {
-            $leaveRequest->status = "Awaiting Level 2";
-        } else if ($user->admin_level === 2 && $leaveRequest->status == "Awaiting Level 2") {
+        if ($user->admin_level === 2 && $leaveRequest->status == "Awaiting Level 2") {
+            $leaveRequest->status = "Awaiting Level 1";
+        } else if ($user->admin_level === 1 && $leaveRequest->status == "Awaiting Level 1") {
             $leaveRequest->status = "Approved";
         } else {
-            $this->Flash->error(__('The leave request could needs to be approved by a same-level admin'));
+            $this->Flash->error(__('The leave request could needs to be approved by a higher-level admin'));
             return $this->redirect(['action' => 'index']);
         }
 
@@ -263,7 +277,7 @@ class LeaveRequestsController extends AppController
         $usersController = new \App\Controller\UsersController();
         $user = $usersController->Users->get($userID);
 
-        if ($user->admin_level === 2 && $leaveRequest->status != "Approved") {
+        if ($leaveRequest->status != "Approved") {
             $leaveRequest->status = "Rejected";
         } else {
             $this->Flash->error(__('The leave request could not be rejected. Please, try again.'));

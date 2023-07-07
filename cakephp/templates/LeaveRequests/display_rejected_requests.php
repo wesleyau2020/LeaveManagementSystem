@@ -20,15 +20,15 @@ $this->Breadcrumbs->add([
 
 <div class="card card-primary card-outline">
     <div class="card-header d-sm-flex">
-      <h2 class="card-title" style="margin-top:10px"><?= __('Approved Requests')?></h2>
+      <h2 class="card-title" style="margin-top:10px"><?= __('Rejected Requests')?></h2>
       <div class="card-toolbox">
         <!-- select year via dropdown menu -->
         <div style="float:left;">
         <?= 
-            $this->Form->create($pendingLeaveRequests, [
+            $this->Form->create($leaveRequest, [
                 'type' => 'post',
                 'valueSources' => ['query', 'data'],
-                'url' => ['action' => 'index/'],
+                'url' => ['action' => 'displayRejectedRequests/'],
             ])
         ?>
         <?=
@@ -65,18 +65,20 @@ $this->Breadcrumbs->add([
           </thead>
           <tbody>
             <?php foreach ($rejectedLeaveRequests as $leaveRequest) : ?>
-                <tr>
-                  <td><?= $this->Number->format($leaveRequest->id) ?></td>
-                  <td><?= h($leaveRequest->user->username) ?></td>
-                  <td><?= h($leaveRequest->description) ?></td>
-                  <td><?= $this->Number->format($leaveRequest->days) ?></td>
-                  <td><?= h($leaveRequest->leave_type->name) ?></td>
-                  <td><?= h($leaveRequest->start_of_leave) ?></td>
-                  <td><?= h($leaveRequest->end_of_leave) ?></td>
-                  <td><?= h($leaveRequest->status) ?></td>
-                  <td><?= h($leaveRequest->remark) ?></td>
-                </tr>
-                <?php endforeach; ?>
+              <?php if ($leaveRequest->year === $inputYear): ?>
+                  <tr>
+                    <td><?= $this->Number->format($leaveRequest->id) ?></td>
+                    <td><?= h($leaveRequest->user->username) ?></td>
+                    <td><?= h($leaveRequest->description) ?></td>
+                    <td><?= $this->Number->format($leaveRequest->days) ?></td>
+                    <td><?= h($leaveRequest->leave_type->name) ?></td>
+                    <td><?= h($leaveRequest->start_of_leave) ?></td>
+                    <td><?= h($leaveRequest->end_of_leave) ?></td>
+                    <td><?= h($leaveRequest->status) ?></td>
+                    <td><?= h($leaveRequest->remark) ?></td>
+                  </tr>
+                <?php endif; ?>
+              <?php endforeach; ?>
           </tbody>
       </table>
   </div>

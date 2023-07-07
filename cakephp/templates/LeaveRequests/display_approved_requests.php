@@ -25,10 +25,10 @@ $this->Breadcrumbs->add([
             <!-- select year via dropdown menu -->
             <div style="float:left;">
             <?= 
-                $this->Form->create($pendingLeaveRequests, [
+                $this->Form->create($leaveRequest, [
                     'type' => 'post',
                     'valueSources' => ['query', 'data'],
-                    'url' => ['action' => 'index/'],
+                    'url' => ['action' => 'displayApprovedRequests/'],
                 ])
             ?>
             <?=
@@ -65,6 +65,7 @@ $this->Breadcrumbs->add([
           </thead>
           <tbody>
             <?php foreach ($approvedLeaveRequests as $leaveRequest) : ?>
+              <?php if ($leaveRequest->year === $inputYear): ?>
                 <tr>
                   <td><?= $this->Number->format($leaveRequest->id) ?></td>
                   <td><?= h($leaveRequest->user->username) ?></td>
@@ -76,7 +77,8 @@ $this->Breadcrumbs->add([
                   <td><?= h($leaveRequest->status) ?></td>
                   <td><?= h($leaveRequest->remark) ?></td>
                 </tr>
-                <?php endforeach; ?>
+              <?php endif; ?>
+            <?php endforeach; ?>
           </tbody>
       </table>
   </div>
