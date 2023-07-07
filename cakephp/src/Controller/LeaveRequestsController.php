@@ -119,7 +119,7 @@ class LeaveRequestsController extends AppController
 
         $leaveRequestUserID = $leaveRequest->user_id;
         if ($this->Authentication->getResult()->getData()->id == $leaveRequestUserID) {
-            // skip authorization if edit his own leave requests
+            // skip authorization if user is editing his own leave requests
             $this->Authorization->skipAuthorization();
         } else {
             $this->checkAdminAuthorization();
@@ -191,8 +191,15 @@ class LeaveRequestsController extends AppController
         }
     
         $leaveRequests = $this->paginate($query);
-        debug($leaveRequests);
-        $this->set(compact('leaveRequests'));
+        $leaveRequestsContains = array();
+        foreach ($leaveRequests as $LeaveRequest) {
+            $leaveRequestID = $LeaveRequest->id;
+            $tmpLeaveRequest = $this->LeaveRequests->find()->contain(['Users','LeaveTypes'])->toArray();
+            array_push($leaveRequestsContains, $tmpLeaveRequest);
+        }
+        
+        // $this->set(compact('leaveRequests'));
+        $this->set(compact('leaveRequestsContains'));
     }
 
     public function displayApprovedRequests() {
