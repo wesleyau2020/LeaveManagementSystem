@@ -165,7 +165,6 @@ class LeaveRequestsController extends AppController
     // Takes in certain parameters and display leave requests
     public function search() {
         $this->Authorization->skipAuthorization();
-        // TODO: Fix unintended authorization denial
         // $this->checkAdminAuthorization();
 
         $leaveRequest = $this->LeaveRequests->newEmptyEntity();
@@ -197,7 +196,6 @@ class LeaveRequestsController extends AppController
         }
 
         $leaveRequests = $this->paginate($query);
-        debug($leaveRequests);
         $leaveRequestsContains = array();
         foreach ($leaveRequests as $leaveRequest) {
             $leaveRequestID = $leaveRequest->id;
@@ -248,7 +246,9 @@ class LeaveRequestsController extends AppController
     }
 
     public function approve($id = null) {
-        $this->checkAdminAuthorization();
+        $this->Authorization->skipAuthorization();
+        // $this->checkAdminAuthorization();
+
         $leaveRequest = $this->LeaveRequests->get($id);
 
         $userID = $this->Authentication->getResult()->getData()->id??0;
@@ -261,7 +261,7 @@ class LeaveRequestsController extends AppController
             $leaveRequest->status = "Approved";
         } else {
             $this->Flash->error(__('The leave request could needs to be approved by a higher-level admin'));
-            return $this->redirect(['action' => 'index']);
+            return $this->redirect(['action' => 'displayApprovedRequests']);
         }
 
         if ($this->LeaveRequests->save($leaveRequest)) {
@@ -270,11 +270,13 @@ class LeaveRequestsController extends AppController
             $this->Flash->error(__('The leave request could not be approved. Please, try again.'));
         }
 
-        return $this->redirect(['action' => 'index']);
+        return $this->redirect(['action' => 'displayApprovedRequests']);
     }
 
     public function reject($id = null) {
-        $this->checkAdminAuthorization();
+        $this->Authorization->skipAuthorization();
+        // $this->checkAdminAuthorization();
+
         $leaveRequest = $this->LeaveRequests->get($id);
 
         $userID = $this->Authentication->getResult()->getData()->id??0;
@@ -285,7 +287,7 @@ class LeaveRequestsController extends AppController
             $leaveRequest->status = "Rejected";
         } else {
             $this->Flash->error(__('The leave request could not be rejected. Please, try again.'));
-            return $this->redirect(['action' => 'index']);
+            return $this->redirect(['action' => 'displayRejectedRequests']);
         }
 
         if ($this->LeaveRequests->save($leaveRequest)) {
@@ -294,7 +296,7 @@ class LeaveRequestsController extends AppController
             $this->Flash->error(__('The leave request could not be rejected. Please, try again.'));
         }
 
-        return $this->redirect(['action' => 'index']);
+        return $this->redirect(['action' => 'displayRejectedRequests']);
     }
 
     public function checkAdminAuthorization() {

@@ -23,7 +23,6 @@ $this->Breadcrumbs->add([
                 'label' => false,
                 'class' => 'form-control-sm',
             ]); ?>
-            <?= $this->Html->link(__('New Leave Request'), ['action' => 'add'], ['class' => 'btn btn-primary btn-sm']) ?>
         </div>
     </div>
     <!-- /.card-header -->
