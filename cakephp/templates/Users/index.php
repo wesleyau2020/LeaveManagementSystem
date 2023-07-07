@@ -18,43 +18,10 @@ $this->Breadcrumbs->add([
 ?>
 
 <div class="card card-primary card-outline">
-    <div class="card-header d-sm-flex">
-        <h2 class="card-title">
-            <!-- -->
-        </h2>
-        <div>
-            <!-- select year via dropdown menu -->
-            <div style="float: left">
-                <?= 
-                    $this->Form->create(null, [
-                        'type' => 'post',
-                        'valueSources' => ['query', 'data'],
-                        'url' => ['action' => 'index/'],
-                        'style' => "margin-right: 5px"
-                    ])
-                ?>
-                <?=
-                    $this->Form->year('inputYear', [
-                        'min' => 2000,
-                        'max' => date('Y'),
-                        'default' => $inputYear,
-
-                    ])
-                ?>
-            </div>
-            <?php
-                echo $this->Form->button('Submit');
-                echo $this->Form->end();
-            ?>
-        </div>
-        <div class="card-toolbox">
-            <?= $this->Paginator->limitControl([], null, [
-                'label' => false,
-                'class' => 'form-control-sm',
-            ]); ?>
-            <?= $this->Html->link(__('New User'), ['action' => 'add'], ['class' => 'btn btn-primary btn-sm']) ?>
-        </div>
-    </div>
+    <!-- <div class="card-header d-sm-flex"> -->
+        <!-- <h2 class="card-title"></h2> -->
+        <!-- <div class="card-toolbox"></div> -->
+    <!-- </div> -->
     <!-- /.card-header -->
 
     <div class="card-body table-responsive p-0">
@@ -87,17 +54,33 @@ $this->Breadcrumbs->add([
     </div>
     <!-- /.card-body -->
 
-    <div class="card-footer d-md-flex paginator">
-        <div class="mr-auto" style="font-size:.8rem">
-            <?= $this->Paginator->counter(__('Page {{page}} of {{pages}}, showing {{current}} record(s) out of {{count}} total')) ?>
-        </div>
-        <ul class="pagination pagination-sm">
-            <?= $this->Paginator->first('<i class="fas fa-angle-double-left"></i>', ['escape' => false]) ?>
-            <?= $this->Paginator->prev('<i class="fas fa-angle-left"></i>', ['escape' => false]) ?>
-            <?= $this->Paginator->numbers() ?>
-            <?= $this->Paginator->next('<i class="fas fa-angle-right"></i>', ['escape' => false]) ?>
-            <?= $this->Paginator->last('<i class="fas fa-angle-double-right"></i>', ['escape' => false]) ?>
-        </ul>
+    <div class="card-footer d-flex">
+    <div class="">
     </div>
+    <div class="ml-auto">
+        <!-- select year via dropdown menu -->
+        <div style="float: left">
+        <?= 
+            $this->Form->create($user, [
+                'type' => 'post',
+                'valueSources' => ['query', 'data'],
+                'url' => ['action' => 'view/'.($user->id)],
+                'style' => "margin-right: 5px"
+            ])
+        ?>
+        <?=
+            $this->Form->year('inputYear', [
+                'min' => 2000,
+                'max' => date('Y'),
+                'default' => $inputYear,
+            ])
+        ?>
+        </div>
+      <?php
+          echo $this->Form->button('Submit');
+          echo $this->Form->end();
+      ?>
+    </div>
+  </div>
     <!-- /.card-footer -->
 </div>
