@@ -124,7 +124,7 @@ class HolidaysController extends AppController
             $this->Authorization->authorize($user);
         } catch (\Exception $e) {
             $this->Flash->error(__('You are not authorised to view this page.'));
-            return $this->redirect(['controller' => 'Holidays', 'action' => 'display']);
+            return $this->redirect(['controller' => 'Users', 'action' => 'view', $userID]);
         }
     }
 }

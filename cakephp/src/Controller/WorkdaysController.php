@@ -157,8 +157,7 @@ class WorkdaysController extends AppController
         try {
             $this->Authorization->authorize($user);
         } catch (\Exception $e) {
-            $this->Flash->error(__('You are not authorised to view this page.'));
-            return $this->redirect(['controller' => 'Workdays', 'action' => 'index']);
+            return $this->redirect(['controller' => 'Users', 'action' => 'view', $userID]);
         }
     }
 }
