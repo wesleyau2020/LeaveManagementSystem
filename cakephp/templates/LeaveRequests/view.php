@@ -73,7 +73,7 @@ $this->Breadcrumbs->add([
     </div>
     <div class="ml-auto">
       <?= $this->Html->link(__('Edit'), ['action' => 'edit', $leaveRequest->id], ['class' => 'btn btn-secondary']) ?>
-      <?= $this->Html->link(__('Cancel'), ['action' => 'index'], ['class' => 'btn btn-default']) ?>
+      <?= $this->Html->link(__('Cancel'), ['action' => 'add'], ['class' => 'btn btn-default']) ?>
     </div>
   </div>
 </div>

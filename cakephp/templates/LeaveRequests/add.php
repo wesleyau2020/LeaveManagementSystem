@@ -32,7 +32,7 @@ $this->Breadcrumbs->add([
   <div class="card-footer d-flex">
     <div class="ml-auto">
       <?= $this->Form->button(__('Save')) ?>
-      <?= $this->Html->link(__('Cancel'), ['action' => 'index'], ['class' => 'btn btn-default']) ?>
+      <?= $this->Html->link(__('Cancel'), ['action' => 'add'], ['class' => 'btn btn-default']) ?>
     </div>
   </div>
 
@@ -41,7 +41,8 @@ $this->Breadcrumbs->add([
 
 <div class="card card-primary card-outline">
     <div class="card-header d-sm-flex">
-        <h3 class="card-title"><?= __('Leave Details (').$inputYear .')'?></h3>
+        <?php $title = ($user->username).'\'s Leave Requests ('.$inputYear .')'?>
+        <h3 class="card-title"><?= __("").$title?></h3>
         <div class="card-toolbox">  
             <!--  -->
         </div>

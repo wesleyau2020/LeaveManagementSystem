@@ -53,6 +53,8 @@ class LeaveRequestsController extends AppController
     public function add()
     {
         $this->Authorization->skipAuthorization();
+
+        // Create new leave request
         $leaveRequest = $this->LeaveRequests->newEmptyEntity();
         if ($this->request->is('post')) {
             $leaveRequest = $this->LeaveRequests->patchEntity($leaveRequest,
@@ -71,6 +73,7 @@ class LeaveRequestsController extends AppController
             // set status
             $leaveRequest->status = "Awaiting Level 1";
 
+            // save new leave request
             if ($this->LeaveRequests->save($leaveRequest)) {
                 $this->Flash->success(__('The leave request has been saved.'));
                 return $this->redirect(['action' => 'index']);
@@ -78,14 +81,20 @@ class LeaveRequestsController extends AppController
             $this->Flash->error(__('The leave request could not be saved. Please, try again.'));
         }
 
+        // pass leaveRequest, users, leaveType to template
         $users = $this->LeaveRequests->Users->find('list', ['limit' => 200])->all();
         $leaveType = $this->LeaveRequests->LeaveTypes->find('list', ['limit' => 200])->all();
         $this->set(compact('leaveRequest', 'users', 'leaveType'));
 
-        // show only user's own requests
+        // pass user's requests to template (don't display other users)
         $userID  = $this->Authentication->getResult()->getData()->id??0;
         $userLeaveRequests = $this->LeaveRequests->find()->where(['user_id' => $userID])->contain(['LeaveTypes'])->toArray();
-        $this->set(compact('userLeaveRequests')); 
+        $this->set(compact('userLeaveRequests'));
+
+        // pass user to the template
+        $usersController = new \App\Controller\UsersController();
+        $user = $usersController->Users->get($userID);
+        $this->set(compact('user')); 
     }
 
     /**
@@ -136,7 +145,7 @@ class LeaveRequestsController extends AppController
             $this->Flash->error(__('The leave request could not be deleted. Please, try again.'));
         }
 
-        return $this->redirect(['action' => 'index']);
+        return $this->redirect(['action' => 'add']);
     }
 
     public function displayApprovedRequests() {
