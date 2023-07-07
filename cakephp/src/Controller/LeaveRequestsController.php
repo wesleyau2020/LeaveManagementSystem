@@ -18,7 +18,7 @@ class LeaveRequestsController extends AppController
      */
     public function index()
     {
-        $this->Authorization->skipAuthorization();
+        $this->checkAdminAuthorization();
         
         $this->paginate = [
             'contain' => ['Users', 'LeaveTypes'],
@@ -37,10 +37,17 @@ class LeaveRequestsController extends AppController
      */
     public function view($id = null)
     {
-        $this->Authorization->skipAuthorization();
         $leaveRequest = $this->LeaveRequests->get($id, [
             'contain' => ['Users', 'LeaveTypes'],
         ]);
+
+        $leaveRequestUserID = $leaveRequest->user_id;
+        if ($this->Authentication->getResult()->getData()->id == $leaveRequestUserID) {
+            // skip authorization if user is viewing his own leave requests
+            $this->Authorization->skipAuthorization();
+        } else {
+            $this->checkAdminAuthorization();
+        }
 
         $this->set(compact('leaveRequest'));
     }
@@ -106,10 +113,17 @@ class LeaveRequestsController extends AppController
      */
     public function edit($id = null)
     {
-        $this->Authorization->skipAuthorization();
         $leaveRequest = $this->LeaveRequests->get($id, [
             'contain' => [],
         ]);
+
+        $leaveRequestUserID = $leaveRequest->user_id;
+        if ($this->Authentication->getResult()->getData()->id == $leaveRequestUserID) {
+            // skip authorization if edit his own leave requests
+            $this->Authorization->skipAuthorization();
+        } else {
+            $this->checkAdminAuthorization();
+        }
 
         if ($this->request->is(['patch', 'post', 'put'])) {
             $leaveRequest = $this->LeaveRequests->patchEntity($leaveRequest, $this->request->getData());
@@ -135,7 +149,7 @@ class LeaveRequestsController extends AppController
      */
     public function delete($id = null)
     {
-        $this->Authorization->skipAuthorization();
+        $this->checkAdminAuthorization();
         $this->request->allowMethod(['post', 'delete']);
         $leaveRequest = $this->LeaveRequests->get($id);
 
@@ -147,12 +161,13 @@ class LeaveRequestsController extends AppController
 
         return $this->redirect(['action' => 'add']);
     }
+
     public function displayApprovedRequests() {
         $this->Authorization->skipAuthorization();
+        $userID = $this->Authentication->getResult()->getData()->id??0;
 
-        $approvedLeaveRequests = $this->LeaveRequests->find()->where(['status' => "Approved"])->contain(['Users','LeaveTypes'])->toArray();
-        $pendingLeaveRequests = $this->LeaveRequests->find()->where(['status' => "Awaiting Level 2"])->contain(['Users', 'LeaveTypes'])->toArray();
-        $pendingLeaveRequests = array_merge($pendingLeaveRequests, $this->LeaveRequests->find()->where(['status' => "Awaiting Level 1"])->contain(['Users', 'LeaveTypes'])->toArray());
+        $approvedLeaveRequests = $this->LeaveRequests->find()->where(['user_id' => $userID], ['status' => "Approved"])->contain(['Users','LeaveTypes'])->toArray();
+        $pendingLeaveRequests = $this->LeaveRequests->find()->where(['user_id' => $userID], ['status' => "Awaiting Level 2"])->contain(['Users', 'LeaveTypes'])->toArray();
 
         $this->set(compact('approvedLeaveRequests'));
         $this->set(compact('pendingLeaveRequests'));
@@ -160,17 +175,17 @@ class LeaveRequestsController extends AppController
 
     public function displayRejectedRequests() {
         $this->Authorization->skipAuthorization();
+        $userID = $this->Authentication->getResult()->getData()->id??0;
 
-        $rejectedLeaveRequests = $this->LeaveRequests->find()->where(['status' => "Rejected"])->contain(['Users', 'LeaveTypes'])->toArray();
-        $pendingLeaveRequests = $this->LeaveRequests->find()->where(['status' => "Awaiting Level 2"])->contain(['Users', 'LeaveTypes'])->toArray();
-        $pendingLeaveRequests = array_merge($pendingLeaveRequests, $this->LeaveRequests->find()->where(['status' => "Awaiting Level 1"])->contain(['Users', 'LeaveTypes'])->toArray());
+        $rejectedLeaveRequests = $this->LeaveRequests->find()->where(['user_id' => $userID], ['status' => "Rejected"])->contain(['Users', 'LeaveTypes'])->toArray();
+        $pendingLeaveRequests = $this->LeaveRequests->find()->where(['user_id' => $userID], ['status' => "Awaiting Level 2"])->contain(['Users', 'LeaveTypes'])->toArray();
 
         $this->set(compact('rejectedLeaveRequests'));
         $this->set(compact('pendingLeaveRequests'));
     }
 
     public function approve($id = null) {
-        $this->Authorization->skipAuthorization();
+        $this->checkAdminAuthorization();
         $leaveRequest = $this->LeaveRequests->get($id);
 
         $userID = $this->Authentication->getResult()->getData()->id??0;
@@ -196,7 +211,7 @@ class LeaveRequestsController extends AppController
     }
 
     public function reject($id = null) {
-        $this->Authorization->skipAuthorization();
+        $this->checkAdminAuthorization();
         $leaveRequest = $this->LeaveRequests->get($id);
 
         $userID = $this->Authentication->getResult()->getData()->id??0;
@@ -217,5 +232,19 @@ class LeaveRequestsController extends AppController
         }
 
         return $this->redirect(['action' => 'index']);
+    }
+
+    public function checkAdminAuthorization() {
+        $userID = $this->Authentication->getResult()->getData()->id??0;
+        $usersController = new \App\Controller\UsersController();
+        $user = $usersController->Users->get($userID);
+
+        try {
+            $this->Authorization->authorize($user);
+        } catch (\Exception $e) {
+            $this->Flash->error(__('You are not authorised to view this page.'));
+            // redirect user back to his own view page
+            return $this->redirect(['controller' => 'LeaveRequests', 'action' => 'displayApprovedRequests', $userID]);
+        }
     }
 }

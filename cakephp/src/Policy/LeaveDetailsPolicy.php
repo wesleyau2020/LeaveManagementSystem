@@ -20,6 +20,7 @@ class LeaveDetailsPolicy
      */
     public function canAdd(IdentityInterface $user, LeaveDetails $leaveDetails)
     {
+        return $this->isAdmin($user, $resource);
     }
 
     /**
@@ -31,6 +32,7 @@ class LeaveDetailsPolicy
      */
     public function canEdit(IdentityInterface $user, LeaveDetails $leaveDetails)
     {
+        return $this->isAdmin($user, $resource);
     }
 
     /**
@@ -42,6 +44,7 @@ class LeaveDetailsPolicy
      */
     public function canDelete(IdentityInterface $user, LeaveDetails $leaveDetails)
     {
+        return $this->isAdmin($user, $resource);
     }
 
     /**
@@ -53,5 +56,6 @@ class LeaveDetailsPolicy
      */
     public function canView(IdentityInterface $user, LeaveDetails $leaveDetails)
     {
+        return $this->isAdmin($user, $resource);
     }
 }

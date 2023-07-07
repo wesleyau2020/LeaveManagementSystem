@@ -296,7 +296,7 @@ class UsersController extends AppController
         $this->set(compact('inactiveUsers'));
     }
 
-    private function checkAdminAuthorization() {
+    public function checkAdminAuthorization() {
         $result = $this->Authentication->getResult();
         $userID  = $result->getData()->id;
         $user = $this->Users->get($userID);
