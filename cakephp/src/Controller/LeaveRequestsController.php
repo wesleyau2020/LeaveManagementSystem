@@ -165,6 +165,9 @@ class LeaveRequestsController extends AppController
     // Takes in certain parameters and display leave requests
     public function search() {
         $this->Authorization->skipAuthorization();
+        // TODO: Fix unintended authorization denial
+        // $this->checkAdminAuthorization();
+
         $leaveRequest = $this->LeaveRequests->newEmptyEntity();
         $this->set(compact('leaveRequest'));
         

@@ -59,10 +59,10 @@ class LeaveRequestsPolicy
         return $this->isAdmin($user, $resource);
     }
 
-    // public function canSearch(IdentityInterface $user, LeaveRequests $leaveRequests)
-    // {
-    //     return $this->isAdmin($user, $resource);
-    // }
+    public function canSearch(IdentityInterface $user, LeaveRequests $leaveRequests)
+    {
+        return $this->isAdmin($user, $resource);
+    }
 
     protected function isAdmin(IdentityInterface $user, User $resource)
     {
