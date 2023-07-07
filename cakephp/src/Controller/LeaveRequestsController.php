@@ -147,41 +147,25 @@ class LeaveRequestsController extends AppController
 
         return $this->redirect(['action' => 'add']);
     }
-    public function display() {
-        $this->Authorization->skipAuthorization();
-
-        $approvedLeaveRequests = $this->LeaveRequests->find()->where(['status' => "Approved"])->contain(['Users','LeaveTypes'])->toArray();
-        $rejectedLeaveRequests = $this->LeaveRequests->find()->where(['status' => "Rejected"])->contain(['Users', 'LeaveTypes'])->toArray();
-        $pendingLeaveRequests = $this->LeaveRequests->find()->where(['status' => "Awaiting Level 2"])->contain(['Users', 'LeaveTypes'])->toArray();
-        $pendingLeaveRequests = array_merge($pendingLeaveRequests, $this->LeaveRequests->find()->where(['status' => "Awaiting Level 1"])->contain(['Users', 'LeaveTypes'])->toArray());
-
-        $this->set(compact('approvedLeaveRequests'));
-        $this->set(compact('rejectedLeaveRequests'));
-        $this->set(compact('pendingLeaveRequests'));
-    }
-
     public function displayApprovedRequests() {
         $this->Authorization->skipAuthorization();
 
         $approvedLeaveRequests = $this->LeaveRequests->find()->where(['status' => "Approved"])->contain(['Users','LeaveTypes'])->toArray();
+        $pendingLeaveRequests = $this->LeaveRequests->find()->where(['status' => "Awaiting Level 2"])->contain(['Users', 'LeaveTypes'])->toArray();
+        $pendingLeaveRequests = array_merge($pendingLeaveRequests, $this->LeaveRequests->find()->where(['status' => "Awaiting Level 1"])->contain(['Users', 'LeaveTypes'])->toArray());
 
         $this->set(compact('approvedLeaveRequests'));
+        $this->set(compact('pendingLeaveRequests'));
     }
 
     public function displayRejectedRequests() {
         $this->Authorization->skipAuthorization();
 
         $rejectedLeaveRequests = $this->LeaveRequests->find()->where(['status' => "Rejected"])->contain(['Users', 'LeaveTypes'])->toArray();
-
-        $this->set(compact('rejectedLeaveRequests'));
-    }
-
-    public function displayPendingRequests() {
-        $this->Authorization->skipAuthorization();
-
         $pendingLeaveRequests = $this->LeaveRequests->find()->where(['status' => "Awaiting Level 2"])->contain(['Users', 'LeaveTypes'])->toArray();
         $pendingLeaveRequests = array_merge($pendingLeaveRequests, $this->LeaveRequests->find()->where(['status' => "Awaiting Level 1"])->contain(['Users', 'LeaveTypes'])->toArray());
 
+        $this->set(compact('rejectedLeaveRequests'));
         $this->set(compact('pendingLeaveRequests'));
     }
 
