@@ -6,11 +6,11 @@
  */
 ?>
 <?php
-$this->assign('title', __('Workdays'));
+$this->assign('title', __('Update Workdays'));
 $this->Breadcrumbs->add([
     ['title' => 'Home', 'url' => '/'],
     ['title' => 'List Workdays', 'url' => ['action' => 'index']],
-    ['title' => 'Set'],
+    ['title' => 'Update'],
 ]);
 ?>
 

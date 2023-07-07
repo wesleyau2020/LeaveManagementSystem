@@ -20,8 +20,32 @@ $this->Breadcrumbs->add([
 
 <div class="card card-primary card-outline">
     <div class="card-header d-sm-flex">
-        <h2 class="card-title"><?= __('Rejected Requests')?></h2>
-        <div class="card-toolbox"></div>
+      <h2 class="card-title" style="margin-top:10px"><?= __('Approved Requests')?></h2>
+      <div class="card-toolbox">
+        <!-- select year via dropdown menu -->
+        <div style="float:left;">
+        <?= 
+            $this->Form->create($pendingLeaveRequests, [
+                'type' => 'post',
+                'valueSources' => ['query', 'data'],
+                'url' => ['action' => 'index/'],
+            ])
+        ?>
+        <?=
+            $this->Form->year('inputYear', [
+                'min' => 2000,
+                'max' => date('Y'),
+                'default' => $inputYear
+            ])
+        ?>
+      </div>
+      <div style="float:right">
+        <?php
+            echo $this->Form->button('Submit');
+            echo $this->Form->end();
+        ?>
+      </div>
+      </div>
     </div>
     <!-- /.card-header -->
   <div class="card-body table-responsive p-0">
@@ -70,7 +94,7 @@ $this->Breadcrumbs->add([
 
 <div class="card card-primary card-outline">
     <div class="card-header d-sm-flex">
-        <h2 class="card-title"><?= __('Pending Requests')?></h2>
+        <h2 class="card-title" style="margin-top:10px"><?= __('Pending Requests')?></h2>
         <div class="card-toolbox"></div>
     </div>
     <!-- /.card-header -->

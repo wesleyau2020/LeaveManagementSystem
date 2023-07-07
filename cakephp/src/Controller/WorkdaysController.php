@@ -114,7 +114,7 @@ class WorkdaysController extends AppController
 
     // Function to set days as workday or not
     // e.g Monday -> is_workday = TRUE, Saturday -> is_workday = FALSE 
-    public function set()
+    public function update()
     {
         $this->Authorization->skipAuthorization();
         $workdays = $this->paginate($this->Workdays);
