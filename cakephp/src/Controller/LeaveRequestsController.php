@@ -191,9 +191,13 @@ class LeaveRequestsController extends AppController
             if (!empty($search['year'])) {
                 $query->where(['year' => $search['year']]);
             }
+            if (!empty($search['status'])) {
+                $query->where(['status' => $search['status']]);
+            }
         }
 
         $leaveRequests = $this->paginate($query);
+        debug($leaveRequests);
         $leaveRequestsContains = array();
         foreach ($leaveRequests as $leaveRequest) {
             $leaveRequestID = $leaveRequest->id;
@@ -227,7 +231,7 @@ class LeaveRequestsController extends AppController
 
     public function displayRejectedRequests() {
         $this->Authorization->skipAuthorization();
-        
+
         $leaveRequest = $this->LeaveRequests->newEmptyEntity();
         $this->set(compact('leaveRequest'));
 
