@@ -161,7 +161,7 @@ class WorkdaysController extends AppController
     }
 
     public function checkAdminAuthorization() {
-        $userID = $this->Authentication->getResult()->getData()->id??0;
+        $userID = $this->Authentication->getResult()->getData()->id;
         $usersController = new \App\Controller\UsersController();
         $user = $usersController->Users->get($userID);
 

@@ -157,7 +157,7 @@ class LeaveRequestsController extends AppController
         try {
             $this->Authorization->authorize($leaveRequest);
         } catch (\Exception $e) {
-            $this->Flash->error(__('You are not authorised to view this page.'));
+            $this->Flash->error(__('You are not authorised to perform this action.'));
             $userID = $this->Authentication->getResult()->getData()->id;
             return $this->redirect(['controller' => 'Users', 'action' => 'view', $userID]);
         }
@@ -207,7 +207,7 @@ class LeaveRequestsController extends AppController
         try {
             $this->Authorization->authorize($leaveRequest);
         } catch (\Exception $e) {
-            $this->Flash->error(__('You are not authorised to view this page.'));
+            $this->Flash->error(__('You are not authorised to perform this action.'));
             $userID = $this->Authentication->getResult()->getData()->id;
             return $this->redirect(['controller' => 'Users', 'action' => 'view', $userID]);
         }
@@ -230,7 +230,7 @@ class LeaveRequestsController extends AppController
         try {
             $this->Authorization->authorize($leaveRequest);
         } catch (\Exception $e) {
-            $this->Flash->error(__('You are not authorised to view this page.'));
+            $this->Flash->error(__('You are not authorised to perform this action.'));
             $userID = $this->Authentication->getResult()->getData()->id;
             return $this->redirect(['controller' => 'Users', 'action' => 'view', $userID]);
         }

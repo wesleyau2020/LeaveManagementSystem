@@ -81,11 +81,6 @@ class UserPolicy
         return $this->isAdmin($user, $resource);
     }
 
-    public function canSearch(IdentityInterface $user, LeaveRequest $leaveRequest)
-    {
-        return $this->isAdmin($user, $leaveRequest);
-    }
-
     protected function isAdmin(IdentityInterface $user, User $resource)
     {
         return $user->is_admin === TRUE;

@@ -109,6 +109,7 @@ class HolidaysController extends AppController
 
         $this->request->allowMethod(['post', 'delete']);
         $holiday = $this->Holidays->get($id);
+        
         if ($this->Holidays->delete($holiday)) {
             $this->Flash->success(__('The holiday has been deleted.'));
         } else {
@@ -122,6 +123,7 @@ class HolidaysController extends AppController
         $this->Authorization->skipAuthorization();
 
         $holidays = $this->paginate($this->Holidays);
+
         $this->set(compact('holidays'));
     }
 
@@ -135,7 +137,7 @@ class HolidaysController extends AppController
     }
 
     public function checkAdminAuthorization() {
-        $userID = $this->Authentication->getResult()->getData()->id??0;
+        $userID = $this->Authentication->getResult()->getData()->id;
         $usersController = new \App\Controller\UsersController();
         $user = $usersController->Users->get($userID);
 
