@@ -20,7 +20,7 @@ class WorkdayPolicy
      */
     public function canAdd(IdentityInterface $user, Workday $workday)
     {
-        return $user->is_admin === TRUE;
+        return $this->isAdmin($user, $workday);
     }
 
     /**
@@ -32,7 +32,7 @@ class WorkdayPolicy
      */
     public function canEdit(IdentityInterface $user, Workday $workday)
     {
-        return $user->is_admin === TRUE;
+        return $this->isAdmin($user, $workday);
     }
 
     /**
@@ -44,7 +44,7 @@ class WorkdayPolicy
      */
     public function canDelete(IdentityInterface $user, Workday $workday)
     {
-        return $user->is_admin === TRUE;
+        return $this->isAdmin($user, $workday);
     }
 
     /**
@@ -56,7 +56,7 @@ class WorkdayPolicy
      */
     public function canView(IdentityInterface $user, Workday $workday)
     {
-        return $user->is_admin === TRUE;
+        return $this->isAdmin($user, $workday);
     }
 
     protected function isAdmin(IdentityInterface $user, Workday $workday)

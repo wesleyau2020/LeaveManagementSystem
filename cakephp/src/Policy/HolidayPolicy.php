@@ -20,7 +20,7 @@ class HolidayPolicy
      */
     public function canAdd(IdentityInterface $user, Holiday $holiday)
     {
-        return $user->is_admin === TRUE;
+        return $this->isAdmin($user, $holiday);
     }
 
     /**
@@ -32,7 +32,7 @@ class HolidayPolicy
      */
     public function canEdit(IdentityInterface $user, Holiday $holiday)
     {
-        return $user->is_admin === TRUE;
+        return $this->isAdmin($user, $holiday);
     }
 
     /**
@@ -44,7 +44,7 @@ class HolidayPolicy
      */
     public function canDelete(IdentityInterface $user, Holiday $holiday)
     {
-        return $user->is_admin === TRUE;
+        return $this->isAdmin($user, $holiday);
     }
 
     /**
@@ -56,7 +56,7 @@ class HolidayPolicy
      */
     public function canView(IdentityInterface $user, Holiday $holiday)
     {
-        return $user->is_admin === TRUE;
+        return $this->isAdmin($user, $holiday);
     }
 
     protected function isAdmin(IdentityInterface $user, Workday $workday)

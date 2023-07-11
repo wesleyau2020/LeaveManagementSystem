@@ -20,7 +20,7 @@ class LeaveRequestPolicy
      */
     public function canAdd(IdentityInterface $user, LeaveRequest $leaveRequest)
     {
-        return $user->is_admin === TRUE;
+        return $this->isAdmin($user, $leaveRequest);
     }
 
     /**
@@ -32,7 +32,7 @@ class LeaveRequestPolicy
      */
     public function canEdit(IdentityInterface $user, LeaveRequest $leaveRequest)
     {
-        return $user->is_admin === TRUE;
+        return $this->isAdmin($user, $leaveRequest);
     }
 
     /**
@@ -44,7 +44,7 @@ class LeaveRequestPolicy
      */
     public function canDelete(IdentityInterface $user, LeaveRequest $leaveRequest)
     {
-        return $user->is_admin === TRUE;
+        return $this->isAdmin($user, $leaveRequest);
     }
 
     /**
@@ -56,7 +56,7 @@ class LeaveRequestPolicy
      */
     public function canView(IdentityInterface $user, LeaveRequest $leaveRequest)
     {
-        return $user->is_admin === TRUE;
+        return $this->isAdmin($user, $leaveRequest);
     }
 
     protected function isAdmin(IdentityInterface $user, Workday $workday)
