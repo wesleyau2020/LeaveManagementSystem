@@ -73,6 +73,16 @@ class UserPolicy
         return $this->isAdmin($user, $resource);
     }
 
+    public function canDisplayActiveUsers(IdentityInterface $user, User $resource)
+    {
+        return $this->isAdmin($user, $resource);
+    }
+
+    public function canDisplayInactiveUsers(IdentityInterface $user, User $resource)
+    {
+        return $this->isAdmin($user, $resource);
+    }
+
     protected function isAdmin(IdentityInterface $user, User $resource)
     {
         return $user->is_admin === TRUE;

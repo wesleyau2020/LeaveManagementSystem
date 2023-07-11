@@ -83,7 +83,7 @@ class LeaveRequestsController extends AppController
 
             // set user_id
             $result = $this->Authentication->getResult();
-            $id  = $result->getData()->id??0;
+            $id = $result->getData()->id;
             $leaveRequest->user_id = $id;
 
             // set num_days
@@ -109,7 +109,7 @@ class LeaveRequestsController extends AppController
         $this->set(compact('leaveRequest', 'users', 'leaveType'));
 
         // pass user's requests to template (don't display other users)
-        $userID  = $this->Authentication->getResult()->getData()->id??0;
+        $userID  = $this->Authentication->getResult()->getData()->id;
         $userLeaveRequests = $this->LeaveRequests->find()->where(['user_id' => $userID])->contain(['LeaveTypes'])->toArray();
         $this->set(compact('userLeaveRequests'));
 
@@ -247,7 +247,7 @@ class LeaveRequestsController extends AppController
             return $this->redirect(['controller' => 'Users', 'action' => 'view', $userID]);
         }
 
-        $userID = $this->Authentication->getResult()->getData()->id??0;
+        $userID = $this->Authentication->getResult()->getData()->id;
 
         $approvedLeaveRequests = $this->LeaveRequests->find()->where(['user_id' => $userID, 'status' => "Approved"])->contain(['Users','LeaveTypes'])->toArray();
 
@@ -271,7 +271,7 @@ class LeaveRequestsController extends AppController
             return $this->redirect(['controller' => 'Users', 'action' => 'view', $userID]);
         }
 
-        $userID = $this->Authentication->getResult()->getData()->id??0;
+        $userID = $this->Authentication->getResult()->getData()->id;
 
         $rejectedLeaveRequests = $this->LeaveRequests->find()->where(['user_id' => $userID, 'status' => "Rejected"])->contain(['Users', 'LeaveTypes'])->toArray();
 
@@ -289,12 +289,12 @@ class LeaveRequestsController extends AppController
         try {
             $this->Authorization->authorize($leaveRequest);
         } catch (\Exception $e) {
-            $this->Flash->error(__('You are not authorised to view this page.'));
+            $this->Flash->error(__('You are not authorised to perform this action.'));
             $userID = $this->Authentication->getResult()->getData()->id;
             return $this->redirect(['controller' => 'Users', 'action' => 'view', $userID]);
         }
 
-        $userID = $this->Authentication->getResult()->getData()->id??0;
+        $userID = $this->Authentication->getResult()->getData()->id;
         $usersController = new \App\Controller\UsersController();
         $user = $usersController->Users->get($userID);
 
@@ -322,12 +322,12 @@ class LeaveRequestsController extends AppController
         try {
             $this->Authorization->authorize($leaveRequest);
         } catch (\Exception $e) {
-            $this->Flash->error(__('You are not authorised to view this page.'));
+            $this->Flash->error(__('You are not authorised to perform this action.'));
             $userID = $this->Authentication->getResult()->getData()->id;
             return $this->redirect(['controller' => 'Users', 'action' => 'view', $userID]);
         }
 
-        $userID = $this->Authentication->getResult()->getData()->id??0;
+        $userID = $this->Authentication->getResult()->getData()->id;
         $usersController = new \App\Controller\UsersController();
         $user = $usersController->Users->get($userID);
 

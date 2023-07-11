@@ -85,7 +85,7 @@ class UsersController extends AppController
                 $leaveBalance = $monthsWorked * 1.5; 
                 $leaveBalance = ceil($leaveBalance * 2) / 2; // round up to the nearest 0.5
     
-                // Auto-create leaveDetail for each user
+                // Create leaveDetail for each user
                 $leaveDetailsController = new \App\Controller\LeaveDetailsController();
                 for ($i = 1; $i < 4; $i++) {
                     $leaveDetail = null;
@@ -118,7 +118,7 @@ class UsersController extends AppController
      */
     public function edit($id = null)
     {
-        if ($this->Authentication->getResult()->getData()->id === $id) {
+        if ($this->Authentication->getResult()->getData()->id == $id) {
             $this->Authorization->skipAuthorization();
         } else {
             $this->checkAdminAuthorization();
@@ -176,7 +176,6 @@ class UsersController extends AppController
         $this->request->allowMethod(['get', 'post']);
         $result = $this->Authentication->getResult();
         
-        // regardless of POST or GET, redirect if user is logged in
         $id = $result->getData()->id??0;
         $is_admin = $result->getData()->is_admin??false;
 
@@ -220,24 +219,29 @@ class UsersController extends AppController
 
     // At the start of a new year, create new leave details
     public function update() {
-        $this->Authorization->skipAuthorization();
+        $this->checkAdminAuthorization();
         $updated = FALSE;
 
         if (FrozenTime::now()->month === 1) { // for testing, set to current month
             $prevYear = FrozenTime::now()->year - 1; // for testing, set to current year 
+
             // get latest $latestLeaveDetail
             $leaveDetailsController = new \App\Controller\LeaveDetailsController();
             $latestLeaveDetail = $leaveDetailsController->LeaveDetails->find()->last();
 
-            // only update if $latestLeaveDetail belongs to previous year
-            // i.e. we are in a new year
+            // update if $latestLeaveDetail belongs to previous year
             if ($latestLeaveDetail->year == $prevYear) {
                 $mapUsersPrevYearALBalance = $this->getMapUsersPrevYearsALBalance();
                 $updated = TRUE;
 
                 foreach ($mapUsersPrevYearALBalance as $k => $v) {  
-                    // auto-create new leaveDetail for each user
-                    // TODO: need to add a check for deactived users
+                    // check if user is deactivated
+                    $user = $this->Users->get($k);
+                    if ($user->is_active === FALSE) {
+                        continue;
+                    }
+
+                    // create new leaveDetail for each user
                     for ($i = 1; $i < 4; $i++) {
                         $leaveDetail = null;
                         if ($i === 1) {
@@ -254,12 +258,13 @@ class UsersController extends AppController
             }
         }
 
-        $userID = $this->Authentication->getResult()->getData()->id;
         if ($updated) {
             $this->Flash->success(__('New leave balances have been created for current year.'));
         } else {
             $this->Flash->error(__('No new leave balances to be created for current year.'));
         }
+
+        $userID = $this->Authentication->getResult()->getData()->id;
         return $this->redirect(['controller' => 'Users', 'action' => 'view', $userID]);
     }
 
@@ -279,8 +284,7 @@ class UsersController extends AppController
     }
 
     public function displayActiveUsers() {
-        // $this->checkAdminAuthorization();
-        $this->Authorization->skipAuthorization();
+        $this->checkAdminAuthorization();
 
         $activeUsers = $this->Users->find()->where(['is_active' => TRUE])->toArray();
 
@@ -288,8 +292,7 @@ class UsersController extends AppController
     }
 
     public function displayInactiveUsers() {
-        // $this->checkAdminAuthorization();
-        $this->Authorization->skipAuthorization();
+        $this->checkAdminAuthorization();
 
         $inactiveUsers = $this->Users->find()->where(['is_active' => FALSE])->toArray();
 

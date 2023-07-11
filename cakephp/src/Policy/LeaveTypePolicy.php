@@ -11,6 +11,11 @@ use Authorization\IdentityInterface;
  */
 class LeaveTypePolicy
 {
+    public function canIndex(IdentityInterface $user, LeaveType $leaveType)
+    {
+        return $this->isAdmin($user, $leaveType);
+    }
+
     /**
      * Check if $user can add LeaveType
      *
