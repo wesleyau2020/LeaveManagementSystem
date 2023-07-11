@@ -22,7 +22,7 @@ class WorkdaysController extends AppController
     public function index()
     {
         $this->checkAdminAuthorization();
-        
+
         $workdays = $this->paginate($this->Workdays);
 
         $this->set(compact('workdays'));
@@ -168,6 +168,7 @@ class WorkdaysController extends AppController
         try {
             $this->Authorization->authorize($user);
         } catch (\Exception $e) {
+            $this->Flash->error(__('You are not authorised to perform this action.'));
             return $this->redirect(['controller' => 'Users', 'action' => 'view', $userID]);
         }
     }

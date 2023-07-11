@@ -11,7 +11,6 @@ use Authorization\IdentityInterface;
  */
 class UserPolicy
 {
-
     /**
      * Check if $user can access templates/Users/index.php
      *
@@ -23,7 +22,6 @@ class UserPolicy
     {
         return $this->isAdmin($user, $resource);
     }
-
 
     /**
      * Check if $user can add User
@@ -81,6 +79,11 @@ class UserPolicy
     public function canDisplayInactiveUsers(IdentityInterface $user, User $resource)
     {
         return $this->isAdmin($user, $resource);
+    }
+
+    public function canSearch(IdentityInterface $user, LeaveRequest $leaveRequest)
+    {
+        return $this->isAdmin($user, $leaveRequest);
     }
 
     protected function isAdmin(IdentityInterface $user, User $resource)

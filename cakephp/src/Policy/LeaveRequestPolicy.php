@@ -11,6 +11,13 @@ use Authorization\IdentityInterface;
  */
 class LeaveRequestPolicy
 {
+    /**
+     * Check if $user can access templates/LeaveRequests/index.php
+     *
+     * @param \Authorization\IdentityInterface $user The user.
+     * @param \App\Model\Entity\LeaveRequests= $LeaveRequest
+     * @return bool
+     */
     public function canIndex(IdentityInterface $user, LeaveRequest $leaveRequest)
     {
         return $this->isAdmin($user, $leaveRequest);

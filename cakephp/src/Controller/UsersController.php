@@ -177,7 +177,7 @@ class UsersController extends AppController
         $result = $this->Authentication->getResult();
         
         $id = $result->getData()->id??0;
-        $is_admin = $result->getData()->is_admin??false;
+        $is_admin = $result->getData()->is_admin??FALSE;
 
         if ($result && $result->isValid()) {
             if ($is_admin == true) {
@@ -307,7 +307,7 @@ class UsersController extends AppController
         try {
             $this->Authorization->authorize($user);
         } catch (\Exception $e) {
-            $this->Flash->error(__('You are not authorised to view this user.'));
+            $this->Flash->error(__('You are not authorised to perform this action.'));
             // redirect user back to his own view page
             return $this->redirect(['controller' => 'Users', 'action' => 'view', $userID]);
         }

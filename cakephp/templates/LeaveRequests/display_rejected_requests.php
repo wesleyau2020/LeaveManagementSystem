@@ -25,7 +25,7 @@ $this->Breadcrumbs->add([
         <!-- select year via dropdown menu -->
         <div style="float:left;">
         <?= 
-            $this->Form->create($leaveRequest, [
+            $this->Form->create(null, [
                 'type' => 'post',
                 'valueSources' => ['query', 'data'],
                 'url' => ['action' => 'displayRejectedRequests/'],

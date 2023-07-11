@@ -20,7 +20,7 @@ class LeaveDetailsController extends AppController
     public function index()
     {
         $this->checkAdminAuthorization();
-        
+
         $this->paginate = [
             'contain' => ['Users'],
         ];
@@ -160,7 +160,7 @@ class LeaveDetailsController extends AppController
         try {
             $this->Authorization->authorize($user);
         } catch (\Exception $e) {
-            $this->Flash->error(__('You are not authorised to view this page.'));
+            $this->Flash->error(__('You are not authorised to perform this action.'));
             return $this->redirect(['controller' => 'Users', 'action' => 'view', $userID]);
         }
     }

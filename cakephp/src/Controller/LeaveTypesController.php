@@ -19,7 +19,7 @@ class LeaveTypesController extends AppController
     public function index()
     {
         $this->checkAdminAuthorization();
-        
+
         $leaveTypes = $this->paginate($this->LeaveTypes);
 
         $this->set(compact('leaveTypes'));
@@ -126,7 +126,7 @@ class LeaveTypesController extends AppController
         try {
             $this->Authorization->authorize($user);
         } catch (\Exception $e) {
-            $this->Flash->error(__('You are not authorised to view this page.'));
+            $this->Flash->error(__('You are not authorised to perform this action.'));
             return $this->redirect(['controller' => 'Users', 'action' => 'view', $userID]);
         }
     }

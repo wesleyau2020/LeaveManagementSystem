@@ -19,7 +19,7 @@ class HolidaysController extends AppController
     public function index()
     {
         $this->checkAdminAuthorization();
-        
+
         $holidays = $this->paginate($this->Holidays);
 
         $this->set(compact('holidays'));
@@ -142,7 +142,7 @@ class HolidaysController extends AppController
         try {
             $this->Authorization->authorize($user);
         } catch (\Exception $e) {
-            $this->Flash->error(__('You are not authorised to view this page.'));
+            $this->Flash->error(__('You are not authorised to perform this action.'));
             return $this->redirect(['controller' => 'Users', 'action' => 'view', $userID]);
         }
     }
