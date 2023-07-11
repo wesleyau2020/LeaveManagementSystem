@@ -11,6 +11,11 @@ use Authorization\IdentityInterface;
  */
 class LeaveRequestPolicy
 {
+    public function canIndex(IdentityInterface $user, LeaveRequest $leaveRequest)
+    {
+        return $this->isAdmin($user, $leaveRequest);
+    }
+
     /**
      * Check if $user can add LeaveRequest
      *
@@ -20,7 +25,7 @@ class LeaveRequestPolicy
      */
     public function canAdd(IdentityInterface $user, LeaveRequest $leaveRequest)
     {
-        return $this->isAdmin($user, $leaveRequest);
+        return TRUE;
     }
 
     /**

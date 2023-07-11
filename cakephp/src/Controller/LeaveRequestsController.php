@@ -18,8 +18,16 @@ class LeaveRequestsController extends AppController
      */
     public function index()
     {
-        $this->checkAdminAuthorization();
-        
+        $leaveRequest = $this->LeaveRequests->newEmptyEntity();
+
+        try {
+            $this->Authorization->authorize($leaveRequest);
+        } catch (\Exception $e) {
+            $this->Flash->error(__('You are not authorised to view this page.'));
+            $userID = $this->Authentication->getResult()->getData()->id;
+            return $this->redirect(['controller' => 'Users', 'action' => 'view', $userID]);
+        }
+
         $this->paginate = [
             'contain' => ['Users', 'LeaveTypes'],
         ];
@@ -41,12 +49,12 @@ class LeaveRequestsController extends AppController
             'contain' => ['Users', 'LeaveTypes'],
         ]);
 
-        $leaveRequestUserID = $leaveRequest->user_id;
-        if ($this->Authentication->getResult()->getData()->id == $leaveRequestUserID) {
-            // skip authorization if user is viewing his own leave requests
-            $this->Authorization->skipAuthorization();
-        } else {
-            $this->checkAdminAuthorization();
+        try {
+            $this->Authorization->authorize($leaveRequest);
+        } catch (\Exception $e) {
+            $this->Flash->error(__('You are not authorised to view this page.'));
+            $userID = $this->Authentication->getResult()->getData()->id;
+            return $this->redirect(['controller' => 'Users', 'action' => 'view', $userID]);
         }
 
         $this->set(compact('leaveRequest'));
@@ -59,10 +67,16 @@ class LeaveRequestsController extends AppController
      */
     public function add()
     {
-        $this->Authorization->skipAuthorization();
-
-        // Create new leave request
         $leaveRequest = $this->LeaveRequests->newEmptyEntity();
+
+        try {
+            $this->Authorization->authorize($leaveRequest);
+        } catch (\Exception $e) {
+            $this->Flash->error(__('You are not authorised to view this page.'));
+            $userID = $this->Authentication->getResult()->getData()->id;
+            return $this->redirect(['controller' => 'Users', 'action' => 'view', $userID]);
+        }
+
         if ($this->request->is('post')) {
             $leaveRequest = $this->LeaveRequests->patchEntity($leaveRequest,
             $this->request->getData());
@@ -85,6 +99,7 @@ class LeaveRequestsController extends AppController
                 $this->Flash->success(__('The leave request has been saved.'));
                 return $this->redirect(['action' => 'index']);
             }
+
             $this->Flash->error(__('The leave request could not be saved. Please, try again.'));
         }
 
@@ -117,21 +132,21 @@ class LeaveRequestsController extends AppController
             'contain' => [],
         ]);
 
-        $leaveRequestUserID = $leaveRequest->user_id;
-        if ($this->Authentication->getResult()->getData()->id == $leaveRequestUserID) {
-            // skip authorization if user is editing his own leave requests
-            $this->Authorization->skipAuthorization();
-        } else {
-            $this->checkAdminAuthorization();
+        try {
+            $this->Authorization->authorize($leaveRequest);
+        } catch (\Exception $e) {
+            $this->Flash->error(__('You are not authorised to view this page.'));
+            $userID = $this->Authentication->getResult()->getData()->id;
+            return $this->redirect(['controller' => 'Users', 'action' => 'view', $userID]);
         }
 
         if ($this->request->is(['patch', 'post', 'put'])) {
             $leaveRequest = $this->LeaveRequests->patchEntity($leaveRequest, $this->request->getData());
             if ($this->LeaveRequests->save($leaveRequest)) {
                 $this->Flash->success(__('The leave request has been saved.'));
-
                 return $this->redirect(['action' => 'index']);
             }
+
             $this->Flash->error(__('The leave request could not be saved. Please, try again.'));
         }
 
@@ -149,10 +164,16 @@ class LeaveRequestsController extends AppController
      */
     public function delete($id = null)
     {
-        $this->checkAdminAuthorization();
-
         $this->request->allowMethod(['post', 'delete']);
         $leaveRequest = $this->LeaveRequests->get($id);
+
+        try {
+            $this->Authorization->authorize($leaveRequest);
+        } catch (\Exception $e) {
+            $this->Flash->error(__('You are not authorised to view this page.'));
+            $userID = $this->Authentication->getResult()->getData()->id;
+            return $this->redirect(['controller' => 'Users', 'action' => 'view', $userID]);
+        }
 
         if ($this->LeaveRequests->delete($leaveRequest)) {
             $this->Flash->success(__('The leave request has been deleted.'));
@@ -165,10 +186,16 @@ class LeaveRequestsController extends AppController
 
     // Takes in certain parameters and display leave requests
     public function search() {
-        $this->checkAdminAuthorization();
-
         $leaveRequest = $this->LeaveRequests->newEmptyEntity();
         $this->set(compact('leaveRequest'));
+        
+        try {
+            $this->Authorization->authorize($leaveRequest);
+        } catch (\Exception $e) {
+            $this->Flash->error(__('You are not authorised to view this page.'));
+            $userID = $this->Authentication->getResult()->getData()->id;
+            return $this->redirect(['controller' => 'Users', 'action' => 'view', $userID]);
+        }
         
         $query = $this->LeaveRequests->find();
 
@@ -205,15 +232,20 @@ class LeaveRequestsController extends AppController
             array_push($leaveRequestsContains, $tmpLeaveRequest);
         }
         
-        // $this->set(compact('leaveRequests'));
         $this->set(compact('leaveRequestsContains'));
     }
 
     public function displayApprovedRequests() {
-        $this->checkAdminAuthorization();
-
         $leaveRequest = $this->LeaveRequests->newEmptyEntity();
         $this->set(compact('leaveRequest'));
+
+        try {
+            $this->Authorization->authorize($leaveRequest);
+        } catch (\Exception $e) {
+            $this->Flash->error(__('You are not authorised to view this page.'));
+            $userID = $this->Authentication->getResult()->getData()->id;
+            return $this->redirect(['controller' => 'Users', 'action' => 'view', $userID]);
+        }
 
         $userID = $this->Authentication->getResult()->getData()->id??0;
 
@@ -228,10 +260,16 @@ class LeaveRequestsController extends AppController
     }
 
     public function displayRejectedRequests() {
-        $this->checkAdminAuthorization();
-
         $leaveRequest = $this->LeaveRequests->newEmptyEntity();
         $this->set(compact('leaveRequest'));
+
+        try {
+            $this->Authorization->authorize($leaveRequest);
+        } catch (\Exception $e) {
+            $this->Flash->error(__('You are not authorised to view this page.'));
+            $userID = $this->Authentication->getResult()->getData()->id;
+            return $this->redirect(['controller' => 'Users', 'action' => 'view', $userID]);
+        }
 
         $userID = $this->Authentication->getResult()->getData()->id??0;
 
@@ -246,9 +284,15 @@ class LeaveRequestsController extends AppController
     }
 
     public function approve($id = null) {
-        $this->checkAdminAuthorization();
-
         $leaveRequest = $this->LeaveRequests->get($id);
+
+        try {
+            $this->Authorization->authorize($leaveRequest);
+        } catch (\Exception $e) {
+            $this->Flash->error(__('You are not authorised to view this page.'));
+            $userID = $this->Authentication->getResult()->getData()->id;
+            return $this->redirect(['controller' => 'Users', 'action' => 'view', $userID]);
+        }
 
         $userID = $this->Authentication->getResult()->getData()->id??0;
         $usersController = new \App\Controller\UsersController();
@@ -273,9 +317,15 @@ class LeaveRequestsController extends AppController
     }
 
     public function reject($id = null) {
-        $this->checkAdminAuthorization();
-
         $leaveRequest = $this->LeaveRequests->get($id);
+
+        try {
+            $this->Authorization->authorize($leaveRequest);
+        } catch (\Exception $e) {
+            $this->Flash->error(__('You are not authorised to view this page.'));
+            $userID = $this->Authentication->getResult()->getData()->id;
+            return $this->redirect(['controller' => 'Users', 'action' => 'view', $userID]);
+        }
 
         $userID = $this->Authentication->getResult()->getData()->id??0;
         $usersController = new \App\Controller\UsersController();
@@ -297,16 +347,13 @@ class LeaveRequestsController extends AppController
         return $this->redirect(['action' => 'displayRejectedRequests']);
     }
 
-    public function checkAdminAuthorization() {
-        $userID = $this->Authentication->getResult()->getData()->id??0;
-        $usersController = new \App\Controller\UsersController();
-        $user = $usersController->Users->get($userID);
-
-        try {
-            $this->Authorization->authorize($user);
-        } catch (\Exception $e) {
-            $this->Flash->error(__('You are not authorised to view this page.'));
-            return $this->redirect(['controller' => 'Users', 'action' => 'view', $userID]);
-        }
-    }
+    // public function checkAdminAuthorization(LeaveRequest $leaveRequest) {
+    //     try {
+    //         $this->Authorization->authorize($leaveRequest);
+    //     } catch (\Exception $e) {
+    //         $this->Flash->error(__('You are not authorised to view this page.'));
+    //         $userID = $this->Authentication->getResult()->getData()->id;
+    //         return $this->redirect(['controller' => 'Users', 'action' => 'view', $userID]);
+    //     }
+    // }
 }
