@@ -19,6 +19,7 @@ class HolidaysController extends AppController
     public function index()
     {
         $this->checkAdminAuthorization();
+        
         $holidays = $this->paginate($this->Holidays);
 
         $this->set(compact('holidays'));
@@ -34,6 +35,7 @@ class HolidaysController extends AppController
     public function view($id = null)
     {
         $this->checkAdminAuthorization();
+
         $holiday = $this->Holidays->get($id, [
             'contain' => [],
         ]);
@@ -49,7 +51,9 @@ class HolidaysController extends AppController
     public function add()
     {
         $this->checkAdminAuthorization();
+
         $holiday = $this->Holidays->newEmptyEntity();
+
         if ($this->request->is('post')) {
             $holiday = $this->Holidays->patchEntity($holiday, $this->request->getData());
             $holiday->is_holiday = TRUE;
@@ -60,6 +64,7 @@ class HolidaysController extends AppController
             }
             $this->Flash->error(__('The holiday could not be saved. Please, try again.'));
         }
+
         $this->set(compact('holiday'));
     }
 
@@ -73,9 +78,11 @@ class HolidaysController extends AppController
     public function edit($id = null)
     {
         $this->checkAdminAuthorization();
+
         $holiday = $this->Holidays->get($id, [
             'contain' => [],
         ]);
+
         if ($this->request->is(['patch', 'post', 'put'])) {
             $holiday = $this->Holidays->patchEntity($holiday, $this->request->getData());
             if ($this->Holidays->save($holiday)) {
@@ -85,6 +92,7 @@ class HolidaysController extends AppController
             }
             $this->Flash->error(__('The holiday could not be saved. Please, try again.'));
         }
+
         $this->set(compact('holiday'));
     }
 
@@ -98,6 +106,7 @@ class HolidaysController extends AppController
     public function delete($id = null)
     {
         $this->checkAdminAuthorization();
+
         $this->request->allowMethod(['post', 'delete']);
         $holiday = $this->Holidays->get($id);
         if ($this->Holidays->delete($holiday)) {
@@ -111,13 +120,15 @@ class HolidaysController extends AppController
 
     public function display() {
         $this->Authorization->skipAuthorization();
+
         $holidays = $this->paginate($this->Holidays);
         $this->set(compact('holidays'));
     }
 
     public function deleteIndex()
     {
-        $this->Authorization->skipAuthorization();
+        $this->checkAdminAuthorization();
+
         $holidays = $this->paginate($this->Holidays);
 
         $this->set(compact('holidays'));

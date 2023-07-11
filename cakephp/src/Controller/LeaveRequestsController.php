@@ -150,6 +150,7 @@ class LeaveRequestsController extends AppController
     public function delete($id = null)
     {
         $this->checkAdminAuthorization();
+
         $this->request->allowMethod(['post', 'delete']);
         $leaveRequest = $this->LeaveRequests->get($id);
 
@@ -164,8 +165,7 @@ class LeaveRequestsController extends AppController
 
     // Takes in certain parameters and display leave requests
     public function search() {
-        $this->Authorization->skipAuthorization();
-        // $this->checkAdminAuthorization();
+        $this->checkAdminAuthorization();
 
         $leaveRequest = $this->LeaveRequests->newEmptyEntity();
         $this->set(compact('leaveRequest'));
@@ -210,7 +210,7 @@ class LeaveRequestsController extends AppController
     }
 
     public function displayApprovedRequests() {
-        $this->Authorization->skipAuthorization();
+        $this->checkAdminAuthorization();
 
         $leaveRequest = $this->LeaveRequests->newEmptyEntity();
         $this->set(compact('leaveRequest'));
@@ -228,7 +228,7 @@ class LeaveRequestsController extends AppController
     }
 
     public function displayRejectedRequests() {
-        $this->Authorization->skipAuthorization();
+        $this->checkAdminAuthorization();
 
         $leaveRequest = $this->LeaveRequests->newEmptyEntity();
         $this->set(compact('leaveRequest'));
@@ -246,8 +246,7 @@ class LeaveRequestsController extends AppController
     }
 
     public function approve($id = null) {
-        $this->Authorization->skipAuthorization();
-        // $this->checkAdminAuthorization();
+        $this->checkAdminAuthorization();
 
         $leaveRequest = $this->LeaveRequests->get($id);
 
@@ -274,8 +273,7 @@ class LeaveRequestsController extends AppController
     }
 
     public function reject($id = null) {
-        $this->Authorization->skipAuthorization();
-        // $this->checkAdminAuthorization();
+        $this->checkAdminAuthorization();
 
         $leaveRequest = $this->LeaveRequests->get($id);
 

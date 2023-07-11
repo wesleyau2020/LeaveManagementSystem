@@ -19,6 +19,7 @@ class LeaveTypesController extends AppController
     public function index()
     {
         $this->checkAdminAuthorization();
+        
         $leaveTypes = $this->paginate($this->LeaveTypes);
 
         $this->set(compact('leaveTypes'));
@@ -34,6 +35,7 @@ class LeaveTypesController extends AppController
     public function view($id = null)
     {
         $this->checkAdminAuthorization();
+
         $leaveType = $this->LeaveTypes->get($id, [
             'contain' => ['LeaveTypes', 'LeaveDetails', 'LeaveRequests'],
         ]);
@@ -49,7 +51,9 @@ class LeaveTypesController extends AppController
     public function add()
     {
         $this->checkAdminAuthorization();
+
         $leaveType = $this->LeaveTypes->newEmptyEntity();
+
         if ($this->request->is('post')) {
             $leaveType = $this->LeaveTypes->patchEntity($leaveType, $this->request->getData());
             if ($this->LeaveTypes->save($leaveType)) {
@@ -59,6 +63,7 @@ class LeaveTypesController extends AppController
             }
             $this->Flash->error(__('The leave type could not be saved. Please, try again.'));
         }
+
         $this->set(compact('leaveType'));
     }
 
@@ -72,9 +77,11 @@ class LeaveTypesController extends AppController
     public function edit($id = null)
     {
         $this->checkAdminAuthorization();
+
         $leaveType = $this->LeaveTypes->get($id, [
             'contain' => [],
         ]);
+
         if ($this->request->is(['patch', 'post', 'put'])) {
             $leaveType = $this->LeaveTypes->patchEntity($leaveType, $this->request->getData());
             if ($this->LeaveTypes->save($leaveType)) {
@@ -84,6 +91,7 @@ class LeaveTypesController extends AppController
             }
             $this->Flash->error(__('The leave type could not be saved. Please, try again.'));
         }
+
         $this->set(compact('leaveType'));
     }
 
@@ -97,8 +105,10 @@ class LeaveTypesController extends AppController
     public function delete($id = null)
     {
         $this->checkAdminAuthorization();
+
         $this->request->allowMethod(['post', 'delete']);
         $leaveType = $this->LeaveTypes->get($id);
+
         if ($this->LeaveTypes->delete($leaveType)) {
             $this->Flash->success(__('The leave type has been deleted.'));
         } else {

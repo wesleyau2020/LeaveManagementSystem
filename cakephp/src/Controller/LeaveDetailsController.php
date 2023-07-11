@@ -20,6 +20,7 @@ class LeaveDetailsController extends AppController
     public function index()
     {
         $this->checkAdminAuthorization();
+        
         $this->paginate = [
             'contain' => ['Users'],
         ];
@@ -60,6 +61,7 @@ class LeaveDetailsController extends AppController
     public function add()
     {
         $this->checkAdminAuthorization();
+
         $leaveDetail = $this->LeaveDetails->newEmptyEntity();
 
         if ($this->request->is('post')) {
@@ -86,6 +88,7 @@ class LeaveDetailsController extends AppController
     public function edit($id = null)
     {
         $this->checkAdminAuthorization();
+
         $leaveDetail = $this->LeaveDetails->get($id, [
             'contain' => [],
         ]);
@@ -114,6 +117,7 @@ class LeaveDetailsController extends AppController
     public function delete($id = null)
     {
         $this->checkAdminAuthorization();
+
         $this->request->allowMethod(['post', 'delete']);
         $leaveDetail = $this->LeaveDetails->get($id);
 

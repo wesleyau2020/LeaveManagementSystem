@@ -22,6 +22,7 @@ class WorkdaysController extends AppController
     public function index()
     {
         $this->checkAdminAuthorization();
+        
         $workdays = $this->paginate($this->Workdays);
 
         $this->set(compact('workdays'));
@@ -37,6 +38,7 @@ class WorkdaysController extends AppController
     public function view($id = null)
     {
         $this->checkAdminAuthorization();
+
         $workday = $this->Workdays->get($id, [
             'contain' => [],
         ]);
@@ -52,7 +54,9 @@ class WorkdaysController extends AppController
     public function add()
     {
         $this->checkAdminAuthorization();
+
         $workday = $this->Workdays->newEmptyEntity();
+
         if ($this->request->is('post')) {
             $workday = $this->Workdays->patchEntity($workday, $this->request->getData());
             if ($this->Workdays->save($workday)) {
@@ -62,6 +66,7 @@ class WorkdaysController extends AppController
             }
             $this->Flash->error(__('The workday could not be saved. Please, try again.'));
         }
+
         $this->set(compact('workday'));
     }
 
@@ -75,9 +80,11 @@ class WorkdaysController extends AppController
     public function edit($id = null)
     {
         $this->checkAdminAuthorization();
+
         $workday = $this->Workdays->get($id, [
             'contain' => [],
         ]);
+
         if ($this->request->is(['patch', 'post', 'put'])) {
             $workday = $this->Workdays->patchEntity($workday, $this->request->getData());
             if ($this->Workdays->save($workday)) {
@@ -88,6 +95,7 @@ class WorkdaysController extends AppController
                 $this->Flash->error(__('The workday could not be saved. Please, try again.'));
             }
         }
+
         $this->set(compact('workday'));
     }
 
@@ -101,8 +109,10 @@ class WorkdaysController extends AppController
     public function delete($id = null)
     {
         $this->checkAdminAuthorization();
+
         $this->request->allowMethod(['post', 'delete']);
         $workday = $this->Workdays->get($id);
+
         if ($this->Workdays->delete($workday)) {
             $this->Flash->success(__('The workday has been deleted.'));
         } else {
@@ -117,6 +127,7 @@ class WorkdaysController extends AppController
     public function update()
     {
         $this->checkAdminAuthorization();
+
         $workdays = $this->paginate($this->Workdays);
         $this->set(compact('workdays'));
       
