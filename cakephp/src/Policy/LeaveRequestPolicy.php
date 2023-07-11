@@ -59,7 +59,32 @@ class LeaveRequestPolicy
         return $this->isAdmin($user, $leaveRequest);
     }
 
-    protected function isAdmin(IdentityInterface $user, Workday $workday)
+    public function canSearch(IdentityInterface $user, LeaveRequest $leaveRequest)
+    {
+        return $this->isAdmin($user, $leaveRequest);
+    }
+
+    public function canDisplayApprovedRequests(IdentityInterface $user, LeaveRequest $leaveRequest)
+    {
+        return $this->isAdmin($user, $leaveRequest);
+    }
+
+    public function canDisplayRejectedRequests(IdentityInterface $user, LeaveRequest $leaveRequest)
+    {
+        return $this->isAdmin($user, $leaveRequest);
+    }
+
+    public function canApprove(IdentityInterface $user, LeaveRequest $leaveRequest)
+    {
+        return $this->isAdmin($user, $leaveRequest);
+    }
+
+    public function canReject(IdentityInterface $user, LeaveRequest $leaveRequest)
+    {
+        return $this->isAdmin($user, $leaveRequest);
+    }
+
+    protected function isAdmin(IdentityInterface $user, LeaveRequest $leaveRequest)
     {
         return $user->is_admin === TRUE;
     }

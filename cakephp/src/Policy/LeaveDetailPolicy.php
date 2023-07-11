@@ -59,7 +59,7 @@ class LeaveDetailPolicy
         return $this->isAdmin($user, $leaveDetail);
     }
 
-    protected function isAdmin(IdentityInterface $user, Workday $workday)
+    protected function isAdmin(IdentityInterface $user, LeaveDetail $leaveDetail)
     {
         return $user->is_admin === TRUE;
     }

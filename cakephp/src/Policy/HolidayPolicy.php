@@ -59,7 +59,7 @@ class HolidayPolicy
         return $this->isAdmin($user, $holiday);
     }
 
-    protected function isAdmin(IdentityInterface $user, Workday $workday)
+    protected function isAdmin(IdentityInterface $user, Holiday $holiday)
     {
         return $user->is_admin === TRUE;
     }

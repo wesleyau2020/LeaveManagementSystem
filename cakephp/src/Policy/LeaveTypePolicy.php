@@ -59,7 +59,7 @@ class LeaveTypePolicy
         return $this->isAdmin($user, $leaveType);
     }
 
-    protected function isAdmin(IdentityInterface $user, Workday $workday)
+    protected function isAdmin(IdentityInterface $user, LeaveType $leaveType)
     {
         return $user->is_admin === TRUE;
     }
