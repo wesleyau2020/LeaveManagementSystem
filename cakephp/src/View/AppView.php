@@ -43,5 +43,6 @@ class AppView extends View
     {
         parent::initialize();
         $this->initializeCakeLte();
+        $this->loadHelper('Excel');
     }
 }
