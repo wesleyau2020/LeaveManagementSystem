@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use App\View\Helper\ExcelHelper;
+use PhpOffice\PhpSpreadsheet\IOFactory;
 
 /**
  * LeaveRequests Controller
@@ -332,10 +333,23 @@ class LeaveRequestsController extends AppController
     {
 
         $resultSet = $this->LeaveRequests->find('all')->toArray();
-        $filename = 'exported_data.xlsx';
-        $this->Excel->exportResultSet($resultSet, $filename);
+        $spreadsheet = new \PhpOffice\PhpSpreadsheet\Spreadsheet();
+        $sheet = $spreadsheet->getActiveSheet();
 
-        // Return the Excel file as a response (optional)
-        // return $this->response->withFile($filename);
+        // Header row
+        $headerRow = array_keys($resultSet[0]->toArray());
+        $sheet->fromArray($headerRow, null, 'A1');
+
+        // Data rows
+        $dataRows = array_map(function ($row) {
+            debug($row->toArray());
+            return array_values($row->toArray());
+        }, $resultSet);
+        $sheet->fromArray($dataRows, null, 'A2');
+
+        // Export the spreadsheet to Excel file
+        $writer = IOFactory::createWriter($spreadsheet, 'Xlsx');
+        $filename = 'exported_data.xlsx';
+        $writer->save($filename);
     }
 }
