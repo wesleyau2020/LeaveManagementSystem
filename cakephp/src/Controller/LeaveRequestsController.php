@@ -342,7 +342,6 @@ class LeaveRequestsController extends AppController
 
         // Data rows
         $dataRows = array_map(function ($row) {
-            debug($row->toArray());
             return array_values($row->toArray());
         }, $resultSet);
         $sheet->fromArray($dataRows, null, 'A2');
