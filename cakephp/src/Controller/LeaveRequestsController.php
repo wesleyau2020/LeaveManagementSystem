@@ -330,19 +330,12 @@ class LeaveRequestsController extends AppController
 
     public function export()
     {
-        // // Load the ExcelHelper
-        // $this->loadHelper('Excel');
 
-        // Get your resultset (e.g., from a model)
         $resultSet = $this->LeaveRequests->find('all')->toArray();
-
-        // Set the filename for the Excel file
         $filename = 'exported_data.xlsx';
-
-        // Export the resultset to Excel
         $this->Excel->exportResultSet($resultSet, $filename);
 
-        // // Return the Excel file as a response (optional)
+        // Return the Excel file as a response (optional)
         // return $this->response->withFile($filename);
     }
 }
