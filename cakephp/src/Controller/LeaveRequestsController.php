@@ -173,11 +173,11 @@ class LeaveRequestsController extends AppController
             if (!empty($search['leaveTypeID'])) {
                 $query->where(['leave_type_id' => $search['leaveTypeID']]);
             }
-            if (!empty($search['start_date'])) {
-                $query->where(['start_of_leave' => $search['start_date']]);
+            if (!empty($search['start_of_leave'])) {
+                $query->where(['start_of_leave' => $search['start_of_leave']]);
             }
-            if (!empty($search['end_date'])) {
-                $query->where(['end_of_leave' => $search['end_date']]);
+            if (!empty($search['end_of_leave'])) {
+                $query->where(['end_of_leave' => $search['end_of_leave']]);
             }
             if (!empty($search['year'])) {
                 $query->where(['year' => $search['year']]);
@@ -187,6 +187,7 @@ class LeaveRequestsController extends AppController
             }
         }
 
+        debug($query);
         $leaveRequests = $this->paginate($query);
         $leaveRequestsContains = array();
 
