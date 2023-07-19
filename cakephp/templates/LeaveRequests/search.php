@@ -28,9 +28,7 @@ $this->Breadcrumbs->add([
         'Rejected' => 'Rejected',
         'Awaiting Level 2' => 'Awaiting Level 2',
         'Awaiting Level 1' => 'Awaiting Level 1',
-      ],
-      // 'required' => true,
-      ]) ?>
+      ]]) ?>
     <?= $this->Form->button(__('Search')) ?>
     <?= $this->Form->end() ?>
   </div>

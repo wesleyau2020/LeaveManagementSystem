@@ -187,7 +187,6 @@ class LeaveRequestsController extends AppController
             }
         }
 
-        debug($query);
         $leaveRequests = $this->paginate($query);
         $leaveRequestsContains = array();
 
@@ -199,6 +198,8 @@ class LeaveRequestsController extends AppController
             array_push($leaveRequestsContains, $tmpLeaveRequest);
         }
         
+        debug(gettype( $leaveRequests ));
+        debug( $leaveRequests );
         $this->set(compact('leaveRequestsContains'));
     }
 
