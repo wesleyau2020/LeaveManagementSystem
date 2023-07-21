@@ -12,9 +12,6 @@ use PhpOffice\PhpSpreadsheet\IOFactory;
  * @property \App\Model\Table\LeaveRequestsTable $LeaveRequests
  * @method \App\Model\Entity\LeaveRequest[]|\Cake\Datasource\ResultSetInterface paginate($object = null, array $settings = [])
  */
-
-$globalArr = array();
-
 class LeaveRequestsController extends AppController
 {
     /**
@@ -204,45 +201,7 @@ class LeaveRequestsController extends AppController
             array_push($leaveRequestsContains, $tmpLeaveRequest);
         }
         
-        global $globalArr;
-        $globalArr = $leaveRequestsContains;
-        debug($globalArr);
         $this->set(compact('leaveRequestsContains'));
-    }
-
-    public function export()
-    {
-        $this->Authorization->skipAuthorization();
-        
-        global $globalArr;
-        debug($globalArr);
-
-        // $resultSet = $this->LeaveRequests->find('all')->toArray();
-        $resultSet = $this->globalVariable;
-        // debug($this->globalVariable);
-        $spreadsheet = new \PhpOffice\PhpSpreadsheet\Spreadsheet();
-        $sheet = $spreadsheet->getActiveSheet();
-
-        // Header row
-        $headerRow = array_keys($resultSet[0]->toArray());
-        $sheet->fromArray($headerRow, null, 'A1');
-
-        // Data rows
-        $dataRows = array_map(function ($row) {
-            return array_values($row->toArray());
-        }, $resultSet);
-        $sheet->fromArray($dataRows, null, 'A2');
-
-        // Export the spreadsheet to Excel file
-        $writer = IOFactory::createWriter($spreadsheet, 'Xlsx');
-        $filename = 'exported_data.xlsx';
-        try {
-            $writer->save($filename);
-        } catch(\Exception $e) {
-            $this->Flash->error(__('Export was unsuccessful. Please, try again.'));
-        }
-        $this->Flash->success(__('Export was successful.'));
-        $this->redirect(['controller' => 'LeaveRequests', 'action' => 'search']);
     }
 
     public function displayApprovedRequests() {
@@ -366,5 +325,35 @@ class LeaveRequestsController extends AppController
             $this->Flash->error(__('You are not authorised to perform this action.'));
             return $this->redirect(['controller' => 'Users', 'action' => 'view', $userID]);
         }
+    }
+
+    public function export()
+    {
+        $this->Authorization->skipAuthorization();
+
+        $resultSet = $this->LeaveRequests->find('all')->toArray();
+        $spreadsheet = new \PhpOffice\PhpSpreadsheet\Spreadsheet();
+        $sheet = $spreadsheet->getActiveSheet();
+
+        // Header row
+        $headerRow = array_keys($resultSet[0]->toArray());
+        $sheet->fromArray($headerRow, null, 'A1');
+
+        // Data rows
+        $dataRows = array_map(function ($row) {
+            return array_values($row->toArray());
+        }, $resultSet);
+        $sheet->fromArray($dataRows, null, 'A2');
+
+        // Export the spreadsheet to Excel file
+        $writer = IOFactory::createWriter($spreadsheet, 'Xlsx');
+        $filename = 'exported_data.xlsx';
+        try {
+            $writer->save($filename);
+        } catch(\Exception $e) {
+            $this->Flash->error(__('Export was unsuccessful. Please, try again.'));
+        }
+        $this->Flash->success(__('Export was successful.'));
+        $this->redirect(['controller' => 'LeaveRequests', 'action' => 'search']);
     }
 }
