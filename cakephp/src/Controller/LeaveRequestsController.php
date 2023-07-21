@@ -14,6 +14,10 @@ use PhpOffice\PhpSpreadsheet\IOFactory;
  */
 class LeaveRequestsController extends AppController
 {
+
+    // Global variable $resultSet
+    private $resultSet = array();
+
     /**
      * Index method
      *
@@ -200,8 +204,44 @@ class LeaveRequestsController extends AppController
             ]);
             array_push($leaveRequestsContains, $tmpLeaveRequest);
         }
-        
+
+        debug($this->resultSet);
+        $this->resultSet = $leaveRequestsContains;
+        debug($this->resultSet);
         $this->set(compact('leaveRequestsContains'));
+    }
+
+    public function export()
+    {
+        $this->Authorization->skipAuthorization();
+
+        // why is this empty?
+        debug($this->resultSet);
+
+        // $resultSet = $this->LeaveRequests->find('all')->toArray();
+        $spreadsheet = new \PhpOffice\PhpSpreadsheet\Spreadsheet();
+        $sheet = $spreadsheet->getActiveSheet();
+
+        // Header row
+        $headerRow = array_keys($this->resultSet[0]->toArray());
+        $sheet->fromArray($headerRow, null, 'A1');
+
+        // Data rows
+        $dataRows = array_map(function ($row) {
+            return array_values($row->toArray());
+        }, $this->resultSet);
+        $sheet->fromArray($dataRows, null, 'A2');
+
+        // Export the spreadsheet to Excel file
+        $writer = IOFactory::createWriter($spreadsheet, 'Xlsx');
+        $filename = 'exported_data.xlsx';
+        try {
+            $writer->save($filename);
+        } catch(\Exception $e) {
+            $this->Flash->error(__('Export was unsuccessful. Please, try again.'));
+        }
+        $this->Flash->success(__('Export was successful.'));
+        $this->redirect(['controller' => 'LeaveRequests', 'action' => 'search']);
     }
 
     public function displayApprovedRequests() {
@@ -327,33 +367,4 @@ class LeaveRequestsController extends AppController
         }
     }
 
-    public function export()
-    {
-        $this->Authorization->skipAuthorization();
-
-        $resultSet = $this->LeaveRequests->find('all')->toArray();
-        $spreadsheet = new \PhpOffice\PhpSpreadsheet\Spreadsheet();
-        $sheet = $spreadsheet->getActiveSheet();
-
-        // Header row
-        $headerRow = array_keys($resultSet[0]->toArray());
-        $sheet->fromArray($headerRow, null, 'A1');
-
-        // Data rows
-        $dataRows = array_map(function ($row) {
-            return array_values($row->toArray());
-        }, $resultSet);
-        $sheet->fromArray($dataRows, null, 'A2');
-
-        // Export the spreadsheet to Excel file
-        $writer = IOFactory::createWriter($spreadsheet, 'Xlsx');
-        $filename = 'exported_data.xlsx';
-        try {
-            $writer->save($filename);
-        } catch(\Exception $e) {
-            $this->Flash->error(__('Export was unsuccessful. Please, try again.'));
-        }
-        $this->Flash->success(__('Export was successful.'));
-        $this->redirect(['controller' => 'LeaveRequests', 'action' => 'search']);
-    }
 }
