@@ -77,12 +77,12 @@ class UsersController extends AppController
             if ($result) {
                 // Calculate $leaveEntitled
                 $monthsWorked = 12 - $user->start_date->month + 1;
-                $leaveEntitled = (14 / 12) * $monthsWorked; 
+                $leaveEntitled = (14 / 12) * $monthsWorked;
                 $leaveEntitled = ceil($leaveEntitled * 2) / 2; // round up to the nearest 0.5
 
                 // Calculate $leaveBalance
                 $monthsWorked = FrozenTime::now()->month - $user->start_date->month + 1;
-                $leaveBalance = $monthsWorked * 1.5; 
+                $leaveBalance = $monthsWorked * 1.5;
                 $leaveBalance = ceil($leaveBalance * 2) / 2; // round up to the nearest 0.5
     
                 // Create leaveDetail for each user

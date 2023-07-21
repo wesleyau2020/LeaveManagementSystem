@@ -5,7 +5,7 @@ namespace App\Controller;
 
 use App\View\Helper\ExcelHelper;
 use PhpOffice\PhpSpreadsheet\IOFactory;
-use Cake\Core\Configure;
+use Cake\I18n\FrozenTime;
 
 /**
  * LeaveRequests Controller
@@ -153,7 +153,7 @@ class LeaveRequestsController extends AppController
         return $this->redirect(['action' => 'add']);
     }
 
-    // Takes in certain parameters and display leave requests
+    // Takes in search parameters and display leave requests accordingly
     public function search() {
         $leaveRequest = $this->LeaveRequests->newEmptyEntity();
         $this->set(compact('leaveRequest'));
@@ -192,20 +192,19 @@ class LeaveRequestsController extends AppController
         }
 
         $leaveRequests = $this->paginate($query);
+        $leaveRequestIDList = array();
         $leaveRequestsContains = array();
 
         foreach ($leaveRequests as $leaveRequest) {
             $leaveRequestID = $leaveRequest->id;
+            array_push($leaveRequestIDList, $leaveRequestID);
             $tmpLeaveRequest = $this->LeaveRequests->get($leaveRequestID, [
                 'contain' => ['Users', 'LeaveTypes'],
             ]);
             array_push($leaveRequestsContains, $tmpLeaveRequest);
         }
 
-        Configure::write('App.resultSet', $leaveRequestsContains);
-        $resultSet = Configure::read('App.resultSet');
-        debug($resultSet);
-
+        $this->set(compact('leaveRequestIDList'));
         $this->set(compact('leaveRequestsContains'));
     }
 
@@ -213,13 +212,22 @@ class LeaveRequestsController extends AppController
     {
         $this->Authorization->skipAuthorization();
 
-        $resultSet = Configure::read('App.resultSet');
-        debug($resultSet); // why is this empty?
+        $leaveRequestIDList = $this->request->getData('leaveRequestIDList'); // '7 8 9 10 11'
+        $leaveRequestIDList = explode(' ', $leaveRequestIDList);
+        $leaveRequestIDList = array_map('intval', $leaveRequestIDList);
+        
+        $resultSet = array();
+        for ($i = 0; $i < count($leaveRequestIDList); $i++) {
+            $id = $leaveRequestIDList[$i];
+            array_push($resultSet, $this->LeaveRequests->get($id));
+        }
 
-        // $resultSet = $this->LeaveRequests->find('all')->toArray();
+        // debug($resultSet);
+        // debug($this->LeaveRequests->find('all')->toArray());
+
         $spreadsheet = new \PhpOffice\PhpSpreadsheet\Spreadsheet();
         $sheet = $spreadsheet->getActiveSheet();
-
+        
         // Header row
         $headerRow = array_keys($resultSet[0]->toArray());
         $sheet->fromArray($headerRow, null, 'A1');
@@ -232,13 +240,17 @@ class LeaveRequestsController extends AppController
 
         // Export the spreadsheet to Excel file
         $writer = IOFactory::createWriter($spreadsheet, 'Xlsx');
-        $filename = 'exported_data.xlsx';
+        $currentDateTime = FrozenTime::now();
+        $formattedDateTime = $currentDateTime->format('Y-m-d');
+        $filename = 'ExportedLeaveRequests-'.$formattedDateTime.'.xlsx';
+
         try {
             $writer->save($filename);
         } catch(\Exception $e) {
             $this->Flash->error(__('Export was unsuccessful. Please, try again.'));
         }
         $this->Flash->success(__('Export was successful.'));
+
         $this->redirect(['controller' => 'LeaveRequests', 'action' => 'search']);
     }
 

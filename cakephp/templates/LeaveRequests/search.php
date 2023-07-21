@@ -40,8 +40,23 @@ $this->Breadcrumbs->add([
           <?= __('Search Results: ')?>
         </h2>
         <div class="card-toolbox">
-          <!--  -->
-          <?= $this->Html->link(__('Export'), ['action' => 'export'], ['class' => 'btn btn-m btn-primary', 'escape' => false]) ?>
+            <?= 
+            $this->Form->create(null, [
+                'type' => 'post',
+                'valueSources' => ['query', 'data'],
+                'url' => ['action' => 'export/'],
+                'style' => "margin-right: 5px"
+            ])
+            ?>
+            <?=
+             $this->Form->hidden('leaveRequestIDList', [
+                'default' => $leaveRequestIDList,
+             ])
+            ?>
+            <?php
+            echo $this->Form->button('Export');
+            echo $this->Form->end();
+            ?>
         </div>
     </div>
     <!-- /.card-header -->
