@@ -201,8 +201,6 @@ class LeaveRequestsController extends AppController
             array_push($leaveRequestsContains, $tmpLeaveRequest);
         }
         
-        debug(gettype( $leaveRequests ));
-        debug( $leaveRequests );
         $this->set(compact('leaveRequestsContains'));
     }
 
@@ -331,6 +329,7 @@ class LeaveRequestsController extends AppController
 
     public function export()
     {
+        $this->Authorization->skipAuthorization();
 
         $resultSet = $this->LeaveRequests->find('all')->toArray();
         $spreadsheet = new \PhpOffice\PhpSpreadsheet\Spreadsheet();
@@ -349,6 +348,12 @@ class LeaveRequestsController extends AppController
         // Export the spreadsheet to Excel file
         $writer = IOFactory::createWriter($spreadsheet, 'Xlsx');
         $filename = 'exported_data.xlsx';
-        $writer->save($filename);
+        try {
+            $writer->save($filename);
+        } catch(\Exception $e) {
+            $this->Flash->error(__('Export was unsuccessful. Please, try again.'));
+        }
+        $this->Flash->success(__('Export was successful.'));
+        $this->redirect(['controller' => 'LeaveRequests', 'action' => 'search']);
     }
 }

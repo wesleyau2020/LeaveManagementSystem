@@ -41,6 +41,7 @@ $this->Breadcrumbs->add([
         </h2>
         <div class="card-toolbox">
           <!--  -->
+          <?= $this->Html->link(__('Export'), ['action' => 'export'], ['class' => 'btn btn-m btn-primary', 'escape' => false]) ?>
         </div>
     </div>
     <!-- /.card-header -->
