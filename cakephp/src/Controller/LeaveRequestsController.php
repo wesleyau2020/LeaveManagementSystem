@@ -5,6 +5,7 @@ namespace App\Controller;
 
 use App\View\Helper\ExcelHelper;
 use PhpOffice\PhpSpreadsheet\IOFactory;
+use Cake\Core\Configure;
 
 /**
  * LeaveRequests Controller
@@ -14,10 +15,6 @@ use PhpOffice\PhpSpreadsheet\IOFactory;
  */
 class LeaveRequestsController extends AppController
 {
-
-    // Global variable $resultSet
-    private $resultSet = array();
-
     /**
      * Index method
      *
@@ -205,9 +202,10 @@ class LeaveRequestsController extends AppController
             array_push($leaveRequestsContains, $tmpLeaveRequest);
         }
 
-        debug($this->resultSet);
-        $this->resultSet = $leaveRequestsContains;
-        debug($this->resultSet);
+        Configure::write('App.resultSet', $leaveRequestsContains);
+        $resultSet = Configure::read('App.resultSet');
+        debug($resultSet);
+
         $this->set(compact('leaveRequestsContains'));
     }
 
@@ -215,21 +213,21 @@ class LeaveRequestsController extends AppController
     {
         $this->Authorization->skipAuthorization();
 
-        // why is this empty?
-        debug($this->resultSet);
+        $resultSet = Configure::read('App.resultSet');
+        debug($resultSet); // why is this empty?
 
         // $resultSet = $this->LeaveRequests->find('all')->toArray();
         $spreadsheet = new \PhpOffice\PhpSpreadsheet\Spreadsheet();
         $sheet = $spreadsheet->getActiveSheet();
 
         // Header row
-        $headerRow = array_keys($this->resultSet[0]->toArray());
+        $headerRow = array_keys($resultSet[0]->toArray());
         $sheet->fromArray($headerRow, null, 'A1');
 
         // Data rows
         $dataRows = array_map(function ($row) {
             return array_values($row->toArray());
-        }, $this->resultSet);
+        }, $resultSet);
         $sheet->fromArray($dataRows, null, 'A2');
 
         // Export the spreadsheet to Excel file
