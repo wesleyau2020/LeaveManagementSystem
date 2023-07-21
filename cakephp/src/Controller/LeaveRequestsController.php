@@ -249,8 +249,8 @@ class LeaveRequestsController extends AppController
         } catch(\Exception $e) {
             $this->Flash->error(__('Export was unsuccessful. Please, try again.'));
         }
+        
         $this->Flash->success(__('Export was successful.'));
-
         $this->redirect(['controller' => 'LeaveRequests', 'action' => 'search']);
     }
 

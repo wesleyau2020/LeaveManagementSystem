@@ -54,7 +54,9 @@ $this->Breadcrumbs->add([
              ])
             ?>
             <?php
-            echo $this->Form->button('Export');
+            echo $this->Form->button('Export', [
+                'class' => 'btn btn-m btn-primary'
+            ]);
             echo $this->Form->end();
             ?>
         </div>
