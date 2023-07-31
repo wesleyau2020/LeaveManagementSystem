@@ -87,6 +87,7 @@ $this->Breadcrumbs->add([
         <!-- Toggle button to switch between active/inactive users -->
         <?= $this->Form->create(null, ['url' => ['controller' => 'leaveRequests', 'action' => '/displayRejectedRequests']]); ?>
         <?= $this->Html->link(__('Display Rejected Requests'), ['action' => 'displayRejectedRequests'], ['class' => 'btn btn-danger btn-sm']) ?>
+        <?= $this->Html->link(__('Add New Request'), ['action' => 'add'], ['class' => 'btn btn-primary btn-sm']) ?>
         <?= $this->Form->end(); ?>
       </div>
     </div>

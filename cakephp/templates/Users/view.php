@@ -52,9 +52,33 @@ $this->Breadcrumbs->add([
   <div class="card-header d-sm-flex">
     <h3 class="card-title"><?= __('Leave Details (').$inputYear .')'?></h3>
     <div class="card-toolbox">  
-      <!--  -->
+      <div class="ml-auto">
+          <!-- select year via dropdown menu -->
+          <div style="float: left">
+            <?= 
+                $this->Form->create(null, [
+                    'type' => 'post',
+                    'valueSources' => ['query', 'data'],
+                    'url' => ['action' => 'view/'.($user->id)],
+                    'style' => "margin-right: 5px"
+                ])
+            ?>
+            <?=
+                $this->Form->year('inputYear', [
+                    'min' => 2000,
+                    'max' => date('Y'),
+                    'default' => $inputYear,
+                ])
+            ?>
+          </div>
+          <?php
+              echo $this->Form->button('Submit');
+              echo $this->Form->end();
+          ?>
+      </div>
     </div>
   </div>
+  
   <div class="card-body table-responsive p-0">
     <table class="table table-hover text-nowrap">
       <tr>
@@ -99,30 +123,6 @@ $this->Breadcrumbs->add([
 
   <div class="card-footer d-flex">
     <div class="">
+      <!--  -->
     </div>
-    <div class="ml-auto">
-        <!-- select year via dropdown menu -->
-        <div style="float: left">
-        <?= 
-            $this->Form->create(null, [
-                'type' => 'post',
-                'valueSources' => ['query', 'data'],
-                'url' => ['action' => 'view/'.($user->id)],
-                'style' => "margin-right: 5px"
-            ])
-        ?>
-        <?=
-            $this->Form->year('inputYear', [
-                'min' => 2000,
-                'max' => date('Y'),
-                'default' => $inputYear,
-            ])
-        ?>
-        </div>
-      <?php
-          echo $this->Form->button('Submit');
-          echo $this->Form->end();
-      ?>
-    </div>
-  </div>
 </div>

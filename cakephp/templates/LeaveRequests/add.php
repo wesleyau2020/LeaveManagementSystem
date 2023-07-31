@@ -41,12 +41,38 @@ $this->Breadcrumbs->add([
 
 <div class="card card-primary card-outline">
     <div class="card-header d-sm-flex">
-        <div style="padding:5px">
+        <div style="padding-top:7px">
             <?php $title = ($user->username).'\'s Leave Requests ('.$inputYear .')'?>
             <h3 class="card-title"><?= __("").$title?></h3>
         </div>
         <div class="card-toolbox">  
-            <!--  -->
+            <div class="ml-auto">
+                <!-- select year via dropdown menu -->
+                <div style="float:left">
+                <?= 
+                    $this->Form->create(null, [
+                        'type' => 'post',
+                        'valueSources' => ['query', 'data'],
+                        // TODO: Action should be 'add/' but changing it will intefere with controller code
+                        'url' => ['action' => 'index/'],
+                        'style' => "margin-right: 5px"
+                    ])
+                ?>
+                <?=
+                    $this->Form->year('inputYear', [
+                        'min' => 2000,
+                        'max' => date('Y'),
+                        'default' => $inputYear
+                    ])
+                ?>
+                </div>
+                <div style="float:right">
+                    <?php
+                        echo $this->Form->button('Submit');
+                        echo $this->Form->end();
+                    ?>
+                </div>
+            </div>
         </div>
     </div>
     <!-- /.card-header -->
@@ -93,33 +119,7 @@ $this->Breadcrumbs->add([
 
     <div class="card-footer d-flex">
         <div class="">
-        </div>
-        <div class="ml-auto">
-            <!-- select year via dropdown menu -->
-            <div style="float:left">
-            <?= 
-                $this->Form->create(null, [
-                    'type' => 'post',
-                    'valueSources' => ['query', 'data'],
-                    // TODO: Action should be 'add/' but changing it will intefere with controller code
-                    'url' => ['action' => 'index/'],
-                    'style' => "margin-right: 5px"
-                ])
-            ?>
-            <?=
-                $this->Form->year('inputYear', [
-                    'min' => 2000,
-                    'max' => date('Y'),
-                    'default' => $inputYear
-                ])
-            ?>
-            </div>
-            <div style="float:right">
-                <?php
-                    echo $this->Form->button('Submit');
-                    echo $this->Form->end();
-                ?>
-            </div>
+            <!--  -->
         </div>
     </div>
     <!-- /.card-footer -->
