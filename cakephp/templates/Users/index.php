@@ -18,10 +18,38 @@ $this->Breadcrumbs->add([
 ?>
 
 <div class="card card-primary card-outline">
-    <!-- <div class="card-header d-sm-flex"> -->
-        <!-- <h2 class="card-title"></h2> -->
-        <!-- <div class="card-toolbox"></div> -->
-    <!-- </div> -->
+    <div class="card-header d-sm-flex">
+        <h2 class="card-title">
+            <!--  -->
+        </h2>
+        <?= $this->Html->link(__('Add New User'), ['action' => 'add'], ['class' => 'btn btn-primary']) ?>
+        <div class="card-toolbox">
+            <div class="ml-auto">
+                <!-- select year via dropdown menu -->
+                <div style="float: left">
+                    <?= 
+                        $this->Form->create(null, [
+                            'type' => 'post',
+                            'valueSources' => ['query', 'data'],
+                            'url' => ['action' => 'index/'],
+                            'style' => "margin-right: 5px"
+                        ])
+                    ?>
+                    <?=
+                        $this->Form->year('inputYear', [
+                            'min' => 2000,
+                            'max' => date('Y'),
+                            'default' => $inputYear,
+                        ])
+                    ?>
+                </div>
+                <?php
+                    echo $this->Form->button('Submit');
+                    echo $this->Form->end();
+                ?>
+            </div>
+        </div>
+    </div>
     <!-- /.card-header -->
 
     <div class="card-body table-responsive p-0">
@@ -61,31 +89,10 @@ $this->Breadcrumbs->add([
     <!-- /.card-body -->
 
     <div class="card-footer d-flex">
-        <div class=""></div>
-        <div class="ml-auto">
-            <!-- select year via dropdown menu -->
-            <div style="float: left">
-                <?= 
-                    $this->Form->create(null, [
-                        'type' => 'post',
-                        'valueSources' => ['query', 'data'],
-                        'url' => ['action' => 'index/'],
-                        'style' => "margin-right: 5px"
-                    ])
-                ?>
-                <?=
-                    $this->Form->year('inputYear', [
-                        'min' => 2000,
-                        'max' => date('Y'),
-                        'default' => $inputYear,
-                    ])
-                ?>
-            </div>
-        <?php
-            echo $this->Form->button('Submit');
-            echo $this->Form->end();
-        ?>
+        <div class="" style="float: right">
+            <?= $this->Html->link(__('Display Active Users'), ['action' => 'displayActiveUsers'], ['class' => 'btn btn-outline-primary btn-sm']) ?>
+            <?= $this->Html->link(__('Display Inactive Users'), ['action' => 'displayInactiveUsers'], ['class' => 'btn btn-outline-danger btn-sm']) ?>
         </div>
-    <!-- /.card-footer -->
     </div>
+    <!-- /.card-footer -->
 </div>

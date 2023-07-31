@@ -20,7 +20,7 @@ $this->Breadcrumbs->add([
 
 <div class="view card card-primary card-outline">
   <div class="card-header d-sm-flex">
-    <h3 class="card-title"><?= __('User Details')?></h3>
+    <h3 class="card-title" style="padding-top: 5px"><?= __('User Details')?></h3>
   </div>
   <div class="card-body table-responsive p-0">
     <table class="table table-hover text-nowrap">
@@ -50,7 +50,7 @@ $this->Breadcrumbs->add([
 
 <div class="view card card-primary card-outline">
   <div class="card-header d-sm-flex">
-    <h3 class="card-title"><?= __('Leave Details (').$inputYear .')'?></h3>
+    <h3 class="card-title" style="padding-top: 5px"><?= __('Leave Details (').$inputYear .')'?></h3>
     <div class="card-toolbox">  
       <div class="ml-auto">
           <!-- select year via dropdown menu -->
@@ -82,7 +82,7 @@ $this->Breadcrumbs->add([
   <div class="card-body table-responsive p-0">
     <table class="table table-hover text-nowrap">
       <tr>
-          <th><?= __('Id') ?></th>
+          <th><?= __('ID') ?></th>
           <th><?= __('Leave Type') ?></th>
           <th><?= __('Carried Over') ?></th>
           <th><?= __('Max Carry Over') ?></th>
@@ -122,7 +122,9 @@ $this->Breadcrumbs->add([
   </div>
 
   <div class="card-footer d-flex">
-    <div class="">
-      <!--  -->
+        <div class="">
+            <!--  -->
+        </div>
     </div>
+    <!-- /.card-footer -->
 </div>
