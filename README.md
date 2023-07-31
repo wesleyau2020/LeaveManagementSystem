@@ -14,3 +14,11 @@ admin filter leave -> leave-requests/search
 
 admin update workdays -> workdays/update
 admin display holidays -> holidays/display
+
+# Debug Kit
+
+To enable Debug Kit, uncomment this statement in Application.php
+
+// if (Configure::read('debug')) {
+// $this->addPlugin('DebugKit');
+// }

@@ -202,7 +202,7 @@ class UsersController extends AppController
             $this->Flash->error(__('Invalid username or password'));
         }
 
-        $this->Flash->error(__('An error has occurred'));
+        // $this->Flash->error(__('An error has occurred'));
     }
 
     public function logout()
