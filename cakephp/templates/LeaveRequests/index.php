@@ -19,10 +19,7 @@ $this->Breadcrumbs->add([
             <!-- -->
         </h2>
         <div class="card-toolbox">
-            <?= $this->Paginator->limitControl([], null, [
-                'label' => false,
-                'class' => 'form-control-sm',
-            ]); ?>
+            <?= $this->Html->link(__('Pending Requests'), ['action' => 'displayPendingRequests'], ['class' => 'btn btn-s btn-primary', 'escape' => false]) ?>
         </div>
     </div>
     <!-- /.card-header -->

@@ -22,7 +22,16 @@ class LeaveRequestsController extends AppController
      */
     public function index()
     {
-        $this->checkAdminAuthorization();
+        $this->Authorization->skipAuthorization();
+
+        $result = $this->Authentication->getResult();
+        $userID  = $result->getData()->id;
+        $usersController = new \App\Controller\UsersController();
+        $user = $usersController->Users->get($userID);
+
+        if ($user->is_admin === FALSE) {
+            return $this->redirect(['action' => 'displayApprovedRequests']);
+        }
 
         $this->paginate = [
             'contain' => ['Users', 'LeaveTypes'],
@@ -252,7 +261,7 @@ class LeaveRequestsController extends AppController
     }
 
     public function displayApprovedRequests() {
-        $this->checkAdminAuthorization();
+        $this->Authorization->skipAuthorization();
 
         $userID = $this->Authentication->getResult()->getData()->id;
 
@@ -260,16 +269,16 @@ class LeaveRequestsController extends AppController
         $approvedLeaveRequests = $this->LeaveRequests->find()->where(['user_id' => $userID, 'status' => "Approved"])->contain(['Users','LeaveTypes'])->toArray();
 
         // Pending Leave Requests
-        $tmp1 = $this->LeaveRequests->find()->where(['user_id' => $userID, 'status' => "Awaiting Level 1"])->contain(['Users', 'LeaveTypes'])->toArray();
-        $tmp2 = $this->LeaveRequests->find()->where(['user_id' => $userID, 'status' => "Awaiting Level 2"])->contain(['Users', 'LeaveTypes'])->toArray();
-        $pendingLeaveRequests = array_merge($tmp1, $tmp2);
+        $level1Requests = $this->LeaveRequests->find()->where(['user_id' => $userID, 'status' => "Awaiting Level 1"])->contain(['Users', 'LeaveTypes'])->toArray();
+        $level2Requests = $this->LeaveRequests->find()->where(['user_id' => $userID, 'status' => "Awaiting Level 2"])->contain(['Users', 'LeaveTypes'])->toArray();
+        $pendingLeaveRequests = array_merge($level1Requests, $level2Requests);
 
         $this->set(compact('approvedLeaveRequests'));
         $this->set(compact('pendingLeaveRequests'));
     }
 
     public function displayRejectedRequests() {
-        $this->checkAdminAuthorization();
+        $this->Authorization->skipAuthorization();
 
         $userID = $this->Authentication->getResult()->getData()->id;
 
@@ -277,11 +286,22 @@ class LeaveRequestsController extends AppController
         $rejectedLeaveRequests = $this->LeaveRequests->find()->where(['user_id' => $userID, 'status' => "Rejected"])->contain(['Users', 'LeaveTypes'])->toArray();
 
         // Pending Leave Requests
-        $tmp1 = $this->LeaveRequests->find()->where(['user_id' => $userID, 'status' => "Awaiting Level 1"])->contain(['Users', 'LeaveTypes'])->toArray();
-        $tmp2 = $this->LeaveRequests->find()->where(['user_id' => $userID, 'status' => "Awaiting Level 2"])->contain(['Users', 'LeaveTypes'])->toArray();
-        $pendingLeaveRequests = array_merge($tmp1, $tmp2);
+        $level1Requests = $this->LeaveRequests->find()->where(['user_id' => $userID, 'status' => "Awaiting Level 1"])->contain(['Users', 'LeaveTypes'])->toArray();
+        $level2Requests = $this->LeaveRequests->find()->where(['user_id' => $userID, 'status' => "Awaiting Level 2"])->contain(['Users', 'LeaveTypes'])->toArray();
+        $pendingLeaveRequests = array_merge($level1Requests, $level2Requests);
 
         $this->set(compact('rejectedLeaveRequests'));
+        $this->set(compact('pendingLeaveRequests'));
+    }
+
+    public function displayPendingRequests() {
+        $this->checkAdminAuthorization();
+
+        // Pending Leave Requests
+        $level1Requests = $this->LeaveRequests->find()->where(['status' => "Awaiting Level 1"])->contain(['Users', 'LeaveTypes'])->toArray();
+        $level2Requests = $this->LeaveRequests->find()->where(['status' => "Awaiting Level 2"])->contain(['Users', 'LeaveTypes'])->toArray();
+        $pendingLeaveRequests = array_merge($level1Requests, $level2Requests);
+
         $this->set(compact('pendingLeaveRequests'));
     }
 
@@ -350,7 +370,7 @@ class LeaveRequestsController extends AppController
             } catch (\Exception $e) {
                 $this->Flash->error(__('You are not authorised to perform this action.'));
                 $userID = $this->Authentication->getResult()->getData()->id;
-                return $this->redirect(['controller' => 'Users', 'action' => 'view', $userID]);
+                return $this->redirect(['action' => 'displayApprovedRequests']);
             }
         }
     }

@@ -10,11 +10,10 @@ $inputYear = $_POST["inputYear"]??date('Y');
 ?>
 
 <?php
-$this->assign('title', __('Display Requests'));
+$this->assign('title', __('Rejected Requests'));
 $this->Breadcrumbs->add([
     ['title' => 'Home', 'url' => '/'],
-    ['title' => 'List Leave Requests', 'url' => ['action' => 'index']],
-    ['title' => 'Display Requests'],
+    ['title' => 'Display Rejected Requests'],
 ]);
 ?>
 
@@ -114,7 +113,6 @@ $this->Breadcrumbs->add([
                     <th><?= $this->Paginator->sort('leave_end') ?></th>
                     <th><?= $this->Paginator->sort('status') ?></th>
                     <th><?= $this->Paginator->sort('remark') ?></th>
-                    <th class="actions"><?= __('Actions') ?></th>
                 </tr>
             </thead>
             <tbody>
@@ -130,10 +128,6 @@ $this->Breadcrumbs->add([
                         <td><?= h($leaveRequest->end_of_leave) ?></td>
                         <td><?= h($leaveRequest->status) ?></td>
                         <td><?= h($leaveRequest->remark) ?></td>
-                        <td class="actions">
-                            <?= $this->Html->link(__('Approve'), ['action' => 'approve', $leaveRequest->id], ['class' => 'btn btn-xs btn-outline-primary', 'escape' => false]) ?>
-                            <?= $this->Html->link(__('Reject'), ['action' => 'reject', $leaveRequest->id], ['class' => 'btn btn-xs btn-outline-danger', 'escape' => false]) ?>
-                        </td>
                     </tr>
                     <?php endif; ?>
                 <?php endforeach; ?>

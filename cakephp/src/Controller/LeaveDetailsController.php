@@ -19,7 +19,16 @@ class LeaveDetailsController extends AppController
      */
     public function index()
     {
-        $this->checkAdminAuthorization();
+        $this->Authorization->skipAuthorization();
+
+        $result = $this->Authentication->getResult();
+        $userID  = $result->getData()->id;
+        $usersController = new \App\Controller\UsersController();
+        $user = $usersController->Users->get($userID);
+
+        if ($user->is_admin === FALSE) {
+            return $this->redirect(['action' => 'displayUserLeaveDetails']);
+        }
 
         $this->paginate = [
             'contain' => ['Users'],
@@ -31,12 +40,12 @@ class LeaveDetailsController extends AppController
 
     public function displayUserLeaveDetails()
     {
-        $this->checkAdminAuthorization();
+        $this->Authorization->skipAuthorization();
         
         $result = $this->Authentication->getResult();
         $userID  = $result->getData()->id;
         $usersController = new \App\Controller\UsersController();
-        $user = $usersController->Users->get(33, [
+        $user = $usersController->Users->get($userID, [
             'contain' => ['LeaveDetails', 'LeaveRequests'],
         ]);
 
@@ -66,7 +75,6 @@ class LeaveDetailsController extends AppController
 
         $leaveDetailUserID = $leaveDetail->user_id;
         if ($this->Authentication->getResult()->getData()->id == $leaveDetailUserID) {
-            // skip authorization if user is viewing his own leave requests
             $this->Authorization->skipAuthorization();
         } else {
             $this->checkAdminAuthorization();
@@ -82,7 +90,7 @@ class LeaveDetailsController extends AppController
      */
     public function add()
     {
-        $this->checkAdminAuthorization();
+        $this->Authorization->skipAuthorization();
 
         $leaveDetail = $this->LeaveDetails->newEmptyEntity();
 

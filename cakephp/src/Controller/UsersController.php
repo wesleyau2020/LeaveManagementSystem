@@ -19,7 +19,17 @@ class UsersController extends AppController
      */
     public function index()
     {
-        $this->checkAdminAuthorization();
+        $this->Authorization->skipAuthorization();
+
+        $result = $this->Authentication->getResult();
+        $userID  = $result->getData()->id;
+        $usersController = new \App\Controller\UsersController();
+        $user = $usersController->Users->get($userID);
+
+        if ($user->is_admin === FALSE) {
+            return $this->redirect(['action' => 'view', $userID]);
+        }
+
         $users = $this->paginate($this->Users);
         $userWithLeaveDetails = $this->Users->find()->contain(['LeaveDetails'])->toArray();
 

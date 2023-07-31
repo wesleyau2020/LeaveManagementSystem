@@ -10,16 +10,16 @@ $inputYear = $_POST["inputYear"]??date('Y');
 ?>
 
 <?php
-$this->assign('title', __('User\'s Leave Details'));
+$this->assign('title', __('Leave Details'));
 $this->Breadcrumbs->add([
     ['title' => 'Home', 'url' => '/'],
-    ['title' => 'Display User\'s Leave Detials'],
+    ['title' => 'Display Leave Details']
 ]);
 ?>
 
 <div class="view card card-primary card-outline">
   <div class="card-header d-sm-flex">
-  <div style="padding:1.5px">
+  <div style="padding-top:1.5px">
       <?php $title = ($user->username).'\'s Leave Details ('.$inputYear .')'?>
       <h3 class="card-title"><?= __("").$title?></h3>
   </div>
