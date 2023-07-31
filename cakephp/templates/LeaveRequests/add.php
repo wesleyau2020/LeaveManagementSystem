@@ -41,8 +41,10 @@ $this->Breadcrumbs->add([
 
 <div class="card card-primary card-outline">
     <div class="card-header d-sm-flex">
-        <?php $title = ($user->username).'\'s Leave Requests ('.$inputYear .')'?>
-        <h3 class="card-title"><?= __("").$title?></h3>
+        <div style="padding:5px">
+            <?php $title = ($user->username).'\'s Leave Requests ('.$inputYear .')'?>
+            <h3 class="card-title"><?= __("").$title?></h3>
+        </div>
         <div class="card-toolbox">  
             <!--  -->
         </div>
@@ -97,9 +99,9 @@ $this->Breadcrumbs->add([
             <div style="float:left">
             <?= 
                 $this->Form->create(null, [
-                    'type' => 'get',
+                    'type' => 'post',
                     'valueSources' => ['query', 'data'],
-                    // TODO: Action should be add/
+                    // TODO: Action should be 'add/' but changing it will intefere with controller code
                     'url' => ['action' => 'index/'],
                     'style' => "margin-right: 5px"
                 ])

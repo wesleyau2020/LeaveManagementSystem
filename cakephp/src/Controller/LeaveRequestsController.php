@@ -57,7 +57,8 @@ class LeaveRequestsController extends AppController
      */
     public function add()
     {
-        $this->checkAdminAuthorization();
+        $this->Authorization->skipAuthorization();
+        // $this->checkAdminAuthorization();
 
         $leaveRequest = $this->LeaveRequests->newEmptyEntity();
 
@@ -335,15 +336,22 @@ class LeaveRequestsController extends AppController
     }
 
     public function checkAdminAuthorization() {
-        $leaveRequest = $this->LeaveRequests->newEmptyEntity();
+        $result = $this->Authentication->getResult();
+        $userID  = $result->getData()->id;
+        $usersController = new \App\Controller\UsersController();
+        $user = $usersController->Users->get($userID);
 
-        try {
-            $this->Authorization->authorize($leaveRequest);
-        } catch (\Exception $e) {
-            $this->Flash->error(__('You are not authorised to perform this action.'));
-            $userID = $this->Authentication->getResult()->getData()->id;
-            return $this->redirect(['controller' => 'Users', 'action' => 'view', $userID]);
+        if ($user->is_admin === TRUE) {
+            $this->Authorization->skipAuthorization();
+        } else {
+            try {
+                $leaveRequest = $this->LeaveRequests->newEmptyEntity();
+                $this->Authorization->authorize($leaveRequest);
+            } catch (\Exception $e) {
+                $this->Flash->error(__('You are not authorised to perform this action.'));
+                $userID = $this->Authentication->getResult()->getData()->id;
+                return $this->redirect(['controller' => 'Users', 'action' => 'view', $userID]);
+            }
         }
     }
-
 }

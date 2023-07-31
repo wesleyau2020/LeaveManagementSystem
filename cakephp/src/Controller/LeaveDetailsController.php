@@ -29,6 +29,28 @@ class LeaveDetailsController extends AppController
         $this->set(compact('leaveDetails'));
     }
 
+    public function displayUserLeaveDetails()
+    {
+        $this->checkAdminAuthorization();
+        
+        $result = $this->Authentication->getResult();
+        $userID  = $result->getData()->id;
+        $usersController = new \App\Controller\UsersController();
+        $user = $usersController->Users->get(33, [
+            'contain' => ['LeaveDetails', 'LeaveRequests'],
+        ]);
+
+        $leaveTypesController = new \App\Controller\LeaveTypesController();
+        $leaveTypeNames = array();
+        for ($i = 0; $i < 3; $i++) {
+            $LeaveTypeName = $leaveTypesController->LeaveTypes->get($i + 1)->name;
+            array_push($leaveTypeNames, $LeaveTypeName);
+        }
+
+        $this->set(compact('user'));
+        $this->set(compact('leaveTypeNames'));
+    }
+
     /**
      * View method
      *
@@ -154,14 +176,22 @@ class LeaveDetailsController extends AppController
     }
 
     public function checkAdminAuthorization() {
-        $leaveDetail = $this->LeaveDetails->newEmptyEntity();
+        $result = $this->Authentication->getResult();
+        $userID  = $result->getData()->id;
+        $usersController = new \App\Controller\UsersController();
+        $user = $usersController->Users->get($userID);
 
-        try {
-            $this->Authorization->authorize($leaveDetail);
-        } catch (\Exception $e) {
-            $this->Flash->error(__('You are not authorised to perform this action.'));
-            $userID = $this->Authentication->getResult()->getData()->id;
-            return $this->redirect(['controller' => 'Users', 'action' => 'view', $userID]);
+        if ($user->is_admin === TRUE) {
+            $this->Authorization->skipAuthorization();
+        } else {
+            try {
+                $leaveDetail = $this->LeaveDetails->newEmptyEntity();
+                $this->Authorization->authorize($leaveDetail);
+            } catch (\Exception $e) {
+                $this->Flash->error(__('You are not authorised to perform this action.'));
+                $userID = $this->Authentication->getResult()->getData()->id;
+                return $this->redirect(['action' => 'displayUserLeaveDetails']);
+            }
         }
     }
 }

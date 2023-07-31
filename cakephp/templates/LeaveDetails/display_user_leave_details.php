@@ -10,47 +10,19 @@ $inputYear = $_POST["inputYear"]??date('Y');
 ?>
 
 <?php
-$this->assign('title', __('Welcome '.$user->username.'!'));
+$this->assign('title', __('User\'s Leave Details'));
 $this->Breadcrumbs->add([
     ['title' => 'Home', 'url' => '/'],
-    ['title' => 'List Users', 'url' => ['action' => 'index']],
-    ['title' => 'View'],
+    ['title' => 'Display User\'s Leave Detials'],
 ]);
 ?>
 
 <div class="view card card-primary card-outline">
   <div class="card-header d-sm-flex">
-    <h3 class="card-title"><?= __('User Details')?></h3>
+  <div style="padding:1.5px">
+      <?php $title = ($user->username).'\'s Leave Details ('.$inputYear .')'?>
+      <h3 class="card-title"><?= __("").$title?></h3>
   </div>
-  <div class="card-body table-responsive p-0">
-    <table class="table table-hover text-nowrap">
-        <tr>
-            <th><?= __('ID') ?></th>
-            <td><?= $this->Number->format($user->id) ?></td>
-        </tr>
-        <tr>
-            <th><?= __('Username') ?></th>
-            <td><?= h($user->username) ?></td>
-        </tr>
-        <tr>
-            <th><?= __('Start Date') ?></th>
-            <td><?= h($user->start_date) ?></td>
-        </tr>
-    </table>
-  </div>
-  <div class="card-footer d-flex">
-    <div class="">
-    </div>
-    <div class="ml-auto">
-      <?= $this->Html->link(__('Edit Details'), ['action' => 'edit', $user->id], ['class' => 'btn btn-secondary']) ?>
-    </div>
-  </div>
-</div>
-
-
-<div class="view card card-primary card-outline">
-  <div class="card-header d-sm-flex">
-    <h3 class="card-title"><?= __('Leave Details (').$inputYear .')'?></h3>
     <div class="card-toolbox">  
       <!--  -->
     </div>
