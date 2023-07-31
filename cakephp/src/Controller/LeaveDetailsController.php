@@ -132,15 +132,7 @@ class LeaveDetailsController extends AppController
 
     // Update leave balance every month (in current year)
     public function update() {
-        $leaveDetail = $this->LeaveDetails->newEmptyEntity();
-
-        try {
-            $this->Authorization->authorize($leaveDetail);
-        } catch (\Exception $e) {
-            $this->Flash->error(__('You are not authorised to perform this action.'));
-            $userID = $this->Authentication->getResult()->getData()->id;
-            return $this->redirect(['controller' => 'Users', 'action' => 'view', $userID]);
-        }
+        $this->checkAdminAuthorization();
 
         $currYear = FrozenTime::now()->year;
         $leaveDetails = $this->LeaveDetails->find()->where(['year' => $currYear],
@@ -162,14 +154,13 @@ class LeaveDetailsController extends AppController
     }
 
     public function checkAdminAuthorization() {
-        $userID = $this->Authentication->getResult()->getData()->id;
-        $usersController = new \App\Controller\UsersController();
-        $user = $usersController->Users->get($userID);
+        $leaveDetail = $this->LeaveDetails->newEmptyEntity();
 
         try {
-            $this->Authorization->authorize($user);
+            $this->Authorization->authorize($leaveDetail);
         } catch (\Exception $e) {
             $this->Flash->error(__('You are not authorised to perform this action.'));
+            $userID = $this->Authentication->getResult()->getData()->id;
             return $this->redirect(['controller' => 'Users', 'action' => 'view', $userID]);
         }
     }

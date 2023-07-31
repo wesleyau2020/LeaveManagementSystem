@@ -23,7 +23,6 @@ class LeaveRequestsController extends AppController
     public function index()
     {
         $this->checkAdminAuthorization();
-        $leaveRequest = $this->LeaveRequests->newEmptyEntity();
 
         $this->paginate = [
             'contain' => ['Users', 'LeaveTypes'],
@@ -43,6 +42,7 @@ class LeaveRequestsController extends AppController
     public function view($id = null)
     {
         $this->checkAdminAuthorization();
+
         $leaveRequest = $this->LeaveRequests->get($id, [
             'contain' => ['Users', 'LeaveTypes'],
         ]);
@@ -58,6 +58,7 @@ class LeaveRequestsController extends AppController
     public function add()
     {
         $this->checkAdminAuthorization();
+
         $leaveRequest = $this->LeaveRequests->newEmptyEntity();
 
         if ($this->request->is('post')) {
@@ -112,6 +113,7 @@ class LeaveRequestsController extends AppController
     public function edit($id = null)
     {
         $this->checkAdminAuthorization();
+
         $leaveRequest = $this->LeaveRequests->get($id, [
             'contain' => [],
         ]);
@@ -141,6 +143,7 @@ class LeaveRequestsController extends AppController
     public function delete($id = null)
     {
         $this->checkAdminAuthorization();
+
         $this->request->allowMethod(['post', 'delete']);
         $leaveRequest = $this->LeaveRequests->get($id);
 
@@ -155,17 +158,10 @@ class LeaveRequestsController extends AppController
 
     // Takes in search parameters and display leave requests accordingly
     public function search() {
+        $this->checkAdminAuthorization();
+
         $leaveRequest = $this->LeaveRequests->newEmptyEntity();
         $this->set(compact('leaveRequest'));
-        
-        try {
-            $this->Authorization->authorize($leaveRequest);
-        } catch (\Exception $e) {
-            $this->Flash->error(__('You are not authorised to perform this action.'));
-            $userID = $this->Authentication->getResult()->getData()->id;
-            return $this->redirect(['controller' => 'Users', 'action' => 'view', $userID]);
-        }
-        
         $query = $this->LeaveRequests->find();
 
         if ($this->request->is('get')) {
@@ -210,7 +206,7 @@ class LeaveRequestsController extends AppController
 
     public function export()
     {
-        $this->Authorization->skipAuthorization();
+        $this->checkAdminAuthorization();
 
         $leaveRequestIDList = $this->request->getData('leaveRequestIDList'); // '7 8 9 10 11'
         $leaveRequestIDList = explode(' ', $leaveRequestIDList);
@@ -255,20 +251,14 @@ class LeaveRequestsController extends AppController
     }
 
     public function displayApprovedRequests() {
-        $leaveRequest = $this->LeaveRequests->newEmptyEntity();
-
-        try {
-            $this->Authorization->authorize($leaveRequest);
-        } catch (\Exception $e) {
-            $this->Flash->error(__('You are not authorised to perform this action.'));
-            $userID = $this->Authentication->getResult()->getData()->id;
-            return $this->redirect(['controller' => 'Users', 'action' => 'view', $userID]);
-        }
+        $this->checkAdminAuthorization();
 
         $userID = $this->Authentication->getResult()->getData()->id;
 
+        // Approved Leave Requests
         $approvedLeaveRequests = $this->LeaveRequests->find()->where(['user_id' => $userID, 'status' => "Approved"])->contain(['Users','LeaveTypes'])->toArray();
 
+        // Pending Leave Requests
         $tmp1 = $this->LeaveRequests->find()->where(['user_id' => $userID, 'status' => "Awaiting Level 1"])->contain(['Users', 'LeaveTypes'])->toArray();
         $tmp2 = $this->LeaveRequests->find()->where(['user_id' => $userID, 'status' => "Awaiting Level 2"])->contain(['Users', 'LeaveTypes'])->toArray();
         $pendingLeaveRequests = array_merge($tmp1, $tmp2);
@@ -278,20 +268,14 @@ class LeaveRequestsController extends AppController
     }
 
     public function displayRejectedRequests() {
-        $leaveRequest = $this->LeaveRequests->newEmptyEntity();
-
-        try {
-            $this->Authorization->authorize($leaveRequest);
-        } catch (\Exception $e) {
-            $this->Flash->error(__('You are not authorised to perform this action.'));
-            $userID = $this->Authentication->getResult()->getData()->id;
-            return $this->redirect(['controller' => 'Users', 'action' => 'view', $userID]);
-        }
+        $this->checkAdminAuthorization();
 
         $userID = $this->Authentication->getResult()->getData()->id;
 
+        // Rejected Leave Requests
         $rejectedLeaveRequests = $this->LeaveRequests->find()->where(['user_id' => $userID, 'status' => "Rejected"])->contain(['Users', 'LeaveTypes'])->toArray();
 
+        // Pending Leave Requests
         $tmp1 = $this->LeaveRequests->find()->where(['user_id' => $userID, 'status' => "Awaiting Level 1"])->contain(['Users', 'LeaveTypes'])->toArray();
         $tmp2 = $this->LeaveRequests->find()->where(['user_id' => $userID, 'status' => "Awaiting Level 2"])->contain(['Users', 'LeaveTypes'])->toArray();
         $pendingLeaveRequests = array_merge($tmp1, $tmp2);
@@ -301,16 +285,9 @@ class LeaveRequestsController extends AppController
     }
 
     public function approve($id = null) {
+        $this->checkAdminAuthorization();
+
         $leaveRequest = $this->LeaveRequests->get($id);
-
-        try {
-            $this->Authorization->authorize($leaveRequest);
-        } catch (\Exception $e) {
-            $this->Flash->error(__('You are not authorised to perform this action.'));
-            $userID = $this->Authentication->getResult()->getData()->id;
-            return $this->redirect(['controller' => 'Users', 'action' => 'view', $userID]);
-        }
-
         $userID = $this->Authentication->getResult()->getData()->id;
         $usersController = new \App\Controller\UsersController();
         $user = $usersController->Users->get($userID);
@@ -334,16 +311,9 @@ class LeaveRequestsController extends AppController
     }
 
     public function reject($id = null) {
+        $this->checkAdminAuthorization();
+
         $leaveRequest = $this->LeaveRequests->get($id);
-
-        try {
-            $this->Authorization->authorize($leaveRequest);
-        } catch (\Exception $e) {
-            $this->Flash->error(__('You are not authorised to perform this action.'));
-            $userID = $this->Authentication->getResult()->getData()->id;
-            return $this->redirect(['controller' => 'Users', 'action' => 'view', $userID]);
-        }
-
         $userID = $this->Authentication->getResult()->getData()->id;
         $usersController = new \App\Controller\UsersController();
         $user = $usersController->Users->get($userID);
@@ -365,14 +335,13 @@ class LeaveRequestsController extends AppController
     }
 
     public function checkAdminAuthorization() {
-        $userID = $this->Authentication->getResult()->getData()->id??0;
-        $usersController = new \App\Controller\UsersController();
-        $user = $usersController->Users->get($userID);
+        $leaveRequest = $this->LeaveRequests->newEmptyEntity();
 
         try {
-            $this->Authorization->authorize($user);
+            $this->Authorization->authorize($leaveRequest);
         } catch (\Exception $e) {
             $this->Flash->error(__('You are not authorised to perform this action.'));
+            $userID = $this->Authentication->getResult()->getData()->id;
             return $this->redirect(['controller' => 'Users', 'action' => 'view', $userID]);
         }
     }
