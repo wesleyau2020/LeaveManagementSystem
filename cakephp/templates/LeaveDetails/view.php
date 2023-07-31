@@ -73,5 +73,3 @@ $this->Breadcrumbs->add([
     </div>
   </div>
 </div>
-
-

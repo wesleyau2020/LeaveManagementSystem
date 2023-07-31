@@ -33,6 +33,7 @@ $this->Breadcrumbs->add([
                     <th><?= $this->Paginator->sort('Carried Over') ?></th>
                     <th><?= $this->Paginator->sort('Entitled') ?></th>
                     <th><?= $this->Paginator->sort('Balance') ?></th>
+                    <th class="actions"><?= __('Actions') ?></th>
                 </tr>
             </thead>
             <tbody>
@@ -45,6 +46,11 @@ $this->Breadcrumbs->add([
                                 <td><?= h($leaveDetail->carried_over) ?></td>
                                 <td><?= h($leaveDetail->entitled) ?></td>
                                 <td><?= h($leaveDetail->balance) ?></td>
+                                <td class="actions">
+                                    <?= $this->Html->link(__('View'), ['action' => 'view', $user->id], ['class' => 'btn btn-xs btn-outline-primary', 'escape' => false]) ?>
+                                    <?= $this->Html->link(__('Edit'), ['action' => 'edit', $user->id], ['class' => 'btn btn-xs btn-outline-primary', 'escape' => false]) ?>
+                                    <?= $this->Form->postLink(__('Delete'), ['action' => 'delete', $user->id], ['class' => 'btn btn-xs btn-outline-danger', 'escape' => false, 'confirm' => __('Are you sure you want to delete # {0}?', $user->id)]) ?>
+                                </td>
                             </tr>
                         <?php endif; ?>
                     <?php endforeach; ?>
@@ -60,10 +66,10 @@ $this->Breadcrumbs->add([
             <!-- select year via dropdown menu -->
             <div style="float: left">
                 <?= 
-                    $this->Form->create($user, [
+                    $this->Form->create(null, [
                         'type' => 'post',
                         'valueSources' => ['query', 'data'],
-                        'url' => ['action' => 'view/'.($user->id)],
+                        'url' => ['action' => 'index/'],
                         'style' => "margin-right: 5px"
                     ])
                 ?>
