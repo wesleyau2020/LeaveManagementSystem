@@ -18,8 +18,12 @@ $this->Breadcrumbs->add([
         <h2 class="card-title">
             <!-- -->
         </h2>
+        <?= $this->Html->link(__('Pending Requests'), ['action' => 'displayPendingRequests'], ['class' => 'btn btn-primary btn-m', 'escape' => false]) ?>
         <div class="card-toolbox">
-            <?= $this->Html->link(__('Pending Requests'), ['action' => 'displayPendingRequests'], ['class' => 'btn btn-s btn-primary', 'escape' => false]) ?>
+        <?= $this->Paginator->limitControl([], null, [
+                'label' => false,
+                'class' => 'form-control-m',
+            ]); ?>
         </div>
     </div>
     <!-- /.card-header -->

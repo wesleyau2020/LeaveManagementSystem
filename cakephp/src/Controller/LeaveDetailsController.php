@@ -146,6 +146,7 @@ class LeaveDetailsController extends AppController
      */
     public function delete($id = null)
     {
+        // TODO: Fix Authorisation - User should not be able to delete leave details
         $this->checkAdminAuthorization();
 
         $this->request->allowMethod(['post', 'delete']);

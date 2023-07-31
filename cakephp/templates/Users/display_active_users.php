@@ -58,7 +58,7 @@ $this->Breadcrumbs->add([
       </div>
     </div>
     <div class="" style="float: right; margin-left: 10px">
-      <?= $this->Html->link(__('Cancel'), ['action' => 'add'], ['class' => 'btn btn-default btn-sm']) ?>
+      <?= $this->Html->link(__('Cancel'), ['action' => 'index'], ['class' => 'btn btn-default btn-sm']) ?>
     </div>
   </div>
 </div>
