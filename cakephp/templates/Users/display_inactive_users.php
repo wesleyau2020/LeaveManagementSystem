@@ -53,12 +53,12 @@ $this->Breadcrumbs->add([
       <div>
         <!-- Toggle button to switch between active/inactive users -->
         <?= $this->Form->create(null, ['url' => ['controller' => 'users', 'action' => '/displayActiveUsers']]); ?>
-        <?= $this->Html->link(__('Display Active Users'), ['action' => 'displayActiveUsers'], ['class' => 'btn btn-primary btn-sm']) ?>
+        <?= $this->Html->link(__('Display Active Users'), ['action' => 'displayActiveUsers'], ['class' => 'btn btn-primary btn-m']) ?>
         <?= $this->Form->end(); ?>
       </div>
     </div>
     <div class="" style="float: right; margin-left: 10px">
-      <?= $this->Html->link(__('Cancel'), ['action' => 'add'], ['class' => 'btn btn-default btn-sm']) ?>
+      <?= $this->Html->link(__('Cancel'), ['action' => 'add'], ['class' => 'btn btn-default btn-m']) ?>
     </div>
   </div>
 </div>

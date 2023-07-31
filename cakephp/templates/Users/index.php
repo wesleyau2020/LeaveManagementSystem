@@ -89,7 +89,7 @@ $this->Breadcrumbs->add([
     <!-- /.card-body -->
 
     <div class="card-footer d-flex">
-        <div class="" style="float: right">
+        <div class="">
             <?= $this->Html->link(__('Display Active Users'), ['action' => 'displayActiveUsers'], ['class' => 'btn btn-outline-primary btn-sm']) ?>
             <?= $this->Html->link(__('Display Inactive Users'), ['action' => 'displayInactiveUsers'], ['class' => 'btn btn-outline-danger btn-sm']) ?>
         </div>

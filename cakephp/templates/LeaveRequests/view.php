@@ -17,7 +17,7 @@ $this->Breadcrumbs->add([
 
 <div class="view card card-primary card-outline">
   <div class="card-header d-sm-flex">
-    <h2 class="card-title"><?= h($leaveRequest->id) ?></h2>
+    <h2 class="card-title" style="padding-top:5px"><?= h($leaveRequest->id) ?></h2>
   </div>
   <div class="card-body table-responsive p-0">
     <table class="table table-hover text-nowrap">

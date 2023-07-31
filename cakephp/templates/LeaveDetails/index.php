@@ -18,7 +18,7 @@ $this->Breadcrumbs->add([
         <h2 class="card-title">
             <!-- -->
         </h2>
-        <?= $this->Html->link(__('New Leave Detail'), ['action' => 'add'], ['class' => 'btn btn-primary btn-sm']) ?>
+        <?= $this->Html->link(__('New Leave Detail'), ['action' => 'add'], ['class' => 'btn btn-primary btn-m']) ?>
         <div class="card-toolbox">
             <?= $this->Paginator->limitControl([], null, [
                 'label' => false,
