@@ -96,10 +96,12 @@ $this->Breadcrumbs->add([
             <!-- select year via dropdown menu -->
             <div style="float:left">
             <?= 
-                $this->Form->create($userLeaveRequests, [
-                    'type' => 'post',
+                $this->Form->create(null, [
+                    'type' => 'get',
                     'valueSources' => ['query', 'data'],
+                    // TODO: Action should be add/
                     'url' => ['action' => 'index/'],
+                    'style' => "margin-right: 5px"
                 ])
             ?>
             <?=
