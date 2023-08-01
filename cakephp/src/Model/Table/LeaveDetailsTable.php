@@ -47,6 +47,10 @@ class LeaveDetailsTable extends Table
             'foreignKey' => 'user_id',
             'joinType' => 'INNER',
         ]);
+        // $this->belongsTo('LeaveTypes', [
+        //     'foreignKey' => 'leave_type_id',
+        //     'joinType' => 'INNER',
+        // ]);
     }
 
     /**

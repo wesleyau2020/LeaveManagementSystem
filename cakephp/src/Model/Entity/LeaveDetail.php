@@ -19,6 +19,7 @@ use Cake\ORM\Entity;
  * @property float $earned
  *
  * @property \App\Model\Entity\User $user
+ * @property \App\Model\Entity\LeaveType $leave_type
  */
 class LeaveDetail extends Entity
 {
@@ -41,5 +42,6 @@ class LeaveDetail extends Entity
         'balance' => true,
         'earned' => true,
         'user' => true,
+        // 'leave_type' => true,
     ];
 }

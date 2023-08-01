@@ -19,7 +19,7 @@ $this->Breadcrumbs->add([
   <div class="card-body">
     <?php
       echo $this->Form->control('user_id', ['options' => $users]);
-      echo $this->Form->control('leave_type_id');
+      echo $this->Form->control('leave_type_id', ['options' => $leaveTypes]);
       echo $this->Form->control('year');
       echo $this->Form->control('carried_over');
       echo $this->Form->control('max_carry_over');

@@ -105,7 +105,8 @@ class LeaveDetailsController extends AppController
         }
 
         $users = $this->LeaveDetails->Users->find('list', ['limit' => 200])->all();
-        $this->set(compact('leaveDetail', 'users'));
+        $leaveTypes = $this->LeaveDetails->LeaveTypes->find('list', ['limit' => 200])->all();
+        $this->set(compact('leaveDetail', 'users', 'leaveTypes'));
     }
 
     /**
