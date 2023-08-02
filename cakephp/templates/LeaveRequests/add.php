@@ -21,7 +21,7 @@ $this->Breadcrumbs->add([
   <?= $this->Form->create($leaveRequest) ?>
   <div class="card-body">
     <?php
-      echo $this->Form->control('leave_type_id', ['options' => $leaveType]);
+      echo $this->Form->control('leave_type_id', ['options' => $leaveTypes]);
       echo $this->Form->control('start_of_leave');
       echo $this->Form->control('end_of_leave');
       echo $this->Form->control('year');

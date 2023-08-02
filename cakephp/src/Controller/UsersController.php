@@ -23,8 +23,7 @@ class UsersController extends AppController
 
         $result = $this->Authentication->getResult();
         $userID  = $result->getData()->id;
-        $usersController = new \App\Controller\UsersController();
-        $user = $usersController->Users->get($userID);
+        $user = $this->Users->get($userID);
 
         if ($user->is_admin === FALSE) {
             return $this->redirect(['action' => 'view', $userID]);
@@ -47,7 +46,6 @@ class UsersController extends AppController
     public function view($id = null)
     {
         if ($this->Authentication->getResult()->getData()->id == $id) {
-            // skip authorization if user is viewing his own page
             $this->Authorization->skipAuthorization();
         } else {
             $this->checkAdminAuthorization();
@@ -75,7 +73,7 @@ class UsersController extends AppController
      */
     public function add()
     {
-        // $this->Authorization->skipAuthorization(); // uncomment to add Admins
+        // $this->Authorization->skipAuthorization(); // uncomment to add admins
         $this->checkAdminAuthorization();
         $user = $this->Users->newEmptyEntity();
 
@@ -220,7 +218,6 @@ class UsersController extends AppController
         $this->Authorization->skipAuthorization();
         $result = $this->Authentication->getResult();
 
-        // regardless of POST or GET, redirect if user is logged in
         if ($result && $result->isValid()) {
             $this->Authentication->logout();
             return $this->redirect(['controller' => 'Users', 'action' => 'login']);
@@ -239,7 +236,7 @@ class UsersController extends AppController
             $leaveDetailsController = new \App\Controller\LeaveDetailsController();
             $latestLeaveDetail = $leaveDetailsController->LeaveDetails->find()->last();
 
-            // update if $latestLeaveDetail belongs to previous year
+            // update if $latestLeaveDetail belongs to the previous year
             if ($latestLeaveDetail->year == $prevYear) {
                 $mapUsersPrevYearALBalance = $this->getMapUsersPrevYearsALBalance();
                 $updated = TRUE;

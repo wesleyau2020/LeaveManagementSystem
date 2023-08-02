@@ -97,10 +97,10 @@ class LeaveRequestsController extends AppController
             $this->Flash->error(__('The leave request could not be saved. Please, try again.'));
         }
 
-        // pass leaveRequest, users, leaveType to template
+        // pass leaveRequest, users, leaveTypes to template
         $users = $this->LeaveRequests->Users->find('list', ['limit' => 200])->all();
-        $leaveType = $this->LeaveRequests->LeaveTypes->find('list', ['limit' => 200])->all();
-        $this->set(compact('leaveRequest', 'users', 'leaveType'));
+        $leaveTypes = $this->LeaveRequests->LeaveTypes->find('list', ['limit' => 200])->all();
+        $this->set(compact('leaveRequest', 'users', 'leaveTypes'));
 
         // pass user's requests to template (don't display other users)
         $userID  = $this->Authentication->getResult()->getData()->id;
