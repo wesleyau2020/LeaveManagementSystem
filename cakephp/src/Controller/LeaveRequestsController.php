@@ -305,6 +305,8 @@ class LeaveRequestsController extends AppController
         $this->set(compact('pendingLeaveRequests'));
     }
 
+    // Level 1 is the highest -> can approve Level 1 & 2 Requests
+    // Level 2 Admin can only approve Level 2 Requests
     public function approve($id = null) {
         $this->checkAdminAuthorization();
 
@@ -352,7 +354,7 @@ class LeaveRequestsController extends AppController
             $this->Flash->error(__('The leave request could not be rejected. Please, try again.'));
         }
 
-        return $this->redirect(['action' => 'displayRejectedRequests']);
+        return $this->redirect(['action' => 'displayPendingRequests']);
     }
 
     public function checkAdminAuthorization() {
@@ -370,7 +372,7 @@ class LeaveRequestsController extends AppController
             } catch (\Exception $e) {
                 $this->Flash->error(__('You are not authorised to perform this action.'));
                 $userID = $this->Authentication->getResult()->getData()->id;
-                return $this->redirect(['action' => 'displayApprovedRequests']);
+                return $this->redirect(['action' => 'displayPendingRequests']);
             }
         }
     }

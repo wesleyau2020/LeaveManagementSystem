@@ -105,7 +105,7 @@ class HolidaysController extends AppController
      */
     public function delete($id = null)
     {
-        $this->checkAdminAuthorization();
+        $this->Authorization->skipAuthorization();
 
         $this->request->allowMethod(['post', 'delete']);
         $holiday = $this->Holidays->get($id);
@@ -129,7 +129,7 @@ class HolidaysController extends AppController
 
     public function deleteIndex()
     {
-        $this->checkAdminAuthorization();
+        $this->Authorization->skipAuthorization();
 
         $holidays = $this->paginate($this->Holidays);
 
